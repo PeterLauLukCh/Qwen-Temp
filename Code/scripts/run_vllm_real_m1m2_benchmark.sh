@@ -36,6 +36,8 @@ Common options:
   --include-raw-results
   --include-messages
   --keep-server
+  --vllm-arg ARG                Extra argument forwarded to vLLM. Repeat for flags
+                                and values, e.g. --vllm-arg --model-impl --vllm-arg transformers.
   --startup-timeout SECONDS
   --                             Remaining args go to run_real_m1m2_interconnection_benchmark.py
 
@@ -102,6 +104,7 @@ VLLM_BIN="${VLLM_BIN:-vllm}"
 KEEP_SERVER=0
 INCLUDE_RAW_RESULTS=0
 INCLUDE_MESSAGES=0
+VLLM_EXTRA_ARGS=()
 BENCH_EXTRA_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -206,6 +209,10 @@ while [[ $# -gt 0 ]]; do
       INCLUDE_MESSAGES=1
       shift
       ;;
+    --vllm-arg)
+      VLLM_EXTRA_ARGS+=("${2:?missing value for --vllm-arg}")
+      shift 2
+      ;;
     --keep-server)
       KEEP_SERVER=1
       shift
@@ -267,6 +274,7 @@ fi
 if [[ "$ENABLE_AUTO_TOOL_CHOICE" == "1" ]]; then
   VLLM_ARGS+=(--enable-auto-tool-choice --tool-call-parser "$TOOL_CALL_PARSER")
 fi
+VLLM_ARGS+=("${VLLM_EXTRA_ARGS[@]}")
 
 BENCH_ARGS=(
   python3 "$CODE_DIR/scripts/run_real_m1m2_interconnection_benchmark.py"
