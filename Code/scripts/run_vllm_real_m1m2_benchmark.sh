@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Keep user-site packages such as ~/.local/lib/pythonX.Y/site-packages from
+# leaking into conda environments. This avoids accidentally importing a vLLM or
+# torch wheel built for a newer CUDA runtime than the node driver supports.
+export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+
 usage() {
   cat <<'EOF'
 Launch vLLM, run generated live remote PSS/E M1+M2 testcases, save results,
@@ -323,6 +328,42 @@ log "Benchmark model: ${BENCHMARK_MODEL}"
 log "Cases: ${CASES_PATH}; count: ${COUNT}"
 log "GPUs: ${GPUS}; TP size: ${TP_SIZE}; port: ${PORT}"
 log "Remote PSS/E endpoint: ${PSSE_REMOTE_BASE_URL}"
+log "PYTHONNOUSERSITE: ${PYTHONNOUSERSITE}"
+
+log "Checking Python/vLLM/CUDA environment..."
+(
+  cd "$REPO_ROOT"
+  export CUDA_VISIBLE_DEVICES="$GPUS"
+  python3 - <<'PY'
+import importlib.metadata
+import shutil
+import site
+import sys
+
+print("python:", sys.executable)
+print("user_site_enabled:", site.ENABLE_USER_SITE)
+print("vllm_executable:", shutil.which("vllm"))
+try:
+    import torch
+    print("torch:", torch.__version__)
+    print("torch_cuda:", torch.version.cuda)
+    available = torch.cuda.is_available()
+    print("cuda_available:", available)
+    if available:
+        print("cuda_device_0:", torch.cuda.get_device_name(0))
+    else:
+        raise SystemExit(
+            "CUDA is not available to this Python environment. Check torch CUDA wheel "
+            "compatibility with the NVIDIA driver."
+        )
+except Exception as exc:
+    raise SystemExit(f"CUDA/vLLM preflight failed: {type(exc).__name__}: {exc}") from exc
+try:
+    print("vllm:", importlib.metadata.version("vllm"))
+except importlib.metadata.PackageNotFoundError:
+    raise SystemExit("CUDA/vLLM preflight failed: vllm is not installed in this environment.")
+PY
+)
 
 export MODEL_PATH_VALUE="$MODEL_PATH"
 export SERVED_MODEL_NAME_VALUE="$SERVED_MODEL_NAME"
