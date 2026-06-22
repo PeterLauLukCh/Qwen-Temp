@@ -96,6 +96,71 @@ class RealM1M2InterconnectionBenchmarkTest(unittest.TestCase):
         )
         self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
 
+    def test_unsupported_case_accepts_not_supported_synonym(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(6, seed=4, profile="mixed")
+            if item.oracle_label != "m1_m2_pass"
+        )
+        agent_result = _AgentResult(
+            "completed",
+            "This is not supported in the current validated remote PSS/E action space.",
+            [_Record("list_remote_psse_m1m2_cases", True, {"tool": "list_remote_psse_m1m2_cases", "case_count": 2})],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
+
+    def test_trgc_executable_case_accepts_current_remote_result(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(20, seed=5, profile="trgc")
+            if item.oracle_label == "m1_m2_pass"
+        )
+        result = {
+            "ok": True,
+            "tool": "run_remote_psse_m1m2",
+            "case_id": scenario.oracle_arguments["case_id"],
+            "scenario_type": scenario.oracle_arguments["scenario_type"],
+            "recommendation": "approve",
+            "summary": {
+                "m1_status": "pass",
+                "m2_status": "pass",
+                "m1_bus_count": 786
+                if scenario.oracle_arguments["case_id"] == "pif6_2026_05_17"
+                else 11,
+            },
+        }
+        agent_result = _AgentResult(
+            "completed",
+            "Recommendation approve from live PSS/E. Unsupported TRGC tests are not run.",
+            [_Record("run_remote_psse_m1m2", True, result)],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
+
+    def test_trgc_unsupported_case_passes_with_scope_listing(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(20, seed=8, profile="trgc")
+            if item.oracle_label == "trgc_unsupported_requirement"
+        )
+        agent_result = _AgentResult(
+            "completed",
+            "TRGC GFL-07 is not supported in the current remote PSS/E gym.",
+            [_Record("list_remote_psse_m1m2_cases", True, {"tool": "list_remote_psse_m1m2_cases", "case_count": 2})],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
+
     def test_forbidden_claim_fails(self):
         scenario = next(
             item

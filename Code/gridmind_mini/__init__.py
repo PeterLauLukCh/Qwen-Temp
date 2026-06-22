@@ -239,7 +239,7 @@ try:
         REAL_M1M2_INTERCONNECTION_PROFILES,
     )
 except ImportError:
-    REAL_M1M2_INTERCONNECTION_PROFILES = ("mixed", "easy", "hard")
+    REAL_M1M2_INTERCONNECTION_PROFILES = ("mixed", "easy", "hard", "trgc")
 try:
     from .real_m1m2_interconnection_generator import REAL_M1M2_SCHEMA_VERSION
 except ImportError:
@@ -301,6 +301,16 @@ from .remote_psse_verl import (
     REMOTE_PSSE_OBSERVATION_SCHEMA_VERSION,
     RemotePsseM1M2ToolCore,
     build_remote_psse_tool_observation,
+)
+from .trgc_requirements import (
+    TRGC_LAYERS,
+    TRGC_REQUIREMENT_CATALOG,
+    TRGC_REQUIREMENT_SCHEMA_VERSION,
+    TRGC_SUPPORT_STATUSES,
+    TRGC_TECHNOLOGIES,
+    TRGCRequirement,
+    get_trgc_requirement,
+    list_trgc_requirements,
 )
 from .verl_reward import compute_score as compute_powergrid_verl_reward
 from .violations import (
@@ -455,6 +465,12 @@ __all__ = [
     "ToolRegistry",
     "ToolRegistryError",
     "TOOL_OBSERVATION_SCHEMA_VERSION",
+    "TRGC_LAYERS",
+    "TRGC_REQUIREMENT_CATALOG",
+    "TRGC_REQUIREMENT_SCHEMA_VERSION",
+    "TRGC_SUPPORT_STATUSES",
+    "TRGC_TECHNOLOGIES",
+    "TRGCRequirement",
     "TransientAssessmentRequest",
     "TransientInterconnectionDecision",
     "TimeSeries",
@@ -510,6 +526,7 @@ __all__ = [
     "generate_real_interconnection_scenarios",
     "generate_real_m1m2_interconnection_testcases",
     "generate_powergrid_verl_splits",
+    "get_trgc_requirement",
     "handle_forced_capacity_routing",
     "has_grounding_credit",
     "is_andes_available",
@@ -519,6 +536,7 @@ __all__ = [
     "list_real_interconnection_actions",
     "list_real_psse_cases",
     "list_remote_psse_m1m2_cases",
+    "list_trgc_requirements",
     "load_real_m1m2_interconnection_testcases",
     "load_inventory",
     "normalize_connection",

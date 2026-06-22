@@ -1074,6 +1074,9 @@ def _has_real_psse_intent(lower: str) -> bool:
             "statcom",
             "frozen psse",
             "processed psse",
+            "trgc",
+            "ng-sa",
+            "ngsa",
         )
     )
 
@@ -1117,6 +1120,16 @@ def _requests_unvalidated_remote_m1m2_action(lower: str) -> bool:
     if re.search(
         r"\b(bus\s+fault|fault\s+(?:at|on)|line\s+trip|trip\s+line|"
         r"disturbance|outage|clearing\s+after)\b",
+        lower,
+    ):
+        return True
+    if re.search(
+        r"\b("
+        r"ride[-\s]?through|hvrt|lvrt|frt|droop|system\s+strength|scr|"
+        r"short[-\s]?circuit\s+ratio|pscad|power\s+quality|harmonic|"
+        r"flicker|field\s+test|field\s+validation|rtds|hil|rocof|"
+        r"fast\s+frequency|frequency\s+response|reactive\s+capability"
+        r")\b",
         lower,
     ):
         return True

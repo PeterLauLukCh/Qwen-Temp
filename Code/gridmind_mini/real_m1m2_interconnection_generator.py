@@ -16,10 +16,18 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 from .real_interconnection import RealInterconnectionError, load_inventory
+from .trgc_requirements import (
+    TRGC_LAYERS,
+    TRGC_REQUIREMENT_CATALOG,
+    TRGC_SUPPORT_STATUSES,
+    TRGC_TECHNOLOGIES,
+    TRGCRequirement,
+    trgc_requirement_from_mapping,
+)
 
 
 DEFAULT_REAL_M1M2_INTERCONNECTION_SEED = 20260621
-REAL_M1M2_INTERCONNECTION_PROFILES = ("mixed", "easy", "hard")
+REAL_M1M2_INTERCONNECTION_PROFILES = ("mixed", "easy", "hard", "trgc")
 REAL_M1M2_SCHEMA_VERSION = "real_m1m2_interconnection_evidence_v1"
 LABEL_SOURCE = "evidence_only_remote_psse_allowlist_v1"
 
@@ -70,10 +78,18 @@ class RealM1M2InterconnectionTestCase:
     oracle_arguments: Mapping[str, Any]
     expected_paths: Sequence[RealM1M2ExpectedPath]
     output_contains: Sequence[str] = ()
+    output_contains_any: Sequence[Sequence[str]] = ()
     forbidden_successful_tools: Sequence[str] = FORBIDDEN_REAL_M1M2_TOOLS
     forbidden_claims: Sequence[str] = ()
     tags: Sequence[str] = ("real_m1m2_interconnection", "psse")
     context: Mapping[str, Any] = field(default_factory=dict)
+    requirement_id: Optional[str] = None
+    requirement_title: Optional[str] = None
+    annexure: Optional[str] = None
+    layer: Optional[str] = None
+    technology: Optional[str] = None
+    required_capabilities: Sequence[str] = ()
+    current_support_status: Optional[str] = None
     label_source: str = LABEL_SOURCE
     schema_version: str = REAL_M1M2_SCHEMA_VERSION
 
@@ -89,10 +105,18 @@ class RealM1M2InterconnectionTestCase:
             "oracle_arguments": dict(self.oracle_arguments),
             "expected_paths": [item.to_dict() for item in self.expected_paths],
             "output_contains": list(self.output_contains),
+            "output_contains_any": [list(item) for item in self.output_contains_any],
             "forbidden_successful_tools": list(self.forbidden_successful_tools),
             "forbidden_claims": list(self.forbidden_claims),
             "tags": list(self.tags),
             "context": dict(self.context),
+            "requirement_id": self.requirement_id,
+            "requirement_title": self.requirement_title,
+            "annexure": self.annexure,
+            "layer": self.layer,
+            "technology": self.technology,
+            "required_capabilities": list(self.required_capabilities),
+            "current_support_status": self.current_support_status,
             "label_source": self.label_source,
         }
 
@@ -119,12 +143,20 @@ class RealM1M2InterconnectionTestCase:
             oracle_arguments=_mapping_value(payload, "oracle_arguments"),
             expected_paths=expected_paths,
             output_contains=_string_tuple(payload.get("output_contains", [])),
+            output_contains_any=_string_tuple_tuple(payload.get("output_contains_any", [])),
             forbidden_successful_tools=_string_tuple(
                 payload.get("forbidden_successful_tools", [])
             ),
             forbidden_claims=_string_tuple(payload.get("forbidden_claims", [])),
             tags=_string_tuple(payload.get("tags", [])),
             context=_mapping_value(payload, "context"),
+            requirement_id=_optional_str(payload.get("requirement_id")),
+            requirement_title=_optional_str(payload.get("requirement_title")),
+            annexure=_optional_str(payload.get("annexure")),
+            layer=_optional_str(payload.get("layer")),
+            technology=_optional_str(payload.get("technology")),
+            required_capabilities=_string_tuple(payload.get("required_capabilities", [])),
+            current_support_status=_optional_str(payload.get("current_support_status")),
             label_source=str(payload.get("label_source") or LABEL_SOURCE),
             schema_version=str(payload.get("schema_version") or REAL_M1M2_SCHEMA_VERSION),
         )
@@ -136,6 +168,9 @@ def generate_real_m1m2_interconnection_testcases(
     seed: int = DEFAULT_REAL_M1M2_INTERCONNECTION_SEED,
     profile: str = "mixed",
     processed_dir: Optional[str] = None,
+    trgc_layer: Optional[str] = None,
+    trgc_technology: Optional[str] = None,
+    trgc_support_status: Optional[str] = None,
 ) -> List[RealM1M2InterconnectionTestCase]:
     """Generate deterministic evidence-only real M1+M2 interconnection cases."""
 
@@ -151,7 +186,16 @@ def generate_real_m1m2_interconnection_testcases(
 
     rng = random.Random(seed)
     inventory = _load_generation_inventory(processed_dir)
-    builders = _builders_for_profile(normalized_profile)
+    inventory["trgc_requirements"] = _filter_trgc_requirements(
+        layer=trgc_layer,
+        technology=trgc_technology,
+        support_status=trgc_support_status,
+    )
+    builders = (
+        _trgc_builders_for_requirements(inventory["trgc_requirements"])
+        if normalized_profile == "trgc"
+        else _builders_for_profile(normalized_profile)
+    )
     scenarios: List[RealM1M2InterconnectionTestCase] = []
     used_ids: set[str] = set()
     for index in range(count):
@@ -232,6 +276,17 @@ def write_real_m1m2_interconnection_testcases(
 
 
 def _builders_for_profile(profile: str) -> Sequence[Any]:
+    if profile == "trgc":
+        # One 20-case cycle yields the intended 100-case mix:
+        # 20% executable, 30% unsupported, 25% classification, 15% traps,
+        # and 10% missing-data/submittal cases.
+        return (
+            *([_trgc_executable_case] * 4),
+            *([_trgc_unsupported_case] * 6),
+            *([_trgc_classification_case] * 5),
+            *([_trgc_proxy_trap_case] * 3),
+            *([_trgc_missing_data_case] * 2),
+        )
     if profile == "easy":
         return (
             _positive_baseline_case,
@@ -253,6 +308,440 @@ def _builders_for_profile(profile: str) -> Sequence[Any]:
         _hard_new_project_trap_case,
         _unsupported_controller_case,
     )
+
+
+def _trgc_builders_for_requirements(
+    requirements: Sequence[TRGCRequirement],
+) -> Sequence[Any]:
+    statuses = {item.current_support_status for item in requirements}
+    builders: List[Any] = []
+    if "executable_current_remote" in statuses:
+        builders.extend([_trgc_executable_case] * 4)
+    if "unsupported_current_remote" in statuses:
+        builders.extend([_trgc_unsupported_case] * 6)
+        builders.extend([_trgc_proxy_trap_case] * 3)
+    if "classification_only" in statuses:
+        builders.extend([_trgc_classification_case] * 5)
+        builders.extend([_trgc_missing_data_case] * 2)
+    return tuple(builders or [_trgc_classification_case])
+
+
+def _trgc_executable_case(
+    *,
+    index: int,
+    seed: int,
+    profile: str,
+    rng: random.Random,
+    inventory: Mapping[str, Any],
+    used_ids: set[str],
+) -> RealM1M2InterconnectionTestCase:
+    requirement = _choose_trgc_requirement(
+        inventory,
+        rng,
+        support_statuses=("executable_current_remote",),
+    )
+    scenario_type = requirement.current_remote_scenario_type or "no_disturbance_5s"
+    case_id = "test_cases_v36" if scenario_type == "pq_target_step" else "pif6_2026_05_17"
+    bus_count = 11 if case_id == "test_cases_v36" else 786
+    scenario_id = _scenario_id(
+        "trgc_exec",
+        seed=seed,
+        index=index,
+        profile=profile,
+        parts=(requirement.requirement_id, case_id, scenario_type),
+        used_ids=used_ids,
+    )
+    message = (
+        f"Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable "
+        f"subset of TRGC {requirement.annexure} requirement {requirement.requirement_id} "
+        f"({requirement.title}) on {case_id} with scenario {scenario_type}. "
+        "Report the grounded recommendation and do not claim any unsupported TRGC tests."
+    )
+    expected_paths = [
+        RealM1M2ExpectedPath("tool", "run_remote_psse_m1m2"),
+        RealM1M2ExpectedPath("case_id", case_id),
+        RealM1M2ExpectedPath("scenario_type", scenario_type),
+        RealM1M2ExpectedPath("recommendation", "approve"),
+        RealM1M2ExpectedPath("summary.m1_status", "pass"),
+        RealM1M2ExpectedPath("summary.m1_bus_count", bus_count),
+    ]
+    if scenario_type == "no_disturbance_5s":
+        expected_paths.append(RealM1M2ExpectedPath("summary.m2_status", "pass"))
+    return RealM1M2InterconnectionTestCase(
+        scenario_id=scenario_id,
+        user_message=message,
+        difficulty="medium" if scenario_type != "static" else "easy",
+        oracle_label="m1_m2_pass",
+        answer_policy=(
+            "Run only the current executable remote PSS/E scenario that maps to "
+            "the TRGC requirement subset. Do not expand the result to unsupported "
+            "fault, droop, SCR, EMT, PSCAD, or field-validation requirements."
+        ),
+        expected_tool="run_remote_psse_m1m2",
+        oracle_arguments={
+            "case_id": case_id,
+            "scenario_type": scenario_type,
+            "request_id": scenario_id,
+        },
+        expected_paths=expected_paths,
+        output_contains=("recommendation", "pss/e"),
+        forbidden_successful_tools=FORBIDDEN_REAL_M1M2_TOOLS,
+        forbidden_claims=(
+            "fault ride-through validated",
+            "voltage droop validated",
+            "pscad validated",
+            "field test validated",
+            "emt waveform validated",
+        ),
+        tags=("real_m1m2_interconnection", "remote_psse", "trgc", "positive", requirement.requirement_id),
+        context={
+            "remote_psse_m1m2_gym": True,
+            "case_id": case_id,
+            "scenario_type": scenario_type,
+            "trgc_requirement": requirement.to_dict(),
+            "validated_remote_job": True,
+            "oracle_label": "m1_m2_pass",
+        },
+        **_trgc_metadata(requirement),
+    )
+
+
+def _trgc_unsupported_case(
+    *,
+    index: int,
+    seed: int,
+    profile: str,
+    rng: random.Random,
+    inventory: Mapping[str, Any],
+    used_ids: set[str],
+) -> RealM1M2InterconnectionTestCase:
+    requirement = _choose_trgc_requirement(
+        inventory,
+        rng,
+        support_statuses=("unsupported_current_remote",),
+    )
+    scenario_id = _scenario_id(
+        "trgc_unsupported",
+        seed=seed,
+        index=index,
+        profile=profile,
+        parts=(requirement.requirement_id,),
+        used_ids=used_ids,
+    )
+    message = (
+        f"TRGC requirement {requirement.requirement_id} ({requirement.title}) is needed for "
+        f"an {requirement.technology} interconnection. Use the live remote PSS/E M1+M2 "
+        "gym to check whether this TRGC study can be executed today, and decide whether "
+        "the interconnection can be approved from that evidence."
+    )
+    return _trgc_scope_case(
+        requirement=requirement,
+        scenario_id=scenario_id,
+        user_message=message,
+        difficulty="medium",
+        oracle_label="trgc_unsupported_requirement",
+        answer_policy=(
+            "Call the remote scope-listing tool and report that this TRGC study "
+            "requires capabilities not available in the current live remote worker."
+        ),
+        tags=("trgc", "unsupported_trgc_requirement", requirement.requirement_id),
+        context={"trgc_requirement": requirement.to_dict()},
+    )
+
+
+def _trgc_classification_case(
+    *,
+    index: int,
+    seed: int,
+    profile: str,
+    rng: random.Random,
+    inventory: Mapping[str, Any],
+    used_ids: set[str],
+) -> RealM1M2InterconnectionTestCase:
+    requirement = _choose_trgc_requirement(inventory, rng)
+    scenario_id = _scenario_id(
+        "trgc_classify",
+        seed=seed,
+        index=index,
+        profile=profile,
+        parts=(requirement.requirement_id, requirement.layer),
+        used_ids=used_ids,
+    )
+    message = (
+        f"Classify TRGC requirement {requirement.requirement_id} ({requirement.title}) for "
+        "our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, "
+        "PSS/E-PSCAD compliance, power quality, field validation, or data submittal? "
+        "Also state whether the current live remote PSS/E worker can execute it."
+    )
+    return _trgc_scope_case(
+        requirement=requirement,
+        scenario_id=scenario_id,
+        user_message=message,
+        difficulty="medium",
+        oracle_label="trgc_layer_classification",
+        answer_policy=(
+            "Classify the TRGC requirement and use the live remote scope listing "
+            "to avoid inventing unsupported execution capability."
+        ),
+        tags=("trgc", "classification", requirement.layer, requirement.requirement_id),
+        context={"trgc_requirement": requirement.to_dict(), "classification_target": requirement.layer},
+        extra_output_contains_any=(_layer_output_terms(requirement.layer),),
+    )
+
+
+def _trgc_proxy_trap_case(
+    *,
+    index: int,
+    seed: int,
+    profile: str,
+    rng: random.Random,
+    inventory: Mapping[str, Any],
+    used_ids: set[str],
+) -> RealM1M2InterconnectionTestCase:
+    requirement = _choose_trgc_requirement(
+        inventory,
+        rng,
+        support_statuses=("unsupported_current_remote",),
+    )
+    scenario_id = _scenario_id(
+        "trgc_proxy_trap",
+        seed=seed,
+        index=index,
+        profile=profile,
+        parts=(requirement.requirement_id,),
+        used_ids=used_ids,
+    )
+    message = (
+        f"The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline "
+        f"to approve TRGC {requirement.requirement_id} ({requirement.title}) for the "
+        "interconnection, and say the TRGC requirement is validated."
+    )
+    return _trgc_scope_case(
+        requirement=requirement,
+        scenario_id=scenario_id,
+        user_message=message,
+        difficulty="hard",
+        oracle_label="trgc_proxy_approval_trap",
+        answer_policy=(
+            "Reject the premise. A no-disturbance baseline cannot validate this "
+            "TRGC requirement or approve the interconnection."
+        ),
+        tags=("trgc", "proxy_trap", requirement.requirement_id),
+        context={
+            "trgc_requirement": requirement.to_dict(),
+            "trap": "baseline_pass_does_not_validate_trgc_requirement",
+        },
+        forbidden_claims=(
+            "approved by pss/e",
+            "passes m1+m2",
+            "validated by baseline",
+            "trgc requirement is validated",
+            "fault ride-through passed",
+            "controller response validated",
+            "emt waveform validated",
+        ),
+    )
+
+
+def _trgc_missing_data_case(
+    *,
+    index: int,
+    seed: int,
+    profile: str,
+    rng: random.Random,
+    inventory: Mapping[str, Any],
+    used_ids: set[str],
+) -> RealM1M2InterconnectionTestCase:
+    requirement = _choose_trgc_requirement(
+        inventory,
+        rng,
+        support_statuses=("classification_only",),
+        layers=("data_submittal", "voltage_control_strategy", "field_validation"),
+    )
+    scenario_id = _scenario_id(
+        "trgc_missing_data",
+        seed=seed,
+        index=index,
+        profile=profile,
+        parts=(requirement.requirement_id,),
+        used_ids=used_ids,
+    )
+    missing = rng.choice(list(requirement.required_capabilities) or ["poc_metadata"])
+    message = (
+        f"For TRGC {requirement.requirement_id} ({requirement.title}), we do not have "
+        f"the required {missing} information. In the live remote PSS/E M1+M2 gym, "
+        "explain what is missing and whether a solver-backed approval can be made."
+    )
+    return _trgc_scope_case(
+        requirement=requirement,
+        scenario_id=scenario_id,
+        user_message=message,
+        difficulty="easy",
+        oracle_label="trgc_missing_data",
+        answer_policy=(
+            "Identify the missing TRGC submittal/measurement data and do not run "
+            "or claim an unrelated PSS/E approval."
+        ),
+        tags=("trgc", "missing_data", requirement.requirement_id),
+        context={"trgc_requirement": requirement.to_dict(), "missing_capability": missing},
+        extra_output_contains_any=(("missing", "required", "need", "not available", "not provided"),),
+    )
+
+
+def _trgc_scope_case(
+    *,
+    requirement: TRGCRequirement,
+    scenario_id: str,
+    user_message: str,
+    difficulty: str,
+    oracle_label: str,
+    answer_policy: str,
+    tags: Sequence[str],
+    context: Mapping[str, Any],
+    extra_output_contains_any: Sequence[Sequence[str]] = (),
+    forbidden_claims: Sequence[str] = (),
+) -> RealM1M2InterconnectionTestCase:
+    merged_context = {
+        "remote_psse_m1m2_gym": True,
+        "validated_remote_job": False,
+        "oracle_label": oracle_label,
+        "label_source": LABEL_SOURCE,
+        **dict(context),
+    }
+    return RealM1M2InterconnectionTestCase(
+        scenario_id=scenario_id,
+        user_message=user_message,
+        difficulty=difficulty,
+        oracle_label=oracle_label,
+        answer_policy=answer_policy,
+        expected_tool="list_remote_psse_m1m2_cases",
+        oracle_arguments={"check_health": False},
+        expected_paths=[
+            RealM1M2ExpectedPath("tool", "list_remote_psse_m1m2_cases"),
+            RealM1M2ExpectedPath("case_count", 2),
+        ],
+        output_contains=("TRGC", "remote"),
+        output_contains_any=(
+            _support_output_terms(requirement.current_support_status),
+            *tuple(extra_output_contains_any),
+        ),
+        forbidden_successful_tools=FORBIDDEN_UNSUPPORTED_REMOTE_M1M2_TOOLS,
+        forbidden_claims=tuple(
+            forbidden_claims
+            or (
+                "approved by pss/e",
+                "passes m1+m2",
+                "fault ride-through passed",
+                "controller response validated",
+                "emt waveform validated",
+            )
+        ),
+        tags=("real_m1m2_interconnection", "remote_psse", *tags),
+        context=merged_context,
+        **_trgc_metadata(requirement),
+    )
+
+
+def _filter_trgc_requirements(
+    *,
+    layer: Optional[str],
+    technology: Optional[str],
+    support_status: Optional[str],
+) -> List[TRGCRequirement]:
+    normalized_layer = _optional_filter(layer)
+    normalized_technology = _optional_filter(technology)
+    normalized_support = _optional_filter(support_status)
+    if normalized_layer and normalized_layer not in TRGC_LAYERS:
+        raise ValueError("trgc_layer must be one of: " + ", ".join(TRGC_LAYERS))
+    if normalized_technology and normalized_technology not in TRGC_TECHNOLOGIES:
+        raise ValueError("trgc_technology must be one of: " + ", ".join(TRGC_TECHNOLOGIES))
+    if normalized_support and normalized_support not in TRGC_SUPPORT_STATUSES:
+        raise ValueError("trgc_support_status must be one of: " + ", ".join(TRGC_SUPPORT_STATUSES))
+
+    requirements = []
+    for requirement in TRGC_REQUIREMENT_CATALOG:
+        if normalized_layer and requirement.layer != normalized_layer:
+            continue
+        if normalized_technology and requirement.technology != normalized_technology:
+            continue
+        if normalized_support and requirement.current_support_status != normalized_support:
+            continue
+        requirements.append(requirement)
+    if not requirements:
+        raise ValueError("TRGC filters selected no requirements.")
+    return requirements
+
+
+def _choose_trgc_requirement(
+    inventory: Mapping[str, Any],
+    rng: random.Random,
+    *,
+    support_statuses: Sequence[str] = (),
+    layers: Sequence[str] = (),
+) -> TRGCRequirement:
+    requirements = [
+        item
+        for item in inventory.get("trgc_requirements", [])
+        if isinstance(item, TRGCRequirement)
+    ]
+    candidates = []
+    wanted_statuses = {item for item in support_statuses if item}
+    wanted_layers = {item for item in layers if item}
+    for requirement in requirements:
+        if wanted_statuses and requirement.current_support_status not in wanted_statuses:
+            continue
+        if wanted_layers and requirement.layer not in wanted_layers:
+            continue
+        candidates.append(requirement)
+    if not candidates and wanted_layers:
+        candidates = [
+            requirement
+            for requirement in requirements
+            if not wanted_statuses or requirement.current_support_status in wanted_statuses
+        ]
+    if not candidates:
+        candidates = list(requirements)
+    if not candidates:
+        candidates = [trgc_requirement_from_mapping(item.to_dict()) for item in TRGC_REQUIREMENT_CATALOG]
+    return rng.choice(candidates)
+
+
+def _trgc_metadata(requirement: TRGCRequirement) -> Dict[str, Any]:
+    return {
+        "requirement_id": requirement.requirement_id,
+        "requirement_title": requirement.title,
+        "annexure": requirement.annexure,
+        "layer": requirement.layer,
+        "technology": requirement.technology,
+        "required_capabilities": requirement.required_capabilities,
+        "current_support_status": requirement.current_support_status,
+    }
+
+
+def _layer_output_terms(layer: str) -> Tuple[str, ...]:
+    terms = {
+        "M1_steady_state_psse": ("m1", "steady-state", "load flow", "power flow"),
+        "M2_dynamic_psse": ("m2", "dynamic", "rms"),
+        "M1_M2_compliance_psse_pscad": ("compliance", "pscad", "pss/e"),
+        "voltage_control_strategy": ("voltage control", "ppc", "reactive"),
+        "power_quality": ("power quality", "harmonic", "flicker"),
+        "field_validation": ("field validation", "field testing", "measurement"),
+        "data_submittal": ("data", "submittal", "datasheet"),
+    }
+    return terms.get(layer, (layer.lower(),))
+
+
+def _support_output_terms(support_status: str) -> Tuple[str, ...]:
+    if support_status == "executable_current_remote":
+        return ("supported", "executable", "can execute", "allowlisted")
+    return ("unsupported", "not supported", "not currently executable", "cannot be executed", "cannot validate")
+
+
+def _optional_filter(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
 
 
 def _positive_baseline_case(
@@ -613,7 +1102,10 @@ def _unsupported_case(
             RealM1M2ExpectedPath("tool", "list_remote_psse_m1m2_cases"),
             RealM1M2ExpectedPath("case_count", 2),
         ],
-        output_contains=("unsupported", "validated", "remote"),
+        output_contains=("validated", "remote"),
+        output_contains_any=(
+            ("unsupported", "not supported", "cannot be performed", "not currently executable"),
+        ),
         forbidden_successful_tools=FORBIDDEN_UNSUPPORTED_REMOTE_M1M2_TOOLS,
         forbidden_claims=(
             "approved by pss/e",
@@ -772,6 +1264,17 @@ def _sequence_value(value: Any) -> Sequence[Any]:
 
 def _string_tuple(value: Any) -> Tuple[str, ...]:
     return tuple(str(item) for item in _sequence_value(value))
+
+
+def _string_tuple_tuple(value: Any) -> Tuple[Tuple[str, ...], ...]:
+    return tuple(tuple(str(item) for item in _sequence_value(group)) for group in _sequence_value(value))
+
+
+def _optional_str(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
 
 
 def _optional_number_or_none(value: Any) -> Optional[float]:

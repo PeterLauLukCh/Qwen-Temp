@@ -346,6 +346,16 @@ def evaluate_real_m1m2_interconnection_result(
                 expected=expected,
             )
         )
+    for index, alternatives in enumerate(getattr(scenario, "output_contains_any", ()) or (), start=1):
+        lowered = [str(item).lower() for item in alternatives]
+        checks.append(
+            RealM1M2BenchmarkCheckResult(
+                name=f"output_contains_any:{index}",
+                passed=any(item in text for item in lowered),
+                actual=text[:500],
+                expected=list(alternatives),
+            )
+        )
     for forbidden in scenario.forbidden_claims:
         claim = str(forbidden).lower()
         checks.append(

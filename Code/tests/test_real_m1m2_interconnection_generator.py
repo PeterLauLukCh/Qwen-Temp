@@ -9,6 +9,7 @@ from pathlib import Path
 
 from gridmind_mini import (
     REAL_M1M2_SCHEMA_VERSION,
+    TRGC_REQUIREMENT_SCHEMA_VERSION,
     RealM1M2InterconnectionTestCase,
     generate_real_m1m2_interconnection_testcases,
     real_m1m2_interconnection_testcases_from_payload,
@@ -66,6 +67,45 @@ class RealM1M2InterconnectionGeneratorTest(unittest.TestCase):
         self.assertTrue(all(item.difficulty in {"easy", "medium"} for item in easy))
         self.assertTrue(any(item.difficulty == "hard" for item in hard))
 
+    def test_trgc_generation_is_deterministic_and_balanced(self) -> None:
+        first = generate_real_m1m2_interconnection_testcases(100, seed=77, profile="trgc")
+        second = generate_real_m1m2_interconnection_testcases(100, seed=77, profile="trgc")
+
+        self.assertEqual([item.to_dict() for item in first], [item.to_dict() for item in second])
+        self.assertEqual(len({item.scenario_id for item in first}), 100)
+        labels = {}
+        support = {}
+        for scenario in first:
+            labels[scenario.oracle_label] = labels.get(scenario.oracle_label, 0) + 1
+            support[scenario.current_support_status] = support.get(scenario.current_support_status, 0) + 1
+            self.assertTrue(scenario.requirement_id)
+            self.assertTrue(scenario.requirement_title)
+            self.assertTrue(scenario.annexure)
+            self.assertTrue(scenario.layer)
+            self.assertTrue(scenario.required_capabilities)
+        self.assertEqual(labels["m1_m2_pass"], 20)
+        self.assertEqual(labels["trgc_unsupported_requirement"], 30)
+        self.assertEqual(labels["trgc_layer_classification"], 25)
+        self.assertEqual(labels["trgc_proxy_approval_trap"], 15)
+        self.assertEqual(labels["trgc_missing_data"], 10)
+        self.assertGreater(support["executable_current_remote"], 0)
+        self.assertGreater(support["unsupported_current_remote"], 0)
+        self.assertGreater(support["classification_only"], 0)
+
+    def test_trgc_filters_select_support_status(self) -> None:
+        scenarios = generate_real_m1m2_interconnection_testcases(
+            6,
+            seed=12,
+            profile="trgc",
+            trgc_support_status="classification_only",
+        )
+
+        self.assertTrue(scenarios)
+        self.assertTrue(
+            all(scenario.current_support_status == "classification_only" for scenario in scenarios)
+        )
+        self.assertTrue(all(scenario.expected_tool == "list_remote_psse_m1m2_cases" for scenario in scenarios))
+
     def test_payload_round_trip_and_write_json_jsonl(self) -> None:
         scenarios = generate_real_m1m2_interconnection_testcases(5, seed=44, profile="mixed")
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -101,6 +141,16 @@ class RealM1M2InterconnectionGeneratorTest(unittest.TestCase):
         reconstructed = RealM1M2InterconnectionTestCase.from_mapping(scenario.to_dict())
 
         self.assertEqual(reconstructed.to_dict(), scenario.to_dict())
+
+    def test_trgc_metadata_round_trip(self) -> None:
+        scenario = generate_real_m1m2_interconnection_testcases(1, seed=13, profile="trgc")[0]
+        payload = {"ok": True, "schema_version": TRGC_REQUIREMENT_SCHEMA_VERSION, "scenarios": [scenario.to_dict()]}
+
+        loaded = real_m1m2_interconnection_testcases_from_payload(payload)
+
+        self.assertEqual(loaded[0].requirement_id, scenario.requirement_id)
+        self.assertEqual(loaded[0].required_capabilities, scenario.required_capabilities)
+        self.assertEqual(loaded[0].output_contains_any, scenario.output_contains_any)
 
 
 if __name__ == "__main__":

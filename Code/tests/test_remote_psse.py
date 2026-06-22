@@ -184,6 +184,19 @@ class RemotePsseIntegrationTest(unittest.TestCase):
         self.assertFalse(decision.allowed)
         self.assertEqual(decision.recommended_tool, "run_remote_psse_m1m2")
 
+    def test_guardrail_rejects_trgc_baseline_proxy(self) -> None:
+        decision = validate_tool_call_policy(
+            tool_name="run_remote_psse_m1m2",
+            user_message=(
+                "Use the live remote PSS/E M1+M2 gym no-disturbance baseline "
+                "to validate TRGC GFL-07 fault ride-through."
+            ),
+            arguments={"case_id": "pif6_2026_05_17", "scenario_type": "no_disturbance_5s"},
+        )
+
+        self.assertFalse(decision.allowed)
+        self.assertEqual(decision.recommended_tool, "list_remote_psse_m1m2_cases")
+
 
 class FakeRemotePsseTransport:
     def __init__(self) -> None:

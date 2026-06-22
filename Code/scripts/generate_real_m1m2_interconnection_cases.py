@@ -18,6 +18,9 @@ from gridmind_mini import (  # noqa: E402
     DEFAULT_REAL_M1M2_INTERCONNECTION_SEED,
     REAL_M1M2_INTERCONNECTION_PROFILES,
     REAL_M1M2_SCHEMA_VERSION,
+    TRGC_LAYERS,
+    TRGC_SUPPORT_STATUSES,
+    TRGC_TECHNOLOGIES,
     generate_real_m1m2_interconnection_testcases,
     write_real_m1m2_interconnection_testcases,
 )
@@ -48,6 +51,21 @@ def main() -> int:
         help="Optional processed PSS/E directory containing inventories/pif6_2026_05_17/*.csv.",
     )
     parser.add_argument(
+        "--trgc-layer",
+        choices=list(TRGC_LAYERS),
+        help="Optional TRGC layer filter used with --profile trgc.",
+    )
+    parser.add_argument(
+        "--trgc-technology",
+        choices=list(TRGC_TECHNOLOGIES),
+        help="Optional TRGC technology filter used with --profile trgc.",
+    )
+    parser.add_argument(
+        "--trgc-support-status",
+        choices=list(TRGC_SUPPORT_STATUSES),
+        help="Optional TRGC current-support filter used with --profile trgc.",
+    )
+    parser.add_argument(
         "--output",
         default="real-data-new/generated_real_m1m2_interconnection_cases.json",
         help="Output JSON/JSONL path.",
@@ -66,6 +84,9 @@ def main() -> int:
             seed=args.seed,
             profile=args.profile,
             processed_dir=args.processed_dir,
+            trgc_layer=args.trgc_layer,
+            trgc_technology=args.trgc_technology,
+            trgc_support_status=args.trgc_support_status,
         )
         generation: Dict[str, Any] = {
             "schema_version": REAL_M1M2_SCHEMA_VERSION,
@@ -73,6 +94,9 @@ def main() -> int:
             "seed": args.seed,
             "profile": args.profile,
             "processed_dir": args.processed_dir,
+            "trgc_layer": args.trgc_layer,
+            "trgc_technology": args.trgc_technology,
+            "trgc_support_status": args.trgc_support_status,
             "label_policy": "evidence_only_no_new_project_approvals_without_exact_psse_results",
         }
         if args.summary_only:
