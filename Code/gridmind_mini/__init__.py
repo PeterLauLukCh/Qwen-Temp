@@ -222,8 +222,6 @@ from .real_interconnection_benchmark import (
     run_real_interconnection_oracles,
 )
 from .real_m1m2_interconnection_generator import (
-    REAL_M1M2_INTERCONNECTION_PROFILES,
-    REAL_M1M2_SCHEMA_VERSION,
     RealM1M2ExpectedPath,
     RealM1M2InterconnectionTestCase,
     generate_real_m1m2_interconnection_testcases,
@@ -236,6 +234,16 @@ try:
     )
 except ImportError:
     DEFAULT_REAL_M1M2_INTERCONNECTION_SEED = 20260621
+try:
+    from .real_m1m2_interconnection_generator import (
+        REAL_M1M2_INTERCONNECTION_PROFILES,
+    )
+except ImportError:
+    REAL_M1M2_INTERCONNECTION_PROFILES = ("mixed", "easy", "hard")
+try:
+    from .real_m1m2_interconnection_generator import REAL_M1M2_SCHEMA_VERSION
+except ImportError:
+    REAL_M1M2_SCHEMA_VERSION = "real_m1m2_interconnection_evidence_v1"
 from .real_m1m2_interconnection_benchmark import (
     RealM1M2BenchmarkCheckResult,
     RealM1M2BenchmarkResult,
