@@ -1,0 +1,41 @@
+{
+  "created_by": "_tmp_export_inventories.py",
+  "cases": [
+    {
+      "case_id": "test_cases_v36",
+      "directory": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\derived_outputs\\psse_processing_full_20240601_124127\\inventories\\test_cases_v36",
+      "branches": 4,
+      "transformers_2w": 6,
+      "transformers_3w": 0,
+      "machines": 5,
+      "loads": 0,
+      "shunts": 0,
+      "switched_shunts": 0,
+      "dynamic_models": 14,
+      "poc_candidates": 5,
+      "flow_notes": {
+        "branches": "P/Q/loading from PSSPY for small case; computed from saved solved line-equivalent data for PIF6.",
+        "transformers_2w": "P/Q/loading from PSSPY only when live case API is available; PIF6 transformer flows left blank.",
+        "transformers_3w": "P/Q/loading from PSSPY only when live case API is available; PIF6 3-winding flows left blank."
+      }
+    },
+    {
+      "case_id": "pif6_2026_05_17",
+      "directory": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\derived_outputs\\psse_processing_full_20240601_124127\\inventories\\pif6_2026_05_17",
+      "branches": 402,
+      "transformers_2w": 13,
+      "transformers_3w": 125,
+      "machines": 251,
+      "loads": 2,
+      "shunts": 0,
+      "switched_shunts": 0,
+      "dynamic_models": 502,
+      "poc_candidates": 13,
+      "flow_notes": {
+        "branches": "P/Q/loading from PSSPY for small case; computed from saved solved line-equivalent data for PIF6.",
+        "transformers_2w": "P/Q/loading from PSSPY only when live case API is available; PIF6 transformer flows left blank.",
+        "transformers_3w": "P/Q/loading from PSSPY only when live case API is available; PIF6 3-winding flows left blank."
+      }
+    }
+  ]
+}

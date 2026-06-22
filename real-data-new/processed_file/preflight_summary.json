@@ -1,0 +1,130 @@
+{
+  "created_at": "2024-06-01T12:42:54",
+  "python_version": "3.12.7 (tags/v3.12.7:0b05ead, Oct  1 2024, 03:06:41) [MSC v.1941 64 bit (AMD64)]",
+  "psse_install": "C:\\Program Files\\PTI\\PSSE36\\36.2",
+  "psse_version": "PSS(R)E Xplore 36.2.0",
+  "console_50000_bus_preflight": {
+    "returncode": 0,
+    "banner_lines": [
+      "PSS(R)E Xplore Version 36",
+      "50000 BUS POWER SYSTEM SIMULATOR--PSS(R)E Xplore-36.2.0"
+    ],
+    "error_lines": []
+  },
+  "bundles": {
+    "test_cases_v36": {
+      "files": {
+        "sav": "real-data-new\\test_cases _v36\\psse_ppc_test_bench_PMIN_QMAX.sav",
+        "dyr": "real-data-new\\test_cases _v36\\psse_ppc_test_dynamic.dyr",
+        "dlls": [
+          {
+            "path": "real-data-new\\test_cases _v36\\sippc_r5gz_v36_5_2_6_test.dll",
+            "sha256": "EA2A72A753D557A7370D8C5DB709765D82FCA17FC7820288FD28814065D6C817"
+          }
+        ]
+      },
+      "dyr_model_counts": {
+        "PLBVFU1": 1,
+        "REECAU1": 4,
+        "REGCAU1": 4,
+        "SIAUX1": 4,
+        "SIR5GZ": 1
+      },
+      "dyr_model_count_errors": [],
+      "dll_load_check": {
+        "bundle_id": "test_cases_v36",
+        "psse_version_tuple": [
+          "PSS(R)E Xplore                  ",
+          36,
+          2,
+          0,
+          "December 18, 2024             ",
+          "2024_12_18_2109_50296d3e                                                                                                            "
+        ],
+        "psseinit_ierr": 0,
+        "dlls": [
+          {
+            "path": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\test_cases _v36\\sippc_r5gz_v36_5_2_6_test.dll",
+            "loaded": true,
+            "ierr": 0,
+            "error": null
+          }
+        ]
+      },
+      "dll_load_stdout_errors": [],
+      "dynamic_error_summary": [
+        "Error: Playback model input (plb) file not found;  Model Ignored."
+      ]
+    },
+    "pif6_2026_05_17": {
+      "files": {
+        "sav": "real-data-new\\2026_05_17\\PIF6_POC2_KLS_V9_updt.sav",
+        "dyr": "real-data-new\\2026_05_17\\PIF6_POC2_Disaggregated.dyr",
+        "dlls": [
+          {
+            "path": "real-data-new\\2026_05_17\\sippc_pif6_v36_5_2_5_5.dll",
+            "sha256": "F50BE449D0D6B501DBB9B443D073A344F324F8F29405AB27827C57A8F3F22E44"
+          },
+          {
+            "path": "real-data-new\\2026_05_17\\SG1100UD_PSSE36_V0131101_260420.dll",
+            "sha256": "654C70F53BB51AE30E9791D7F8495C2EFD8E346E325ACB502860685EC42F91C7"
+          },
+          {
+            "path": "real-data-new\\2026_05_17\\NWSTAT01_V2_20250829_V36.dll",
+            "sha256": "A661C05D37F09E32D7AEAD76BE58F351CDA0606BAA87CBBEE68542AEECCA5BF0"
+          }
+        ]
+      },
+      "savinfo": {
+        "PIF6_POC2_KLS_V9_updt.sav": {
+          "vrsn": "36.3 ",
+          "sizebus": 786
+        }
+      },
+      "dyr_model_counts": {
+        "GENCLS": 1,
+        "SIPIF6": 1,
+        "SGCVTF0131101": 240,
+        "NWSTAT01": 10,
+        "SIAUX1": 250
+      },
+      "dyr_model_count_errors": [],
+      "dll_load_check": {
+        "bundle_id": "pif6_2026_05_17",
+        "psse_version_tuple": [
+          "PSS(R)E Xplore                  ",
+          36,
+          2,
+          0,
+          "December 18, 2024             ",
+          "2024_12_18_2109_50296d3e                                                                                                            "
+        ],
+        "psseinit_ierr": 0,
+        "dlls": [
+          {
+            "path": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\2026_05_17\\sippc_pif6_v36_5_2_5_5.dll",
+            "loaded": true,
+            "ierr": 0,
+            "error": null
+          },
+          {
+            "path": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\2026_05_17\\SG1100UD_PSSE36_V0131101_260420.dll",
+            "loaded": true,
+            "ierr": 0,
+            "error": null
+          },
+          {
+            "path": "C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\2026_05_17\\NWSTAT01_V2_20250829_V36.dll",
+            "loaded": true,
+            "ierr": 0,
+            "error": null
+          }
+        ]
+      },
+      "dll_load_stdout_errors": [],
+      "static_console_error_summary": [],
+      "dynamic_error_summary": [],
+      "rate2_overload_report": "PSS/E BAT_RATE_2 reported * NONE * above 100% rating set 1."
+    }
+  }
+}

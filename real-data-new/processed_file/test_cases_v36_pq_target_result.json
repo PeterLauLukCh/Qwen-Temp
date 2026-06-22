@@ -1,0 +1,39 @@
+{
+  "case_id": "test_cases_v36_step_pmin_qmax_reproduction",
+  "backend": "psse",
+  "psse_version": "PSS(R)E Xplore 36.2.0",
+  "files": {
+    "sav": "real-data-new\\test_cases _v36\\psse_ppc_test_bench_PMIN_QMAX.sav",
+    "dyr": "real-data-new\\test_cases _v36\\psse_ppc_test_dynamic.dyr",
+    "dlls": [
+      "real-data-new\\test_cases _v36\\sippc_r5gz_v36_5_2_6_test.dll"
+    ]
+  },
+  "m1_powerflow": {
+    "status": "pass",
+    "converged": true,
+    "bus_voltage_min_pu": 1.0,
+    "bus_voltage_max_pu": 1.0616588592529297,
+    "poc_p_mw": 200.02813720703125,
+    "poc_q_mvar": 330.07147216796875
+  },
+  "m2_dynamic": {
+    "status": "not_run",
+    "initialized": false,
+    "simulation_converged": false,
+    "event": "static_pq_target_reproduction_from_step_pmin_qmax_py",
+    "metrics": {
+      "min_voltage_pu": null,
+      "max_voltage_pu": null,
+      "final_poc_p_mw": 200.02813720703125,
+      "final_poc_q_mvar": 330.07147216796875,
+      "max_oscillation": null
+    }
+  },
+  "limitations": [
+    "psse_rms_dynamic_not_emt_waveform",
+    "labels_not_yet_expert_validated",
+    "source_script_referenced_missing_psse_ppc_test_bench_sav_available_pmin_qmax_sav_used",
+    "derived_outputs_only_no_sav_saved"
+  ]
+}

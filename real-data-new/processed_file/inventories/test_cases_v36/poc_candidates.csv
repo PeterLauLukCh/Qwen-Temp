@@ -1,0 +1,6 @@
+candidate_type,bus,name,voltage_pu,from_bus,to_bus,circuit_id,P_MW,Q_Mvar,reason
+bus,700,BUSPOC,1.0263376235961914,,,,,,name_or_known_poc_bus
+bus,800,DUMBUS,1.0257291793823242,,,,,,name_or_known_poc_bus
+bus,900,SYSTEM,1.0,,,,,,name_or_known_poc_bus
+branch,700,BUSPOC,1.0263376235961914,700,800,1,200.00865173339844,330.330322265625,branch_touching_poc_candidate_bus
+branch,800,DUMBUS,1.0257291793823242,800,900,1,200.0081024169922,330.0627136230469,branch_touching_poc_candidate_bus

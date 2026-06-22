@@ -1,0 +1,91 @@
+{
+  "steps": [
+    {
+      "step": "psseinit",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "case",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "fdns",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "dyre_new_2",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "addmodellibrary:sippc_r5gz_v36_5_2_6_test.dll",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "dynamics_solution_param_2",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "cong",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "conl1",
+      "ierr": 0,
+      "value": "(0, 0)"
+    },
+    {
+      "step": "conl2",
+      "ierr": 0,
+      "value": "(0, 0)"
+    },
+    {
+      "step": "conl3",
+      "ierr": 0,
+      "value": "(0, 0)"
+    },
+    {
+      "step": "branch_pq_channel_800_900",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "voltage_channel_900",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "voltage_channel_800",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "bus_frequency_channel_900",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "machine_speed_40",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "strt_2",
+      "ierr": 0,
+      "value": "0"
+    },
+    {
+      "step": "run_5s",
+      "ierr": 0,
+      "value": "0"
+    }
+  ],
+  "channel_row_count": 5004,
+  "dyntools_error": null
+}

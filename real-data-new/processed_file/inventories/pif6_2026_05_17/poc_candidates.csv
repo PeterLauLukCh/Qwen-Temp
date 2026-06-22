@@ -1,0 +1,14 @@
+candidate_type,bus,name,voltage_pu,from_bus,to_bus,circuit_id,P_MW,Q_Mvar,reason
+bus,2,POC2,0.9061172008514404,,,,,,name_or_known_poc_bus
+bus,800,TERMINAL(60),0.9976325631141663,,,,,,name_or_known_poc_bus
+bus,2000,POC2_0,0.8999999761581421,,,,,,name_or_known_poc_bus
+bus,2001,DUMMY,0.9060958623886108,,,,,,name_or_known_poc_bus
+bus,9001,DUMMY,0.9029827117919922,,,,,,name_or_known_poc_bus
+branch,2,POC2,0.9061172008514404,2,762,1,0.8211538320135224,-4.761662507434608,branch_touching_poc_candidate_bus
+branch,2,POC2,0.9061172008514404,2,768,1,0.6532296764552231,-1.8926231247871999,branch_touching_poc_candidate_bus
+branch,2,POC2,0.9061172008514404,2,773,1,1.5541531503934707,-4.475046109301368,branch_touching_poc_candidate_bus
+branch,2,POC2,0.9061172008514404,2,776,1,0.5472478298147643,-2.5721425412382315,branch_touching_poc_candidate_bus
+branch,2,POC2,0.9061172008514404,2,785,1,1.5553038811242255,-5.579201880585782,branch_touching_poc_candidate_bus
+branch,800,TERMINAL(60),0.9976325631141663,613,800,1,0.00010494745148238466,-0.029529024669750575,branch_touching_poc_candidate_bus
+branch,2,POC2,0.9061172008514404,2,2001,1,-5.0866778480386206,19.335164455381832,branch_touching_poc_candidate_bus
+branch,9001,DUMMY,0.9029827117919922,9001,2000,1,-5.1403223570580066,16.766420464541895,branch_touching_poc_candidate_bus

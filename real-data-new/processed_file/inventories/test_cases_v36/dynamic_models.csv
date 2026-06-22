@@ -1,0 +1,15 @@
+bus,id,model_name,model_category,connected_controlled_bus_candidates,source_line_start,source_line_end
+900,1,PLBVFU1,auxiliary,,1,1
+700,,SIR5GZ,PPC,800;40;50;41;51;200;201,5,61
+40,1,REGCAU1,inverter,101,64,67
+40,1,REECAU1,inverter,200,68,78
+40,1,SIAUX1,auxiliary,700,81,83
+41,1,REGCAU1,inverter,101,85,88
+41,1,REECAU1,inverter,200,89,99
+41,1,SIAUX1,auxiliary,700,102,104
+200,1,REGCAU1,inverter,101,108,111
+200,1,REECAU1,inverter,100,112,122
+200,1,SIAUX1,auxiliary,700,124,126
+201,1,REGCAU1,inverter,101,128,131
+201,1,REECAU1,inverter,100,132,142
+201,1,SIAUX1,auxiliary,700,144,146

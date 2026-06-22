@@ -1,0 +1,240 @@
+source,stream,line_no,message
+test_cases_v36_pq_target,stdout,2, Input error detected at !
+test_cases_v36_pq_target,stdout,3," -c """
+test_cases_v36_pq_target,stdout,4,import json
+test_cases_v36_pq_target,stdout,5,"import psse3602, psspy"
+test_cases_v36_pq_target,stdout,6,"SAV=\""C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\test_cases _v36\\psse_ppc_test_bench_PMIN_QMAX.sav\"""
+test_cases_v36_pq_target,stdout,7,TARGET_P=200.0; TARGET_Q=330.0
+test_cases_v36_pq_target,stdout,8,out={'psse_version_tuple': list
+test_cases_v36_pq_target,stdout,9,                                               !
+test_cases_v36_pq_target,stdout,11, PSS(R)E Xplore Version 36
+test_cases_v36_pq_target,stdout,12, Copyright (c) 1976-2024
+test_cases_v36_pq_target,stdout,13," Siemens Industry, Inc.,"
+test_cases_v36_pq_target,stdout,14, Power Technologies International                            (PTI)
+test_cases_v36_pq_target,stdout,15, This program is a confidential  unpublished  work  created  and  first
+test_cases_v36_pq_target,stdout,16, licensed in 1976.  It is a trade secret which is the property of  PTI.
+test_cases_v36_pq_target,stdout,17," All use,  disclosure,  and/or reproduction not specifically authorized"
+test_cases_v36_pq_target,stdout,18, by  PTI  is prohibited.   This  program is protected  under  copyright
+test_cases_v36_pq_target,stdout,19, laws  of  non-U.S.  countries  and  by  application  of  international
+test_cases_v36_pq_target,stdout,20, treaties.  All  Rights  Reserved  Under  The  Copyright  Laws.
+test_cases_v36_pq_target,stdout,23,           SIEMENS POWER TECHNOLOGIES INTERNATIONAL
+test_cases_v36_pq_target,stdout,25,    50 BUS POWER SYSTEM SIMULATOR--PSS(R)E Xplore-36.2.0
+test_cases_v36_pq_target,stdout,27,"             INITIATED ON SAT, JUN 01 2024  12:41"
+test_cases_v36_pq_target,stdout,29," SIEMENS PPC TEST BENCH WITH STAT, REG"
+test_cases_v36_pq_target,stdout,32," The Saved Case in file C:\Users\pchen\Desktop\Qwen-Grid-main\real-data-new\test_cases _v36\psse_ppc_test_bench_PMIN_QMAX.sav was saved on SUN, MAY 31 2026  20:35"
+test_cases_v36_pq_target,stdout,34,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,35,   0.0       0.0002(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,36,                                                             0.00000(            )   0.00000(     41     )
+test_cases_v36_pq_target,stdout,37,   0.5       0.0000(     41     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,38,                                                             0.00000(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,39,   1.0       0.0000(     40     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,42, Reached tolerance in 1 iterations
+test_cases_v36_pq_target,stdout,44, Largest mismatch:     -0.00 MW     -0.00 Mvar      0.00 MVA at bus 40 [REGTRM1     0.6900]
+test_cases_v36_pq_target,stdout,45, System total absolute mismatch:                    0.00 MVA
+test_cases_v36_pq_target,stdout,47, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,48,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,49,    900     SYSTEM      230.00    -198.9   9999.0 -9999.0    -319.4   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,51, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,52," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,53, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,54,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,56," Power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]:"
+test_cases_v36_pq_target,stdout,57, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,58,    100.004         500.000      PG
+test_cases_v36_pq_target,stdout,59,    22.1294         0.00000      QG
+test_cases_v36_pq_target,stdout,60,    22.1294         0.00000      QT
+test_cases_v36_pq_target,stdout,61,    22.1294         0.00000      QB
+test_cases_v36_pq_target,stdout,63, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,64," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,65, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,66,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,68," Power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]:"
+test_cases_v36_pq_target,stdout,69, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,70,    100.004         500.000      PG
+test_cases_v36_pq_target,stdout,71,    22.1294         0.00000      QG
+test_cases_v36_pq_target,stdout,72,    22.1294         0.00000      QT
+test_cases_v36_pq_target,stdout,73,    22.1294         0.00000      QB
+test_cases_v36_pq_target,stdout,75,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,76,   0.0       4.0000(     41     )    0.2213(     41     )
+test_cases_v36_pq_target,stdout,77,                                                             0.00000(            )   0.13740(     41     )
+test_cases_v36_pq_target,stdout,78,   0.5       0.2601(    800     )    0.4472(    800     )
+test_cases_v36_pq_target,stdout,79,                                                             0.01588(     40     )   0.00000(            )
+test_cases_v36_pq_target,stdout,80,   1.0       0.2815(    800     )    0.0104(    201     )
+test_cases_v36_pq_target,stdout,81,                                                             0.00000(            )   0.00301(    100     )
+test_cases_v36_pq_target,stdout,82,   1.5       0.0036(    800     )    0.0104(    201     )
+test_cases_v36_pq_target,stdout,83,                                                             0.00057(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,84,   2.0       0.0040(     41     )    0.0009(    201     )
+test_cases_v36_pq_target,stdout,85,                                                             0.00000(            )   0.00013(     41     )
+test_cases_v36_pq_target,stdout,86,   2.5       0.0002(    800     )    0.0009(    201     )
+test_cases_v36_pq_target,stdout,87,                                                             0.00002(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,88,   3.0       0.0002(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,91, Reached tolerance in 3 iterations
+test_cases_v36_pq_target,stdout,93, Largest mismatch:      0.02 MW     -0.00 Mvar      0.02 MVA at bus 800 [DUMBUS      230.00]
+test_cases_v36_pq_target,stdout,94, System total absolute mismatch:                    0.06 MVA
+test_cases_v36_pq_target,stdout,96, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,97,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,98,    900     SYSTEM      230.00    -992.5   9999.0 -9999.0    -115.5   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,100, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,101," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,102, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,103,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,105," Power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]:"
+test_cases_v36_pq_target,stdout,106, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,107,    500.000         100.001      PG
+test_cases_v36_pq_target,stdout,109, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,110," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,111, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,112,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,114," Power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]:"
+test_cases_v36_pq_target,stdout,115, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,116,    500.000         100.001      PG
+test_cases_v36_pq_target,stdout,118,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,119,   0.0       3.9999(     41     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,120,                                                             0.00000(            )   0.13955(     41     )
+test_cases_v36_pq_target,stdout,121,   0.5       0.2057(    800     )    0.4338(    800     )
+test_cases_v36_pq_target,stdout,122,                                                             0.00851(     40     )   0.00000(            )
+test_cases_v36_pq_target,stdout,123,   1.0       0.2504(    800     )    0.0057(    201     )
+test_cases_v36_pq_target,stdout,124,                                                             0.00000(            )   0.00145(    800     )
+test_cases_v36_pq_target,stdout,125,   1.5       0.0054(    101     )    0.0165(    800     )
+test_cases_v36_pq_target,stdout,126,                                                             0.00038(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,127,   2.0       0.0054(    101     )    0.0006(    201     )
+test_cases_v36_pq_target,stdout,128,                                                             0.00000(            )   0.00005(    100     )
+test_cases_v36_pq_target,stdout,129,   2.5       0.0002(    101     )    0.0006(    201     )
+test_cases_v36_pq_target,stdout,130,                                                             0.00003(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,131,   3.0       0.0002(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,134, Reached tolerance in 3 iterations
+test_cases_v36_pq_target,stdout,136, Largest mismatch:      0.02 MW      0.00 Mvar      0.02 MVA at bus 101 [BUREG2      35.000]
+test_cases_v36_pq_target,stdout,137, System total absolute mismatch:                    0.08 MVA
+test_cases_v36_pq_target,stdout,139, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,140,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,141,    900     SYSTEM      230.00    -199.1   9999.0 -9999.0    -277.1   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,143, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,144," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,145, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,146,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,148," No power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]"
+test_cases_v36_pq_target,stdout,150, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,151," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,152, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,153,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,155," No power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]"
+test_cases_v36_pq_target,stdout,157,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,158,   0.0       0.0002(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,159,                                                             0.00000(            )   0.00000(    101     )
+test_cases_v36_pq_target,stdout,160,   0.5       0.0000(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,161,                                                             0.00000(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,162,   1.0       0.0000(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,165, Reached tolerance in 1 iterations
+test_cases_v36_pq_target,stdout,167, Largest mismatch:     -0.00 MW     -0.00 Mvar      0.00 MVA at bus 101 [BUREG2      35.000]
+test_cases_v36_pq_target,stdout,168, System total absolute mismatch:                    0.00 MVA
+test_cases_v36_pq_target,stdout,170, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,171,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,172,    900     SYSTEM      230.00    -199.1   9999.0 -9999.0    -277.1   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,174, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,175," Messages for machine ""1"" at bus 200 [BUSSVG1     35.000]:   (003075)"
+test_cases_v36_pq_target,stdout,176, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,177,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,179," No power flow data changed for machine ""1"" at bus 200 [BUSSVG1     35.000]"
+test_cases_v36_pq_target,stdout,181, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,182," Messages for machine ""1"" at bus 201 [BUSSVG2     35.000]:   (003075)"
+test_cases_v36_pq_target,stdout,183, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,184,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,186," No power flow data changed for machine ""1"" at bus 201 [BUSSVG2     35.000]"
+test_cases_v36_pq_target,stdout,188,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,189,   0.0       0.0000(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,190,                                                             0.00000(            )   0.00000(    101     )
+test_cases_v36_pq_target,stdout,191,   0.5       0.0000(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,192,                                                             0.00000(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,193,   1.0       0.0000(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,196, Reached tolerance in 1 iterations
+test_cases_v36_pq_target,stdout,198, Largest mismatch:      0.00 MW      0.00 Mvar      0.00 MVA at bus 101 [BUREG2      35.000]
+test_cases_v36_pq_target,stdout,199, System total absolute mismatch:                    0.00 MVA
+test_cases_v36_pq_target,stdout,201, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,202,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,203,    900     SYSTEM      230.00    -199.1   9999.0 -9999.0    -277.1   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,205, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,206," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,207, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,208,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,210," No power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]"
+test_cases_v36_pq_target,stdout,212, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,213," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,214, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,215,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,217," No power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]"
+test_cases_v36_pq_target,stdout,219,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,220,   0.0       0.0000(    101     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,221,                                                             0.00000(            )   0.00000(    101     )
+test_cases_v36_pq_target,stdout,222,   0.5       0.0000(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,223,                                                             0.00000(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,224,   1.0       0.0000(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,227, Reached tolerance in 1 iterations
+test_cases_v36_pq_target,stdout,229, Largest mismatch:     -0.00 MW     -0.00 Mvar      0.00 MVA at bus 800 [DUMBUS      230.00]
+test_cases_v36_pq_target,stdout,230, System total absolute mismatch:                    0.00 MVA
+test_cases_v36_pq_target,stdout,232, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,233,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,234,    900     SYSTEM      230.00    -199.1   9999.0 -9999.0    -277.1   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,236, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,237," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,238, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,239,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,241," Power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]:"
+test_cases_v36_pq_target,stdout,242, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,243,    0.00000         22.0397      QG
+test_cases_v36_pq_target,stdout,244,    0.00000         22.0397      QT
+test_cases_v36_pq_target,stdout,245,    0.00000         22.0397      QB
+test_cases_v36_pq_target,stdout,247, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,248," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,249, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,250,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,252," Power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]:"
+test_cases_v36_pq_target,stdout,253, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,254,    0.00000         22.0397      QG
+test_cases_v36_pq_target,stdout,255,    0.00000         22.0397      QT
+test_cases_v36_pq_target,stdout,256,    0.00000         22.0397      QB
+test_cases_v36_pq_target,stdout,258,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,259,   0.0       0.0000(    800     )    0.2204(     41     )
+test_cases_v36_pq_target,stdout,260,                                                             0.00000(            )   0.00000(     41     )
+test_cases_v36_pq_target,stdout,261,   0.5       0.0000(    800     )    0.2204(     41     )
+test_cases_v36_pq_target,stdout,262,                                                             0.00750(     40     )   0.00000(            )
+test_cases_v36_pq_target,stdout,263,   1.0       0.0376(    800     )    0.0048(    201     )
+test_cases_v36_pq_target,stdout,264,                                                             0.00000(            )   0.00058(     41     )
+test_cases_v36_pq_target,stdout,265,   1.5       0.0008(    800     )    0.0048(    201     )
+test_cases_v36_pq_target,stdout,266,                                                             0.00022(    201     )   0.00000(            )
+test_cases_v36_pq_target,stdout,267,   2.0       0.0010(     40     )    0.0003(    201     )
+test_cases_v36_pq_target,stdout,270, Reached tolerance in 2 iterations
+test_cases_v36_pq_target,stdout,272, Largest mismatch:     -0.10 MW     -0.00 Mvar      0.10 MVA at bus 40 [REGTRM1     0.6900]
+test_cases_v36_pq_target,stdout,273, System total absolute mismatch:                    0.48 MVA
+test_cases_v36_pq_target,stdout,275, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,276,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,277,    900     SYSTEM      230.00    -198.8   9999.0 -9999.0    -319.1   9999.0 -9999.0
+test_cases_v36_pq_target,stdout,279, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,280," Messages for machine ""1"" at bus 40 [REGTRM1     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,281, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,282,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,284," Power flow data changed for machine ""1"" at bus 40 [REGTRM1     0.6900]:"
+test_cases_v36_pq_target,stdout,285, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,286,    22.0397         22.1293      QG
+test_cases_v36_pq_target,stdout,287,    22.0397         22.1293      QT
+test_cases_v36_pq_target,stdout,288,    22.0397         22.1293      QB
+test_cases_v36_pq_target,stdout,290, Messages for api MACHINE_DATA_5
+test_cases_v36_pq_target,stdout,291," Messages for machine ""1"" at bus 41 [REGTRM2     0.6900]:   (003075)"
+test_cases_v36_pq_target,stdout,292, Error: No ownership data is specified   (003082)
+test_cases_v36_pq_target,stdout,293,        Ownership data is set to: 1 1.00000   0 1.00000   0 1.00000   0 1.00000   (003083)
+test_cases_v36_pq_target,stdout,295," Power flow data changed for machine ""1"" at bus 41 [REGTRM2     0.6900]:"
+test_cases_v36_pq_target,stdout,296, X--ORIGINAL--X  X-NEW VALUE--X  DATA ITEM
+test_cases_v36_pq_target,stdout,297,    22.0397         22.1293      QG
+test_cases_v36_pq_target,stdout,298,    22.0397         22.1293      QT
+test_cases_v36_pq_target,stdout,299,    22.0397         22.1293      QB
+test_cases_v36_pq_target,stdout,301,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_pq_target,stdout,302,   0.0       0.0010(     40     )    0.0009(     40     )
+test_cases_v36_pq_target,stdout,303,                                                             0.00000(            )   0.00002(     41     )
+test_cases_v36_pq_target,stdout,304,   0.5       0.0000(     41     )    0.0009(     40     )
+test_cases_v36_pq_target,stdout,305,                                                             0.00004(     40     )   0.00000(            )
+test_cases_v36_pq_target,stdout,306,   1.0       0.0002(    800     )    0.0000(    201     )
+test_cases_v36_pq_target,stdout,309, Reached tolerance in 1 iterations
+test_cases_v36_pq_target,stdout,311, Largest mismatch:      0.02 MW     -0.00 Mvar      0.02 MVA at bus 800 [DUMBUS      230.00]
+test_cases_v36_pq_target,stdout,312, System total absolute mismatch:                    0.07 MVA
+test_cases_v36_pq_target,stdout,314, SWING BUS SUMMARY:
+test_cases_v36_pq_target,stdout,315,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_pq_target,stdout,316,    900     SYSTEM      230.00    -199.0   9999.0 -9999.0    -319.4   9999.0 -9999.0

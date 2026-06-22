@@ -1,0 +1,6 @@
+tools:
+  - class_name: "gridmind_mini.remote_psse_verl.RemotePsseM1M2Tool"
+    config:
+      type: native
+      mode: live_remote_psse_m1m2
+      max_observation_chars: 6000

@@ -1,0 +1,85 @@
+{
+  "case_id": "test_cases_v36_psse_ppc_test_bench_pmin_qmax_no_disturbance",
+  "backend": "psse",
+  "psse_version": "PSS(R)E Xplore 36.2.0",
+  "files": {
+    "sav": "real-data-new\\test_cases _v36\\psse_ppc_test_bench_PMIN_QMAX.sav",
+    "dyr": "real-data-new\\test_cases _v36\\psse_ppc_test_dynamic.dyr",
+    "dlls": [
+      "real-data-new\\test_cases _v36\\sippc_r5gz_v36_5_2_6_test.dll"
+    ]
+  },
+  "m1_powerflow": {
+    "status": "pass",
+    "converged": true,
+    "bus_voltage_min_pu": 1.0,
+    "bus_voltage_max_pu": 1.0616588592529297,
+    "poc_p_mw": 200.0081024169922,
+    "poc_q_mvar": 330.0627136230469,
+    "bus_count": 11,
+    "branch_count": 10,
+    "machine_count": 5,
+    "load_count": 0,
+    "overloaded_branch_count": 0,
+    "key_bus_voltages": [
+      {
+        "bus": 900,
+        "voltage_pu": 1.0,
+        "ierr": 0
+      },
+      {
+        "bus": 800,
+        "voltage_pu": 1.025728464126587,
+        "ierr": 0
+      },
+      {
+        "bus": 700,
+        "voltage_pu": 1.0263367891311646,
+        "ierr": 0
+      },
+      {
+        "bus": 40,
+        "voltage_pu": 1.0453766584396362,
+        "ierr": 0
+      },
+      {
+        "bus": 41,
+        "voltage_pu": 1.0453766584396362,
+        "ierr": 0
+      },
+      {
+        "bus": 200,
+        "voltage_pu": 1.0616588592529297,
+        "ierr": 0
+      },
+      {
+        "bus": 201,
+        "voltage_pu": 1.0616588592529297,
+        "ierr": 0
+      }
+    ]
+  },
+  "m2_dynamic": {
+    "status": "pass",
+    "initialized": true,
+    "simulation_converged": true,
+    "event": "no_disturbance_5s",
+    "metrics": {
+      "min_voltage_pu": 1.0,
+      "max_voltage_pu": 1.025728464126587,
+      "final_poc_p_mw": 200.00880432128906,
+      "final_poc_q_mvar": 330.0626525878906,
+      "max_oscillation": 0.000335693359375
+    },
+    "error_summary": [
+      "Error: Playback model input (plb) file not found;  Model Ignored."
+    ],
+    "process_returncode": 0
+  },
+  "limitations": [
+    "psse_rms_dynamic_not_emt_waveform",
+    "labels_not_yet_expert_validated",
+    "small_case_available_sav_is_pmin_qmax_variant",
+    "dyr_references_missing_PL_playback_plb_for_PLBVFU1_bus_900"
+  ]
+}

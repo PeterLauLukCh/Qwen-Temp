@@ -1,0 +1,16 @@
+.DS_Store
+*.zip
+*.lnk
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+*.log
+real-data-new/derived_outputs/
+
+# Local/private working materials; keep GitHub code-only.
+code v2.0/
+new_dataset/
+transient_ledesma_dataset_2016/
+report.txt
+translated.txt

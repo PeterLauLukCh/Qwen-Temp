@@ -1,0 +1,35 @@
+source,stream,line_no,message
+test_cases_v36_static,stdout,2, Input error detected at !
+test_cases_v36_static,stdout,3," -c """
+test_cases_v36_static,stdout,4,import json
+test_cases_v36_static,stdout,5,"import psse3602, psspy, caspy"
+test_cases_v36_static,stdout,6,"SAV=\""C:\\Users\\pchen\\Desktop\\Qwen-Grid-main\\real-data-new\\test_cases _v36\\psse_ppc_test_bench_PMIN_QMAX.sav\"""
+test_cases_v36_static,stdout,7,"out={'psse_version_tuple': None, 'psseinit_ierr': None,"
+test_cases_v36_static,stdout,8,                                                      !
+test_cases_v36_static,stdout,10, PSS(R)E Xplore Version 36
+test_cases_v36_static,stdout,11, Copyright (c) 1976-2024
+test_cases_v36_static,stdout,12," Siemens Industry, Inc.,"
+test_cases_v36_static,stdout,13, Power Technologies International                            (PTI)
+test_cases_v36_static,stdout,14, This program is a confidential  unpublished  work  created  and  first
+test_cases_v36_static,stdout,15, licensed in 1976.  It is a trade secret which is the property of  PTI.
+test_cases_v36_static,stdout,16," All use,  disclosure,  and/or reproduction not specifically authorized"
+test_cases_v36_static,stdout,17, by  PTI  is prohibited.   This  program is protected  under  copyright
+test_cases_v36_static,stdout,18, laws  of  non-U.S.  countries  and  by  application  of  international
+test_cases_v36_static,stdout,19, treaties.  All  Rights  Reserved  Under  The  Copyright  Laws.
+test_cases_v36_static,stdout,22,           SIEMENS POWER TECHNOLOGIES INTERNATIONAL
+test_cases_v36_static,stdout,24,    50 BUS POWER SYSTEM SIMULATOR--PSS(R)E Xplore-36.2.0
+test_cases_v36_static,stdout,26,"             INITIATED ON SAT, JUN 01 2024  12:41"
+test_cases_v36_static,stdout,28," SIEMENS PPC TEST BENCH WITH STAT, REG"
+test_cases_v36_static,stdout,31," The Saved Case in file C:\Users\pchen\Desktop\Qwen-Grid-main\real-data-new\test_cases _v36\psse_ppc_test_bench_PMIN_QMAX.sav was saved on SUN, MAY 31 2026  20:35"
+test_cases_v36_static,stdout,33,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+test_cases_v36_static,stdout,34,   0.0       0.0002(    800     )    0.0000(    201     )
+test_cases_v36_static,stdout,35,                                                             0.00000(            )   0.00000(     41     )
+test_cases_v36_static,stdout,36,   0.5       0.0000(     41     )    0.0000(    201     )
+test_cases_v36_static,stdout,37,                                                             0.00000(    201     )   0.00000(            )
+test_cases_v36_static,stdout,38,   1.0       0.0000(     40     )    0.0000(    201     )
+test_cases_v36_static,stdout,41, Reached tolerance in 1 iterations
+test_cases_v36_static,stdout,43, Largest mismatch:     -0.00 MW     -0.00 Mvar      0.00 MVA at bus 40 [REGTRM1     0.6900]
+test_cases_v36_static,stdout,44, System total absolute mismatch:                    0.00 MVA
+test_cases_v36_static,stdout,46, SWING BUS SUMMARY:
+test_cases_v36_static,stdout,47,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+test_cases_v36_static,stdout,48,    900     SYSTEM      230.00    -198.9   9999.0 -9999.0    -319.4   9999.0 -9999.0

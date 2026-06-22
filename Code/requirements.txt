@@ -1,0 +1,36 @@
+# Core deterministic grid simulation backend.
+pandapower
+
+# M2 transient-stability backend. Pin below 2.0 for Python 3.10 compatibility
+# on the current remote node; ANDES 2.x requires Python 3.11+.
+andes>=1.10.1,<2.0
+
+# Public IEEE118 RAW/DYR benchmark data resolver used by the strict integrated
+# M1+M2 IEEE118 path. Data are public benchmark cases, not customer-validated
+# dynamics.
+powerfulcases>=0.4.0,<0.5
+
+# GPU-node LLM serving for Qwen3.5/Qwen3.6 through vLLM.
+#
+# Install this on the remote GPU node, not necessarily on the laptop. vLLM has
+# strict PyTorch/CUDA wheel coupling, so do not pin torch separately here unless
+# the cluster administrator provides a known-good torch/CUDA stack.
+#
+# Recommended NVIDIA install from current vLLM docs:
+#   uv pip install -U vllm --torch-backend=auto
+#
+# If you must use pip instead of uv, choose the PyTorch CUDA index matching the
+# node, for example:
+#   pip install -r Code/requirements.txt --extra-index-url https://download.pytorch.org/whl/cu129
+vllm>=0.8.5
+
+# Optional but useful for smoke-testing the OpenAI-compatible vLLM server from
+# notebooks or small scripts. The project code itself uses a stdlib HTTP client.
+openai>=1.0.0
+
+# Frozen-scenario parquet export for verl RL training. The actual verl package
+# should be installed from the sibling verl-main checkout on the GPU node
+# because its PyTorch/CUDA/vLLM dependencies are environment-specific.
+datasets>=3.0.0
+pyarrow>=19.0.0
+PyYAML>=6.0

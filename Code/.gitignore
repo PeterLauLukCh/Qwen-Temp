@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+benchmark_results/
+verl_data/
+*.raw
+*.dyr
+!public_data/
+!public_data/ieee118_dynamic/
+!public_data/ieee118_dynamic/ieee118.raw
+!public_data/ieee118_dynamic/ieee118.dyr

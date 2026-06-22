@@ -1,0 +1,55 @@
+source,stream,line_no,message
+pif6_rate2_console,stdout,2, PSS(R)E Xplore Version 36
+pif6_rate2_console,stdout,3, Copyright (c) 1976-2024
+pif6_rate2_console,stdout,4," Siemens Industry, Inc.,"
+pif6_rate2_console,stdout,5, Power Technologies International                            (PTI)
+pif6_rate2_console,stdout,6, This program is a confidential  unpublished  work  created  and  first
+pif6_rate2_console,stdout,7, licensed in 1976.  It is a trade secret which is the property of  PTI.
+pif6_rate2_console,stdout,8," All use,  disclosure,  and/or reproduction not specifically authorized"
+pif6_rate2_console,stdout,9, by  PTI  is prohibited.   This  program is protected  under  copyright
+pif6_rate2_console,stdout,10, laws  of  non-U.S.  countries  and  by  application  of  international
+pif6_rate2_console,stdout,11, treaties.  All  Rights  Reserved  Under  The  Copyright  Laws.
+pif6_rate2_console,stdout,14,           SIEMENS POWER TECHNOLOGIES INTERNATIONAL
+pif6_rate2_console,stdout,16,   50000 BUS POWER SYSTEM SIMULATOR--PSS(R)E Xplore-36.2.0
+pif6_rate2_console,stdout,18,"             INITIATED ON SAT, JUN 01 2024  12:47"
+pif6_rate2_console,stdout,19, Dialogue input from file C:\Users\pchen\AppData\Local\Temp\pif6_rate2_50zooke0.idv
+pif6_rate2_console,stdout,21, ACTIVITY?  case 'C:\Users\pchen\Desktop\Qwen-Grid-main\real-data-new\2026_05_17\PIF6_POC2_KLS_V9_updt.sav'
+pif6_rate2_console,stdout,23, PIF6 KLS KHULIS PV V8_20251105-STUDY CASE
+pif6_rate2_console,stdout,24," POWERFACTORY 2025 SP3  DATE: 2025-11-05, TIME: 19:19:06"
+pif6_rate2_console,stdout,26," The Saved Case in file C:\Users\pchen\Desktop\Qwen-Grid-main\real-data-new\2026_05_17\PIF6_POC2_KLS_V9_updt.sav was saved on MON, MAY 18 2026  11:27"
+pif6_rate2_console,stdout,28, The following option settings are changed to the settings contained in the Saved Case File:
+pif6_rate2_console,stdout,30, ** TRANSMISSION LINE INPUT UNITS option setting set to OHMS
+pif6_rate2_console,stdout,32, ** NON-TRANSFORMER BRANCH PERCENT LOADING UNITS option setting set to MVA
+pif6_rate2_console,stdout,34, ACTIVITY?  BAT_FDNS 0 0 0 1 1 0 99 0
+pif6_rate2_console,stdout,36, Warning: Remote bus 2 [POC2        110.00] is specified for type 3 bus 2000 [POC2_0      380.00]
+pif6_rate2_console,stdout,37, Generation at bus 2000 [POC2_0      380.00] will control its own bus voltage
+pif6_rate2_console,stdout,39,  ITER       DELTAP      BUS         DELTAQ      BUS        DELTA/V/      BUS       DELTAANG      BUS
+pif6_rate2_console,stdout,40,   0.0       0.0005(   2001     )    0.0000(    772     )
+pif6_rate2_console,stdout,41,                                                             0.00000(            )   0.00000(    814     )
+pif6_rate2_console,stdout,42,   0.5       0.0000(   2001     )    0.0000(   9001     )
+pif6_rate2_console,stdout,43,                                                             0.00000(    814     )   0.00000(            )
+pif6_rate2_console,stdout,44,   1.0       0.0000(   2001     )    0.0000(    772     )
+pif6_rate2_console,stdout,47, Reached tolerance in 1 iterations
+pif6_rate2_console,stdout,49, Largest mismatch:     -0.00 MW     -0.00 Mvar      0.00 MVA at bus 2001 [DUMMY       110.00]
+pif6_rate2_console,stdout,50, System total absolute mismatch:                    0.01 MVA
+pif6_rate2_console,stdout,52, SWING BUS SUMMARY:
+pif6_rate2_console,stdout,53,   BUS#-SCT X-- NAME --X BASKV      PGEN     PMAX    PMIN      QGEN     QMAX    QMIN
+pif6_rate2_console,stdout,54,   2000     POC2_0      380.00       5.2   9999.0 -9999.0     -16.7    923.1  -923.1
+pif6_rate2_console,stdout,55, Batch command complete.
+pif6_rate2_console,stdout,56, :  BAT_RATE_2 0 1 1 1 1 1 100.0
+pif6_rate2_console,stdout,57," PSS(R)E Xplore-36.2.0 LIMIT CHECKING REPORT - BRANCH FLOWS          SAT, JUN 01 2024  12:47"
+pif6_rate2_console,stdout,58, PIF6 KLS KHULIS PV V8_20251105-STUDY CASE
+pif6_rate2_console,stdout,59," POWERFACTORY 2025 SP3  DATE: 2025-11-05, TIME: 19:19:06"
+pif6_rate2_console,stdout,61, SUBSYSTEM LOADING CHECK (INCLUDED: LINES; BREAKERS AND SWITCHES; TRANSFORMERS) (EXCLUDED: NONE)
+pif6_rate2_console,stdout,62, MVA LOADINGS ABOVE 100.0 % OF BRANCH RATING SET 1
+pif6_rate2_console,stdout,63, LOADINGS ABOVE 100.0 % OF SWITCHING DEVICE RATING SET  1
+pif6_rate2_console,stdout,65, X----------- FROM BUS ------------X X------------ TO BUS -------------X
+pif6_rate2_console,stdout,66,   BUS#-SCT X-- NAME --X BASKV  AREA   BUS#-SCT X-- NAME --X BASKV  AREA CKT LOADING   RATE1 PERCENT
+pif6_rate2_console,stdout,68,                                   * NONE *
+pif6_rate2_console,stdout,70, Output completed
+pif6_rate2_console,stdout,71, Batch command complete.
+pif6_rate2_console,stdout,72, : 
+pif6_rate2_console,stdout,73, Response file operation terminated for file C:\Users\pchen\AppData\Local\Temp\pif6_rate2_50zooke0.idv
+pif6_rate2_console,stdout,74, Batch command complete.
+pif6_rate2_console,stdout,75, :  Batch command complete.
+pif6_rate2_console,stdout,76, :  End-of-file from terminal.

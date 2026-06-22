@@ -1,0 +1,6 @@
+tools:
+  - class_name: "gridmind_mini.verl_powergrid.PowerGridIntegratedAssessmentTool"
+    config:
+      type: native
+      mode: frozen_oracle
+      max_observation_chars: 6000

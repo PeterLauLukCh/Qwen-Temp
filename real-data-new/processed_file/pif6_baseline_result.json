@@ -1,0 +1,103 @@
+{
+  "case_id": "pif6_2026_05_17_baseline_no_disturbance",
+  "backend": "psse",
+  "psse_version": "PSS(R)E Xplore 36.2.0 (pssecmd36 licensed 50000-bus launch; savinfo reports saved case PSS/E 36.3)",
+  "files": {
+    "sav": "real-data-new\\2026_05_17\\PIF6_POC2_KLS_V9_updt.sav",
+    "dyr": "real-data-new\\2026_05_17\\PIF6_POC2_Disaggregated.dyr",
+    "dlls": [
+      "real-data-new\\2026_05_17\\sippc_pif6_v36_5_2_5_5.dll",
+      "real-data-new\\2026_05_17\\SG1100UD_PSSE36_V0131101_260420.dll",
+      "real-data-new\\2026_05_17\\NWSTAT01_V2_20250829_V36.dll"
+    ]
+  },
+  "m1_powerflow": {
+    "status": "pass",
+    "converged": true,
+    "bus_voltage_min_pu": 0.8999999761581421,
+    "bus_voltage_max_pu": 1.0425307750701904,
+    "poc_p_mw": 5.0866778480386206,
+    "poc_q_mvar": -19.33467761090973,
+    "bus_count": 786,
+    "branch_count": 790,
+    "machine_count": 251,
+    "load_count": 2,
+    "overloaded_branch_count": 0,
+    "key_bus_voltages": [
+      {
+        "bus": 2,
+        "name": "POC2",
+        "base_kv": 110.0,
+        "voltage_pu": 0.9061172008514404,
+        "angle_deg": -0.19773317873477936,
+        "type": 1
+      },
+      {
+        "bus": 2000,
+        "name": "POC2_0",
+        "base_kv": 380.0,
+        "voltage_pu": 0.8999999761581421,
+        "angle_deg": 0.0,
+        "type": 3
+      },
+      {
+        "bus": 2001,
+        "name": "DUMMY",
+        "base_kv": 110.0,
+        "voltage_pu": 0.9060958623886108,
+        "angle_deg": -0.19737820327281952,
+        "type": 1
+      },
+      {
+        "bus": 9001,
+        "name": "DUMMY",
+        "base_kv": 380.0,
+        "voltage_pu": 0.9029827117919922,
+        "angle_deg": -0.14280807971954346,
+        "type": 1
+      }
+    ],
+    "poc_branch_identification": "metered end of branch 2-2001 ckt 1; see pif6_poc_branch_candidates.csv",
+    "transformer_count": 388,
+    "three_winding_transformer_count": 125
+  },
+  "m2_dynamic": {
+    "status": "pass",
+    "initialized": true,
+    "simulation_converged": true,
+    "event": "no_disturbance_5s_safe_baseline_only",
+    "metrics": {
+      "min_voltage_pu": 0.9000000357627869,
+      "max_voltage_pu": 0.9061174988746643,
+      "final_poc_p_mw": 5.131742000579834,
+      "final_poc_q_mvar": -19.284170150756836,
+      "max_oscillation": 0.015529155731201172
+    },
+    "error_summary": [],
+    "process_returncode": 0,
+    "channel_meta": {
+      "outvrsn": 0,
+      "short_title": "PIF6 KLS KHULIS PV V8_20251105-STUDY CASE\nPOWERFACTORY 2025 SP3  DATE: 2025-11-05, TIME: 19:19:06",
+      "channel_ids": {
+        "time": "Time(s)",
+        "1": "POC2_V",
+        "2": "POC2_0_V",
+        "3": "DUMMY_110_V",
+        "4": "POC_P_2001_2",
+        "5": "POC_Q_2001_2",
+        "6": "GEN_P_2000",
+        "7": "GEN_Q_2000",
+        "8": "GEN_SPEED_2000",
+        "9": "FREQ_2"
+      }
+    }
+  },
+  "limitations": [
+    "psse_rms_dynamic_not_emt_waveform",
+    "labels_not_yet_expert_validated",
+    "official_disturbance_list_not_provided",
+    "no_severe_faults_invented",
+    "pif6_small_ppc_step_not_run_without_engineer_validated_control_variable",
+    "pif6_overloads_checked_by_psse_rate_2_report"
+  ]
+}
