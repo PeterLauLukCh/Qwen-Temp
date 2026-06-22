@@ -602,14 +602,39 @@ def validate_tool_call_policy(
         raise ValueError("context must be a mapping when provided")
 
     normalized_tool = tool_name.strip()
+    context_dict = dict(context or {})
     lower = user_message.lower()
     transient_intent = _has_transient_intent(lower)
     emt_intent = _has_emt_intent(lower)
     real_psse_intent = _has_real_psse_intent(lower)
-    remote_psse_intent = _has_remote_psse_intent(lower)
+    remote_psse_intent = _has_remote_psse_intent(lower) or bool(
+        _optional_context_bool(context_dict, "remote_psse_m1m2_gym")
+    )
     real_interconnection_intent = _has_real_interconnection_intent(lower)
     joint_transient_interconnection = _has_joint_interconnection_transient_intent(lower)
     joint_emt_interconnection = _has_joint_interconnection_emt_intent(lower)
+    if (
+        remote_psse_intent
+        and normalized_tool == "run_remote_psse_m1m2"
+        and _requests_unvalidated_remote_m1m2_action(lower)
+    ):
+        return ToolCallPolicyDecision(
+            allowed=False,
+            tool_name=normalized_tool,
+            reason_codes=[
+                "remote_psse_m1_m2_request",
+                "unvalidated_remote_action",
+            ],
+            message=(
+                "The live remote PSS/E M1+M2 gym supports only allowlisted "
+                "baseline/static scenarios. Do not run an allowlisted baseline "
+                "as a proxy for a new project, fault, line trip, or controller "
+                "edit. Use list_remote_psse_m1m2_cases to inspect the supported "
+                "remote scope and report the requested action as unsupported "
+                "unless an exact allowlisted scenario exists."
+            ),
+            recommended_tool="list_remote_psse_m1m2_cases",
+        )
     if remote_psse_intent and normalized_tool in {
         "run_powerflow",
         "inspect_violations",
@@ -1077,6 +1102,30 @@ def _has_remote_psse_intent(lower: str) -> bool:
             "m1+m2 gym",
             "m1 m2 gym",
         )
+    )
+
+
+def _requests_unvalidated_remote_m1m2_action(lower: str) -> bool:
+    """Detect requests that should not be proxied by an allowlisted baseline run."""
+
+    if _mentions_new_project_or_connection(lower) and re.search(
+        r"\b(add|adding|added|new|connect|interconnect|interconnection|approve|"
+        r"host|project|solar|wind|bess|battery|storage|load|generator)\b",
+        lower,
+    ):
+        return True
+    if re.search(
+        r"\b(bus\s+fault|fault\s+(?:at|on)|line\s+trip|trip\s+line|"
+        r"disturbance|outage|clearing\s+after)\b",
+        lower,
+    ):
+        return True
+    return bool(
+        re.search(
+            r"\b(controller|control|droop|q_ref|p_ref|v_ref|statcom|ppc)\b",
+            lower,
+        )
+        and re.search(r"\b(change|edit|modify|set|tune|adjust)\b", lower)
     )
 
 

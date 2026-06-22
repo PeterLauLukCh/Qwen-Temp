@@ -140,7 +140,7 @@ class RealM1M2InterconnectionBenchmarkRunner:
         with contextlib.redirect_stdout(sys.stderr):
             agent_result = self.agent.run_turn(
                 scenario.user_message,
-                context=dict(scenario.context) if scenario.context else None,
+                context=_agent_visible_context(scenario),
             )
         checks = evaluate_real_m1m2_interconnection_result(
             scenario,
@@ -412,6 +412,30 @@ def _compact_tool_result(result: Any) -> Dict[str, Any]:
         "error_type": result.get("error_type"),
         "message": result.get("message"),
     }
+
+
+def _agent_visible_context(
+    scenario: RealM1M2InterconnectionTestCase,
+) -> Optional[Dict[str, Any]]:
+    """Return testcase context that is safe to expose to the model.
+
+    Generated scenarios carry oracle metadata for grading. Do not leak labels,
+    answer policy, or pass/fail flags into the agent prompt.
+    """
+
+    context = dict(scenario.context) if scenario.context else {}
+    for key in (
+        "answer_policy",
+        "expected_tool",
+        "label_source",
+        "oracle_label",
+        "trap",
+        "validated_remote_job",
+    ):
+        context.pop(key, None)
+    context["remote_psse_m1m2_gym"] = True
+    context["remote_psse_m1m2_scope"] = "live_tcp_ip_windows_worker"
+    return context or None
 
 
 def _progress_json(**payload: Any) -> str:

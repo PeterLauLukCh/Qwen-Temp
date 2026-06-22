@@ -35,6 +35,10 @@ FORBIDDEN_REAL_M1M2_TOOLS = (
     "run_real_psse_assessment",
     "run_real_interconnection_assessment",
 )
+FORBIDDEN_UNSUPPORTED_REMOTE_M1M2_TOOLS = (
+    *FORBIDDEN_REAL_M1M2_TOOLS,
+    "run_remote_psse_m1m2",
+)
 
 
 @dataclass(frozen=True)
@@ -344,6 +348,7 @@ def _positive_baseline_case(
             *selected["tags"],
         ),
         context={
+            "remote_psse_m1m2_gym": True,
             "case_id": selected["case_id"],
             "scenario_type": selected["scenario_type"],
             "validated_remote_job": True,
@@ -568,10 +573,14 @@ def _wrong_tool_trap_case(
             RealM1M2ExpectedPath("case_count", 2),
         ],
         output_contains=("remote", "pss/e", "case"),
-        forbidden_successful_tools=FORBIDDEN_REAL_M1M2_TOOLS,
+        forbidden_successful_tools=FORBIDDEN_UNSUPPORTED_REMOTE_M1M2_TOOLS,
         forbidden_claims=("ieee14 result", "pandapower result", "andes result"),
         tags=("real_m1m2_interconnection", "remote_psse", "wrong_tool_trap"),
-        context={"requested_case_id": case_id, "oracle_label": "wrong_tool_trap"},
+        context={
+            "remote_psse_m1m2_gym": True,
+            "requested_case_id": case_id,
+            "oracle_label": "wrong_tool_trap",
+        },
     )
 
 
@@ -586,6 +595,7 @@ def _unsupported_case(
     context: Mapping[str, Any],
 ) -> RealM1M2InterconnectionTestCase:
     merged_context = {
+        "remote_psse_m1m2_gym": True,
         "oracle_label": oracle_label,
         "validated_remote_job": False,
         "label_source": LABEL_SOURCE,
@@ -604,7 +614,7 @@ def _unsupported_case(
             RealM1M2ExpectedPath("case_count", 2),
         ],
         output_contains=("unsupported", "validated", "remote"),
-        forbidden_successful_tools=FORBIDDEN_REAL_M1M2_TOOLS,
+        forbidden_successful_tools=FORBIDDEN_UNSUPPORTED_REMOTE_M1M2_TOOLS,
         forbidden_claims=(
             "approved by pss/e",
             "passes m1+m2",
