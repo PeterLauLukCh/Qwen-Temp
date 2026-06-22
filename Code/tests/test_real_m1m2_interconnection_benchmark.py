@@ -114,6 +114,38 @@ class RealM1M2InterconnectionBenchmarkTest(unittest.TestCase):
         failed = [check.name for check in checks if not check.passed]
         self.assertIn("forbidden_claim:approved by pss/e", failed)
 
+    def test_negative_case_fails_successful_remote_baseline_proxy(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(6, seed=4, profile="mixed")
+            if item.oracle_label != "m1_m2_pass"
+        )
+        agent_result = _AgentResult(
+            "completed",
+            "Unsupported in the current validated remote PSS/E action space.",
+            [
+                _Record(
+                    "list_remote_psse_m1m2_cases",
+                    True,
+                    {"tool": "list_remote_psse_m1m2_cases", "case_count": 2},
+                ),
+                _Record(
+                    "run_remote_psse_m1m2",
+                    True,
+                    {
+                        "tool": "run_remote_psse_m1m2",
+                        "recommendation": "approve",
+                    },
+                ),
+            ],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        failed = [check.name for check in checks if not check.passed]
+        self.assertIn("forbidden_remote_baseline_proxy", failed)
+
     def test_load_and_filter_generated_json(self):
         scenarios = generate_real_m1m2_interconnection_testcases(5, seed=9, profile="hard")
         with tempfile.TemporaryDirectory() as tmp:

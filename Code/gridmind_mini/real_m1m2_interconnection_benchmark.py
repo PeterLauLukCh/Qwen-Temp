@@ -294,6 +294,25 @@ def evaluate_real_m1m2_interconnection_result(
                 expected=False,
             )
         )
+    if scenario.oracle_label != "m1_m2_pass":
+        used_remote_proxy = [
+            record
+            for record in records
+            if getattr(record, "name", None) == "run_remote_psse_m1m2"
+            and getattr(record, "ok", False)
+        ]
+        checks.append(
+            RealM1M2BenchmarkCheckResult(
+                name="forbidden_remote_baseline_proxy",
+                passed=not used_remote_proxy,
+                actual=bool(used_remote_proxy),
+                expected=False,
+                message=(
+                    "Negative remote-gym scenarios must not run an allowlisted "
+                    "baseline as a proxy for the unsupported requested action."
+                ),
+            )
+        )
 
     if expected_records:
         record = expected_records[-1]
