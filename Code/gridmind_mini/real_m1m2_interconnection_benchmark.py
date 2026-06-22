@@ -158,8 +158,42 @@ class RealM1M2InterconnectionBenchmarkRunner:
         scenarios: Sequence[RealM1M2InterconnectionTestCase],
     ) -> RealM1M2BenchmarkSuiteResult:
         start = time.perf_counter()
+        results: List[RealM1M2BenchmarkResult] = []
+        total = len(scenarios)
+        for index, scenario in enumerate(scenarios, start=1):
+            case_start = time.perf_counter()
+            print(
+                _progress_json(
+                    event="scenario_start",
+                    index=index,
+                    total=total,
+                    scenario_id=scenario.scenario_id,
+                    difficulty=scenario.difficulty,
+                    oracle_label=scenario.oracle_label,
+                    expected_tool=scenario.expected_tool,
+                ),
+                file=sys.stderr,
+                flush=True,
+            )
+            result = self.run_scenario(scenario)
+            results.append(result)
+            print(
+                _progress_json(
+                    event="scenario_done",
+                    index=index,
+                    total=total,
+                    scenario_id=scenario.scenario_id,
+                    passed=result.passed,
+                    duration_s=time.perf_counter() - case_start,
+                    checks_failed=[
+                        check.name for check in result.check_results if not check.passed
+                    ],
+                ),
+                file=sys.stderr,
+                flush=True,
+            )
         return RealM1M2BenchmarkSuiteResult(
-            results=[self.run_scenario(scenario) for scenario in scenarios],
+            results=results,
             duration_s=time.perf_counter() - start,
         )
 
@@ -378,6 +412,10 @@ def _compact_tool_result(result: Any) -> Dict[str, Any]:
         "error_type": result.get("error_type"),
         "message": result.get("message"),
     }
+
+
+def _progress_json(**payload: Any) -> str:
+    return json.dumps({"real_m1m2_progress": payload}, sort_keys=True)
 
 
 def _counts_by(

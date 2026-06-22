@@ -439,6 +439,8 @@ raise SystemExit(1)
 PY
 
 log "Running generated real M1+M2 benchmark..."
+log "Benchmark progress/stderr: ${BENCH_STDERR}"
+log "For live progress, in another terminal run: tail -f ${BENCH_STDERR}"
 set +e
 (
   cd "$REPO_ROOT"
