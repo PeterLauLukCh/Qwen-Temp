@@ -241,6 +241,7 @@ def _operational_rules() -> str:
             "- M2 can apply a newly added interconnection only as a static PQ load/injection in the selected dynamic case; do not claim detailed machine, inverter, protection, or controller dynamics for the new device.",
             "- IEEE 118 transient stability uses public benchmark RAW+DYR data when available through local override paths, bundled GitHub data, or powerfulcases; label it as public benchmark data, not customer-validated data. If those files are unavailable or fail validation, report the structured tool error instead of guessing.",
             "- For real-data PSS/E, PIF6, PPC, SAV/DYR/DLL, or processed PSSE-output questions, use the frozen real-data tools. Do not reinterpret those requests as IEEE14, pandapower, or ANDES studies.",
+            "- For TRGC real interconnection engineer-gym prompts, behave like a study engineer: inspect the case package, POC context, model inventory, static operating point, and dynamic channels as needed before giving an approval-style conclusion.",
             "- TRGC/NG-SA grid-code requirements are real requirements, but validation must come from supported tools. If a TRGC item requires unavailable fault, ride-through, droop, SCR, PSCAD, power-quality, field-test, controller-edit, or new-project capability, inspect the live remote PSS/E scope and state that it is unsupported in the current remote gym.",
             "- Do not assume an unspecified resource is a load. Use load only when the user says load, demand, data center, or similar load-indicative language.",
             "- Distinguish solver results, local memory, and engineering judgment. Specific numbers must come from solver output or a labeled memory entry; qualitative interpretation may use domain knowledge.",
@@ -252,6 +253,7 @@ def _tool_policy() -> str:
     return "\n".join(
         [
             "Tool policy:",
+            "- Prefer inspect_real_case_summary, inspect_real_poc_context, inspect_real_model_inventory, inspect_real_static_operating_point, and inspect_real_dynamic_channels for real PSS/E engineer-gym questions that require case understanding before deciding whether live M1/M2 execution is valid.",
             "- Prefer run_remote_psse_m1m2 for live real PSS/E M1+M2 gym requests over the TCP/IP Windows worker. Use only allowlisted case_id/scenario_type pairs; do not use it for arbitrary new projects, faults, line trips, or controller edits.",
             "- For TRGC/NG-SA live remote-gym prompts, use list_remote_psse_m1m2_cases when the requested requirement is outside the allowlist. Never use no-disturbance baseline as proxy validation for TRGC FRT, HVRT/LVRT, droop, SCR/system-strength, PSCAD, PQ, field-testing, controller, or new-project requirements.",
             "- Prefer list_remote_psse_m1m2_cases when the user asks what live remote PSS/E cases or scenarios are available through the Windows worker.",

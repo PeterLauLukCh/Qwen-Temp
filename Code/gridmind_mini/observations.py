@@ -40,6 +40,18 @@ def build_tool_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
         return _real_interconnection_action_list_observation(result)
     if tool == "run_real_interconnection_assessment":
         return _real_interconnection_assessment_observation(result)
+    if tool == "inspect_real_case_summary":
+        return _real_case_summary_observation(result)
+    if tool == "inspect_real_poc_context":
+        return _real_poc_context_observation(result)
+    if tool == "inspect_real_network_neighborhood":
+        return _real_network_neighborhood_observation(result)
+    if tool == "inspect_real_model_inventory":
+        return _real_model_inventory_observation(result)
+    if tool == "inspect_real_static_operating_point":
+        return _real_static_operating_point_observation(result)
+    if tool == "inspect_real_dynamic_channels":
+        return _real_dynamic_channels_observation(result)
     if tool == "list_remote_psse_m1m2_cases":
         return _remote_psse_case_list_observation(result)
     if tool == "run_remote_psse_m1m2":
@@ -611,6 +623,107 @@ def _real_interconnection_assessment_observation(result: Mapping[str, Any]) -> D
             "scr": _optional_number(summary.get("scr")),
         },
         "stage_statuses": stages,
+        "limitations": _string_list(result.get("limitations")),
+    }
+
+
+def _real_case_summary_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "tool": "inspect_real_case_summary",
+        "case_id": _optional_str(result.get("case_id")),
+        "display_name": _optional_str(result.get("display_name")),
+        "inventory_counts": _mapping(result.get("inventory_counts")),
+        "case_size": _mapping(result.get("case_size")),
+        "available_remote_scenarios": _string_list(result.get("available_remote_scenarios")),
+        "poc_candidates": _limited_items(result.get("poc_candidates"), limit=6),
+        "static_snapshot": _mapping(result.get("static_snapshot")),
+        "dynamic_snapshot": _mapping(result.get("dynamic_snapshot")),
+        "data_quality_warnings": _string_list(result.get("data_quality_warnings")),
+        "limitations": _string_list(result.get("limitations")),
+    }
+
+
+def _real_poc_context_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    selected = _mapping(result.get("selected_poc"))
+    return {
+        "tool": "inspect_real_poc_context",
+        "case_id": _optional_str(result.get("case_id")),
+        "query": _mapping(result.get("query")),
+        "selected_poc": {
+            "bus": _optional_int(selected.get("bus")),
+            "name": _optional_str(selected.get("name")),
+            "voltage_pu": _optional_number(selected.get("voltage_pu")),
+            "reason": _optional_str(selected.get("reason")),
+        } if selected else None,
+        "candidate_count": _optional_int(result.get("candidate_count")),
+        "ambiguous": _optional_bool(result.get("ambiguous")),
+        "candidate_buses": _limited_items(result.get("candidate_buses"), limit=6),
+        "candidate_branches": _limited_items(result.get("candidate_branches"), limit=6),
+        "controlled_or_nearby_machines": _limited_items(
+            result.get("controlled_or_nearby_machines"),
+            limit=4,
+        ),
+        "engineering_note": _optional_str(result.get("engineering_note")),
+    }
+
+
+def _real_network_neighborhood_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "tool": "inspect_real_network_neighborhood",
+        "case_id": _optional_str(result.get("case_id")),
+        "bus": _optional_int(result.get("bus")),
+        "depth": _optional_int(result.get("depth")),
+        "visited_bus_count": _optional_int(result.get("visited_bus_count")),
+        "buses": _limited_items(result.get("buses"), limit=8),
+        "branches": _limited_items(result.get("branches"), limit=8),
+        "transformers_2w": _limited_items(result.get("transformers_2w"), limit=5),
+        "transformers_3w": _limited_items(result.get("transformers_3w"), limit=5),
+        "top_loading_percent": _optional_number(result.get("top_loading_percent")),
+        "limitations": _string_list(result.get("limitations")),
+    }
+
+
+def _real_model_inventory_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "tool": "inspect_real_model_inventory",
+        "case_id": _optional_str(result.get("case_id")),
+        "model_scope": _optional_str(result.get("model_scope")),
+        "counts": _mapping(result.get("counts")),
+        "machines": _limited_items(result.get("machines"), limit=5),
+        "dynamic_models": _limited_items(result.get("dynamic_models"), limit=8),
+        "limitations": _string_list(result.get("limitations")),
+    }
+
+
+def _real_static_operating_point_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "tool": "inspect_real_static_operating_point",
+        "case_id": _optional_str(result.get("case_id")),
+        "converged": _optional_bool(result.get("converged")),
+        "voltage_range_pu": _mapping(result.get("voltage_range_pu")),
+        "poc": _mapping(result.get("poc")),
+        "counts": _mapping(result.get("counts")),
+        "lowest_voltage_buses": _limited_items(result.get("lowest_voltage_buses"), limit=4),
+        "highest_voltage_buses": _limited_items(result.get("highest_voltage_buses"), limit=4),
+        "overloaded_or_monitored_branches": _limited_items(
+            result.get("overloaded_or_monitored_branches"),
+            limit=4,
+        ),
+        "limitations": _string_list(result.get("limitations")),
+    }
+
+
+def _real_dynamic_channels_observation(result: Mapping[str, Any]) -> Dict[str, Any]:
+    return {
+        "tool": "inspect_real_dynamic_channels",
+        "case_id": _optional_str(result.get("case_id")),
+        "scenario_type": _optional_str(result.get("scenario_type")),
+        "row_count": _optional_int(result.get("row_count")),
+        "final_time_s": _optional_number(result.get("final_time_s")),
+        "channel_names": _string_list(result.get("channel_names")),
+        "final_values": _mapping(result.get("final_values")),
+        "voltage_extrema": _mapping(result.get("voltage_extrema")),
+        "frequency_extrema": _mapping(result.get("frequency_extrema")),
         "limitations": _string_list(result.get("limitations")),
     }
 

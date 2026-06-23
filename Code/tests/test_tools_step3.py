@@ -212,6 +212,12 @@ class ToolRegistryTest(unittest.TestCase):
         self.assertIn("run_real_psse_assessment", names)
         self.assertIn("list_real_interconnection_actions", names)
         self.assertIn("run_real_interconnection_assessment", names)
+        self.assertIn("inspect_real_case_summary", names)
+        self.assertIn("inspect_real_poc_context", names)
+        self.assertIn("inspect_real_network_neighborhood", names)
+        self.assertIn("inspect_real_model_inventory", names)
+        self.assertIn("inspect_real_static_operating_point", names)
+        self.assertIn("inspect_real_dynamic_channels", names)
         self.assertIn("list_remote_psse_m1m2_cases", names)
         self.assertIn("run_remote_psse_m1m2", names)
 
@@ -240,6 +246,12 @@ class ToolRegistryTest(unittest.TestCase):
                 "run_real_psse_assessment",
                 "list_real_interconnection_actions",
                 "run_real_interconnection_assessment",
+                "inspect_real_case_summary",
+                "inspect_real_poc_context",
+                "inspect_real_network_neighborhood",
+                "inspect_real_model_inventory",
+                "inspect_real_static_operating_point",
+                "inspect_real_dynamic_channels",
                 "list_remote_psse_m1m2_cases",
                 "run_remote_psse_m1m2",
                 "run_cia_with_mitigation",
@@ -258,6 +270,12 @@ class ToolRegistryTest(unittest.TestCase):
         self.assertTrue(tools["run_real_psse_assessment"]["implemented"])
         self.assertTrue(tools["list_real_interconnection_actions"]["implemented"])
         self.assertTrue(tools["run_real_interconnection_assessment"]["implemented"])
+        self.assertTrue(tools["inspect_real_case_summary"]["implemented"])
+        self.assertTrue(tools["inspect_real_poc_context"]["implemented"])
+        self.assertTrue(tools["inspect_real_network_neighborhood"]["implemented"])
+        self.assertTrue(tools["inspect_real_model_inventory"]["implemented"])
+        self.assertTrue(tools["inspect_real_static_operating_point"]["implemented"])
+        self.assertTrue(tools["inspect_real_dynamic_channels"]["implemented"])
         self.assertTrue(tools["list_remote_psse_m1m2_cases"]["implemented"])
         self.assertTrue(tools["run_remote_psse_m1m2"]["implemented"])
 

@@ -23,6 +23,14 @@ from .integrated_assessment import (
     IntegratedAssessmentRunner,
     TransientAssessmentRequest,
 )
+from .real_case_dossier import (
+    inspect_real_case_summary,
+    inspect_real_dynamic_channels,
+    inspect_real_model_inventory,
+    inspect_real_network_neighborhood,
+    inspect_real_poc_context,
+    inspect_real_static_operating_point,
+)
 from .memory import StudyMemoryStore
 from .real_data import list_real_psse_cases, run_real_psse_assessment
 from .real_interconnection import (
@@ -173,6 +181,12 @@ class ToolRegistry:
             "run_real_psse_assessment": self._tool_run_real_psse_assessment,
             "list_real_interconnection_actions": self._tool_list_real_interconnection_actions,
             "run_real_interconnection_assessment": self._tool_run_real_interconnection_assessment,
+            "inspect_real_case_summary": self._tool_inspect_real_case_summary,
+            "inspect_real_poc_context": self._tool_inspect_real_poc_context,
+            "inspect_real_network_neighborhood": self._tool_inspect_real_network_neighborhood,
+            "inspect_real_model_inventory": self._tool_inspect_real_model_inventory,
+            "inspect_real_static_operating_point": self._tool_inspect_real_static_operating_point,
+            "inspect_real_dynamic_channels": self._tool_inspect_real_dynamic_channels,
             "list_remote_psse_m1m2_cases": self._tool_list_remote_psse_m1m2_cases,
             "run_remote_psse_m1m2": self._tool_run_remote_psse_m1m2,
         }
@@ -213,6 +227,55 @@ class ToolRegistry:
     def _tool_list_remote_psse_m1m2_cases(self, args: Mapping[str, Any]) -> Dict[str, Any]:
         return list_remote_psse_m1m2_cases(
             check_health=bool(args.get("check_health", False)),
+        )
+
+    def _tool_inspect_real_case_summary(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_case_summary(
+            case_id=_required_str(args, "case_id"),
+            processed_dir=args.get("processed_dir"),
+            max_poc_candidates=_optional_int(args, "max_poc_candidates", 8),
+        )
+
+    def _tool_inspect_real_poc_context(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_poc_context(
+            case_id=_required_str(args, "case_id"),
+            poc_label_or_bus=args.get("poc_label_or_bus"),
+            processed_dir=args.get("processed_dir"),
+            max_candidates=_optional_int(args, "max_candidates", 12),
+            max_branches=_optional_int(args, "max_branches", 12),
+        )
+
+    def _tool_inspect_real_network_neighborhood(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_network_neighborhood(
+            case_id=_required_str(args, "case_id"),
+            bus=_optional_int(args, "bus", 0),
+            depth=_optional_int(args, "depth", 1),
+            max_rows=_optional_int(args, "max_rows", 20),
+            processed_dir=args.get("processed_dir"),
+        )
+
+    def _tool_inspect_real_model_inventory(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_model_inventory(
+            case_id=_required_str(args, "case_id"),
+            model_scope=str(args.get("model_scope") or "summary"),
+            processed_dir=args.get("processed_dir"),
+            max_rows=_optional_int(args, "max_rows", 20),
+        )
+
+    def _tool_inspect_real_static_operating_point(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_static_operating_point(
+            case_id=_required_str(args, "case_id"),
+            processed_dir=args.get("processed_dir"),
+            max_voltage_rows=_optional_int(args, "max_voltage_rows", 6),
+            max_overload_rows=_optional_int(args, "max_overload_rows", 6),
+        )
+
+    def _tool_inspect_real_dynamic_channels(self, args: Mapping[str, Any]) -> Dict[str, Any]:
+        return inspect_real_dynamic_channels(
+            case_id=_required_str(args, "case_id"),
+            scenario_type=str(args.get("scenario_type") or "no_disturbance_5s"),
+            processed_dir=args.get("processed_dir"),
+            max_samples=_optional_int(args, "max_samples", 5),
         )
 
     def _tool_set_backend(self, args: Mapping[str, Any]) -> Dict[str, Any]:
@@ -710,6 +773,63 @@ def _build_tool_definitions() -> Dict[str, ToolDefinition]:
                 "RMS dynamic survival, or interconnection impact."
             ),
             parameters=_real_interconnection_assessment_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_case_summary",
+            group="real_data",
+            description=(
+                "Inspect a processed real PSS/E case package: inventory counts, "
+                "available remote scenarios, POC candidates, static/dynamic snapshot, "
+                "artifact availability, and data-quality warnings. Read-only."
+            ),
+            parameters=_real_case_summary_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_poc_context",
+            group="real_data",
+            description=(
+                "Inspect candidate POC buses/branches and nearby controlled machines "
+                "for a processed real PSS/E case. Use this before choosing or claiming "
+                "the POC bus when labels such as POC2, POC2_0, or DUMMY are ambiguous."
+            ),
+            parameters=_real_poc_context_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_network_neighborhood",
+            group="real_data",
+            description=(
+                "Inspect a bounded topology neighborhood around one real PSS/E bus, "
+                "including bus voltages, adjacent branches, transformers, and top loading. "
+                "Read-only; it does not run contingency or a new load flow."
+            ),
+            parameters=_real_network_neighborhood_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_model_inventory",
+            group="real_data",
+            description=(
+                "Inspect processed machine and dynamic-model inventory for a real PSS/E case, "
+                "including model categories, model names, POC-related machines, and limitations."
+            ),
+            parameters=_real_model_inventory_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_static_operating_point",
+            group="real_data",
+            description=(
+                "Inspect processed static operating-point evidence: convergence, voltage range, "
+                "POC P/Q, bus counts, and overload rows. Read-only; no new PSS/E solve."
+            ),
+            parameters=_real_static_operating_point_schema(),
+        ),
+        ToolDefinition(
+            name="inspect_real_dynamic_channels",
+            group="real_data",
+            description=(
+                "Inspect processed no-disturbance RMS dynamic channel evidence, including "
+                "channel names, final POC P/Q/V/frequency values, extrema, and row count."
+            ),
+            parameters=_real_dynamic_channels_schema(),
         ),
         ToolDefinition(
             name="list_remote_psse_m1m2_cases",
@@ -1244,6 +1364,119 @@ def _real_interconnection_assessment_schema() -> Dict[str, Any]:
             },
         },
         required=["case_id", "connection", "disturbance"],
+    )
+
+
+def _real_case_id_property() -> Dict[str, Any]:
+    return {
+        "type": "string",
+        "enum": ["pif6_2026_05_17", "test_cases_v36"],
+        "description": "Processed real PSS/E case package id.",
+    }
+
+
+def _processed_dir_property() -> Dict[str, Any]:
+    return {
+        "type": "string",
+        "description": (
+            "Optional processed PSSE artifact directory. Defaults to "
+            "POWERGYM_REAL_DATA_DIR or real-data-new/processed_file."
+        ),
+    }
+
+
+def _real_case_summary_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "processed_dir": _processed_dir_property(),
+            "max_poc_candidates": {
+                "type": "integer",
+                "default": 8,
+                "description": "Maximum POC candidate rows to return.",
+            },
+        },
+        required=["case_id"],
+    )
+
+
+def _real_poc_context_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "poc_label_or_bus": {
+                "type": "string",
+                "description": "Optional POC label or bus selector, e.g. POC2 or 2.",
+            },
+            "processed_dir": _processed_dir_property(),
+            "max_candidates": {"type": "integer", "default": 12},
+            "max_branches": {"type": "integer", "default": 12},
+        },
+        required=["case_id"],
+    )
+
+
+def _real_network_neighborhood_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "bus": {
+                "type": "integer",
+                "description": "Real PSS/E bus number to inspect.",
+            },
+            "depth": {
+                "type": "integer",
+                "default": 1,
+                "description": "Graph depth, clamped to 1..3.",
+            },
+            "max_rows": {"type": "integer", "default": 20},
+            "processed_dir": _processed_dir_property(),
+        },
+        required=["case_id", "bus"],
+    )
+
+
+def _real_model_inventory_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "model_scope": {
+                "type": "string",
+                "enum": ["summary", "poc", "machines", "controllers", "dynamic", "all"],
+                "default": "summary",
+            },
+            "max_rows": {"type": "integer", "default": 20},
+            "processed_dir": _processed_dir_property(),
+        },
+        required=["case_id"],
+    )
+
+
+def _real_static_operating_point_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "processed_dir": _processed_dir_property(),
+            "max_voltage_rows": {"type": "integer", "default": 6},
+            "max_overload_rows": {"type": "integer", "default": 6},
+        },
+        required=["case_id"],
+    )
+
+
+def _real_dynamic_channels_schema() -> Dict[str, Any]:
+    return _object_schema(
+        {
+            "case_id": _real_case_id_property(),
+            "scenario_type": {
+                "type": "string",
+                "enum": ["no_disturbance_5s", "no_disturbance", "baseline"],
+                "default": "no_disturbance_5s",
+            },
+            "processed_dir": _processed_dir_property(),
+            "max_samples": {"type": "integer", "default": 5},
+        },
+        required=["case_id"],
     )
 
 

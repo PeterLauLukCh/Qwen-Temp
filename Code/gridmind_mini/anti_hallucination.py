@@ -33,6 +33,12 @@ GROUNDING_CAPABLE_TOOLS = {
     "run_integrated_assessment",
     "run_real_psse_assessment",
     "run_real_interconnection_assessment",
+    "inspect_real_case_summary",
+    "inspect_real_poc_context",
+    "inspect_real_network_neighborhood",
+    "inspect_real_model_inventory",
+    "inspect_real_static_operating_point",
+    "inspect_real_dynamic_channels",
     "run_remote_psse_m1m2",
     "find_max_capacity",
 }
