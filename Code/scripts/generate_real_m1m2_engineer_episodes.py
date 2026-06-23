@@ -15,7 +15,9 @@ if str(REPO_ROOT / "Code") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "Code"))
 
 from gridmind_mini import (  # noqa: E402
+    DEFAULT_REAL_M1M2_ENGINEER_CHALLENGE_SEED,
     DEFAULT_REAL_M1M2_ENGINEER_GYM_SEED,
+    REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION,
     REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
     REAL_M1M2_ENGINEER_PROFILES,
     generate_real_m1m2_engineer_episodes,
@@ -26,28 +28,38 @@ from gridmind_mini import (  # noqa: E402
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate TRGC engineer-gym episodes.")
     parser.add_argument("--count", type=int, default=100)
-    parser.add_argument("--seed", type=int, default=DEFAULT_REAL_M1M2_ENGINEER_GYM_SEED)
+    parser.add_argument("--seed", type=int)
+    parser.add_argument("--hidden-seed", type=int)
+    parser.add_argument("--split", default="public", choices=["public", "hidden"])
     parser.add_argument("--profile", default="trgc_engineer", choices=list(REAL_M1M2_ENGINEER_PROFILES))
     parser.add_argument("--max-steps", type=int, default=8)
     parser.add_argument(
         "--output",
-        default="real-data-new/generated_trgc_real_m1m2_engineer_episodes.json",
+        default=None,
     )
     parser.add_argument("--jsonl", action="store_true")
     parser.add_argument("--summary-only", action="store_true")
     args = parser.parse_args()
 
     try:
+        seed = _resolve_seed(args)
+        output = _resolve_output(args)
+        schema_version = (
+            REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION
+            if args.profile == "trgc_engineer_challenge"
+            else REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION
+        )
         episodes = generate_real_m1m2_engineer_episodes(
             args.count,
-            seed=args.seed,
+            seed=seed,
             profile=args.profile,
             max_steps=args.max_steps,
         )
         generation = {
-            "schema_version": REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
+            "schema_version": schema_version,
             "count": args.count,
-            "seed": args.seed,
+            "seed": seed,
+            "split": args.split,
             "profile": args.profile,
             "max_steps": args.max_steps,
             "objective": "trgc_real_interconnection_engineer_workflow",
@@ -55,7 +67,7 @@ def main() -> int:
         if args.summary_only:
             payload = {
                 "ok": True,
-                "schema_version": REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
+                "schema_version": schema_version,
                 "generation": generation,
                 "episode_count": len(episodes),
                 "curriculum_level_counts": _count_by(episodes, "curriculum_level"),
@@ -66,7 +78,7 @@ def main() -> int:
         else:
             payload = write_real_m1m2_engineer_episodes(
                 episodes,
-                args.output,
+                output,
                 generation=generation,
                 jsonl=bool(args.jsonl),
             )
@@ -87,6 +99,25 @@ def _count_by(episodes: Any, attr: str) -> Dict[str, int]:
         key = str(getattr(episode, attr))
         counts[key] = counts.get(key, 0) + 1
     return counts
+
+
+def _resolve_seed(args: argparse.Namespace) -> int:
+    if args.hidden_seed is not None:
+        return args.hidden_seed
+    if args.seed is not None:
+        return args.seed
+    if args.profile == "trgc_engineer_challenge":
+        return DEFAULT_REAL_M1M2_ENGINEER_CHALLENGE_SEED
+    return DEFAULT_REAL_M1M2_ENGINEER_GYM_SEED
+
+
+def _resolve_output(args: argparse.Namespace) -> str:
+    if args.output:
+        return args.output
+    if args.profile == "trgc_engineer_challenge":
+        split = "hidden" if args.split == "hidden" else "public"
+        return f"real-data-new/generated_trgc_real_m1m2_engineer_challenge_{split}.json"
+    return "real-data-new/generated_trgc_real_m1m2_engineer_episodes.json"
 
 
 if __name__ == "__main__":

@@ -3,7 +3,9 @@ import unittest
 from pathlib import Path
 
 from gridmind_mini import (
+    ENGINEER_CHALLENGE_FAMILIES,
     ENGINEER_CURRICULUM_LEVELS,
+    REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION,
     REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
     RealM1M2EngineerEnv,
     filter_real_m1m2_engineer_episodes,
@@ -61,12 +63,28 @@ def _fake_runner(name, args):
             "candidate_buses": [{"bus": 2, "name": "POC2"}, {"bus": 2000, "name": "POC2_0"}],
             "candidate_branches": [{"from_bus": 2, "to_bus": 2001, "p_mw": 5.1, "q_mvar": -19.3}],
         }
+    if name == "inspect_real_network_neighborhood":
+        return {
+            "ok": True,
+            "tool": name,
+            "case_id": args["case_id"],
+            "bus": args["bus"],
+            "visited_bus_count": 7,
+            "buses": [{"bus": 2, "name": "POC2", "voltage_pu": 0.9061}, {"bus": 2001, "name": "DUMMY"}],
+            "branches": [{"from_bus": 2, "to_bus": 2001, "p_mw": -5.0867, "q_mvar": 19.3352}],
+            "top_loading_percent": 1.754,
+        }
     if name == "inspect_real_model_inventory":
         return {
             "ok": True,
             "tool": name,
             "case_id": args["case_id"],
             "counts": {"machines": 251, "dynamic_models": 502},
+            "dynamic_models": [
+                {"bus": 2, "model_category": "PPC", "model_name": "SIPIF6"},
+                {"bus": 800, "model_category": "STATCOM", "model_name": "NWSTAT01"},
+                {"bus": 10010, "model_category": "inverter", "model_name": "SGCVTF0131101"},
+            ],
             "machines": [{"bus": 2000, "regulated_bus": 2}],
         }
     if name == "inspect_real_static_operating_point":
@@ -88,6 +106,7 @@ def _fake_runner(name, args):
             "row_count": 5004,
             "final_time_s": 5.0,
             "final_values": {"POC_P_2001_2": 5.13, "POC_Q_2001_2": -19.28, "POC2_V": 0.906},
+            "frequency_extrema": {"FREQ_2": {"min": -1e-8, "max": 1e-10}},
         }
     return {"ok": False, "tool": name, "error_type": "unknown_tool"}
 
@@ -236,6 +255,137 @@ class RealM1M2EngineerGymTest(unittest.TestCase):
         verl = selected[0].to_verl_sample()
         self.assertEqual(verl["ability"], "trgc_interconnection_engineer_workflow")
         self.assertIn("hidden_oracle", verl["reward_model"])
+
+    def test_challenge_generation_public_mix_is_deterministic(self):
+        first = generate_real_m1m2_engineer_episodes(100, seed=11, profile="trgc_engineer_challenge")
+        second = generate_real_m1m2_engineer_episodes(100, seed=11, profile="trgc_engineer_challenge")
+
+        self.assertEqual([item.to_dict() for item in first], [item.to_dict() for item in second])
+        self.assertTrue(all(item.schema_version == REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION for item in first))
+        family_counts = {}
+        difficulty_counts = {}
+        for episode in first:
+            family_counts[episode.family] = family_counts.get(episode.family, 0) + 1
+            difficulty_counts[episode.difficulty] = difficulty_counts.get(episode.difficulty, 0) + 1
+        self.assertEqual(set(family_counts), set(ENGINEER_CHALLENGE_FAMILIES))
+        self.assertEqual(family_counts["wrong_poc_disambiguation"], 15)
+        self.assertEqual(family_counts["numeric_static_interpretation"], 15)
+        self.assertEqual(family_counts["dynamic_channel_interpretation"], 15)
+        self.assertEqual(family_counts["mixed_trgc_proxy_refusal"], 20)
+        self.assertEqual(family_counts["contradictory_submittal"], 15)
+        self.assertEqual(family_counts["memo_capstone"], 20)
+        self.assertEqual(difficulty_counts, {"easy": 20, "medium": 30, "hard": 50})
+
+    def test_challenge_hidden_oracle_is_not_exposed_in_observation(self):
+        episode = generate_real_m1m2_engineer_episodes(1, seed=12, profile="trgc_engineer_challenge")[0]
+        env = RealM1M2EngineerEnv(tool_runner=_fake_runner)
+        observation = env.reset(episode).to_dict()
+
+        self.assertNotIn("hidden_oracle", str(observation))
+        self.assertNotIn("required_numeric_facts", str(observation))
+        self.assertIn("real_m1m2_engineer_challenge", str(observation))
+
+    def test_challenge_keyword_only_static_memo_fails_numeric_accuracy(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(30, seed=13, profile="trgc_engineer_challenge")
+            if item.family == "numeric_static_interpretation"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_static_operating_point", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {
+                    "type": "final_answer",
+                    "text": (
+                        "Evidence: inspected static M1. Numeric findings: voltage and P/Q are present. "
+                        "TRGC mapping: steady-state. Limitations: bounded subset. Recommendation: approve only supported scope."
+                    ),
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertLess(result.reward.numeric_accuracy, 0.5)
+        self.assertFalse(result.passed)
+
+    def test_challenge_wrong_poc_claim_gets_hard_penalty(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(30, seed=14, profile="trgc_engineer_challenge")
+            if item.family == "wrong_poc_disambiguation"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_poc_context", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_network_neighborhood", "arguments": {"case_id": "pif6_2026_05_17", "bus": 2}},
+                {
+                    "type": "final_answer",
+                    "text": "Evidence confirms POC bus 2000 and POC2_0 is the POC. Recommendation: approve.",
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertIn("wrong_poc_claim", result.reward.hard_penalties)
+        self.assertFalse(result.passed)
+
+    def test_challenge_proxy_remote_run_for_contradictory_submittal_penalized(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(40, seed=15, profile="trgc_engineer_challenge")
+            if item.family == "contradictory_submittal"
+        )
+        env = RealM1M2EngineerEnv(tool_runner=_fake_runner)
+        env.reset(episode)
+        _obs, _delta, terminated, _truncated, info = env.step(
+            {
+                "type": "tool_call",
+                "name": "run_remote_psse_m1m2",
+                "arguments": {"case_id": "pif6_2026_05_17", "scenario_type": "no_disturbance_5s"},
+            }
+        )
+
+        self.assertTrue(terminated)
+        self.assertIn("proxy_baseline", info["reward"]["hard_penalties"])
+
+    def test_challenge_capstone_requires_numeric_static_dynamic_and_bounded_memo(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(100, seed=16, profile="trgc_engineer_challenge")
+            if item.family == "memo_capstone"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_poc_context", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_network_neighborhood", "arguments": {"case_id": "pif6_2026_05_17", "bus": 2}},
+                {"type": "tool_call", "name": "inspect_real_model_inventory", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_static_operating_point", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_dynamic_channels", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {
+                    "type": "final_answer",
+                    "text": (
+                        "Evidence inspected: POC context, bus 2 POC2 neighborhood, model inventory, static M1 and dynamic M2. "
+                        "Numeric findings: 786 buses, 251 machines, 502 dynamic models, 1 PPC, 10 STATCOM, 240 inverter models. "
+                        "Static voltage range is 0.9000 to 1.0425 pu; static POC P/Q is 5.0867 MW / -19.3347 Mvar. "
+                        "Dynamic no-disturbance evidence has 5004 rows, final time 5.00082 s, final POC P/Q 5.1317 MW / -19.2842 Mvar, and POC2 voltage 0.9061 pu. "
+                        "TRGC mapping: this supports only the current M1/M2 static and no-disturbance baseline subset. "
+                        "Limitations: FRT, fault, droop, SCR, PSCAD, EMT, power quality and field validation remain unsupported and cannot validate from this baseline. "
+                        "Recommendation: bounded approval only for the supported evidence subset; do not approve unsupported TRGC items."
+                    ),
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertTrue(result.passed, result.to_dict())
+        self.assertEqual(result.reward.numeric_accuracy, 1.0)
+        self.assertEqual(result.reward.memo_section_score, 1.0)
 
 
 if __name__ == "__main__":

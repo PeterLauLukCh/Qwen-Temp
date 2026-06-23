@@ -35,8 +35,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Run TRGC real interconnection engineer-gym episodes.")
     parser.add_argument(
         "--episodes",
-        default="real-data-new/generated_trgc_real_m1m2_engineer_episodes.json",
+        default=None,
     )
+    parser.add_argument("--challenge", action="store_true", help="Run the stricter TRGC engineer challenge fixture.")
     parser.add_argument("--base-url", help="Full vLLM base URL, e.g. http://127.0.0.1:8037/v1.")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
@@ -47,6 +48,8 @@ def main() -> int:
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-tokens", type=int, default=2048)
     parser.add_argument("--max-tool-rounds", type=int, default=8)
+    parser.add_argument("--strict-agent", action="store_true", help="Disable deterministic report fallback.")
+    parser.add_argument("--include-messages", action="store_true", help="Include full LLM conversation messages in output.")
     parser.add_argument("--memory-dir")
     parser.add_argument("--episode", action="append", default=[])
     parser.add_argument("--curriculum-level", action="append", default=[])
@@ -63,10 +66,17 @@ def main() -> int:
         help="Actually call the Windows remote worker for run_remote_psse_m1m2; default uses processed fallback/cache.",
     )
     args = parser.parse_args()
+    if args.challenge:
+        args.strict_agent = True
+    episodes_path = args.episodes or (
+        "real-data-new/generated_trgc_real_m1m2_engineer_challenge_public.json"
+        if args.challenge
+        else "real-data-new/generated_trgc_real_m1m2_engineer_episodes.json"
+    )
 
     try:
         episodes = filter_real_m1m2_engineer_episodes(
-            load_real_m1m2_engineer_episodes(args.episodes),
+            load_real_m1m2_engineer_episodes(episodes_path),
             episode_ids=args.episode,
             curriculum_levels=args.curriculum_level,
             families=args.family,
@@ -82,7 +92,7 @@ def main() -> int:
             _json(
                 {
                     "ok": True,
-                    "episodes": args.episodes,
+                    "episodes": episodes_path,
                     "episode_count": len(episodes),
                     "items": [episode.to_dict(include_hidden=False) for episode in episodes],
                 }
@@ -108,7 +118,7 @@ def main() -> int:
             )
         ),
         memory_store=memory_store,
-        config=AgentConfig(max_tool_rounds=args.max_tool_rounds),
+        config=_agent_config(args),
     )
     tool_runner = HybridRemoteM1M2CacheRunner(
         registry=registry,
@@ -138,7 +148,7 @@ def main() -> int:
         )
         env = RealM1M2EngineerEnv(registry=registry, tool_runner=tool_runner)
         env.reset(episode)
-        result = env.run_agent(agent)
+        result = env.run_agent(agent, include_messages=args.include_messages)
         results.append(result)
         print(
             json.dumps(
@@ -163,11 +173,12 @@ def main() -> int:
         results,
         duration_s=time.perf_counter() - start,
         include_hidden=args.include_hidden,
+        strict_agent=args.strict_agent,
     )
     output = {
         "ok": suite["ok"],
         "mode": "live_agent_real_m1m2_engineer_gym",
-        "episodes": args.episodes,
+        "episodes": episodes_path,
         "base_url": base_url,
         "model": args.model,
         "live_remote": bool(args.live_remote),
@@ -189,7 +200,12 @@ def main() -> int:
                     "average_reward": suite["average_reward"],
                     "by_curriculum_level": suite["by_curriculum_level"],
                     "by_difficulty": suite["by_difficulty"],
+                    "by_challenge_family": suite["by_challenge_family"],
                     "reward_components": suite["reward_components"],
+                    "numeric_accuracy": suite["numeric_accuracy"],
+                    "poc_accuracy": suite["poc_accuracy"],
+                    "memo_section_score": suite["memo_section_score"],
+                    "strict_agent": suite["strict_agent"],
                 }
             )
         )
@@ -205,6 +221,15 @@ def _base_url(args: argparse.Namespace) -> str:
 
 def _json(payload: Dict[str, Any]) -> str:
     return json.dumps(payload, indent=2, sort_keys=True)
+
+
+def _agent_config(args: argparse.Namespace) -> AgentConfig:
+    return AgentConfig(
+        max_tool_rounds=args.max_tool_rounds,
+        enable_deterministic_report=not args.strict_agent,
+        use_deterministic_report_when_final_empty=not args.strict_agent,
+        use_deterministic_report_on_max_rounds=not args.strict_agent,
+    )
 
 
 if __name__ == "__main__":

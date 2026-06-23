@@ -58,8 +58,9 @@ def main() -> int:
     parser.add_argument("--list-models", action="store_true")
     parser.add_argument(
         "--episodes",
-        default="real-data-new/generated_trgc_real_m1m2_engineer_episodes.json",
+        default=None,
     )
+    parser.add_argument("--challenge", action="store_true", help="Run the stricter TRGC engineer challenge fixture.")
     parser.add_argument("--episode", action="append", default=[])
     parser.add_argument("--curriculum-level", action="append", default=[])
     parser.add_argument("--family", action="append", default=[])
@@ -72,6 +73,8 @@ def main() -> int:
     )
     parser.add_argument("--list-episodes", action="store_true")
     parser.add_argument("--max-tool-rounds", type=int, default=8)
+    parser.add_argument("--strict-agent", action="store_true", help="Disable deterministic report fallback.")
+    parser.add_argument("--include-messages", action="store_true", help="Include full LLM conversation messages in output.")
     parser.add_argument("--memory-dir")
     parser.add_argument("--cache-dir", default="Code/benchmark_results/real_m1m2_engineer_cache")
     parser.add_argument(
@@ -82,6 +85,13 @@ def main() -> int:
     parser.add_argument("--include-hidden", action="store_true")
     parser.add_argument("--output")
     args = parser.parse_args()
+    if args.challenge:
+        args.strict_agent = True
+    episodes_path = args.episodes or (
+        "real-data-new/generated_trgc_real_m1m2_engineer_challenge_public.json"
+        if args.challenge
+        else "real-data-new/generated_trgc_real_m1m2_engineer_episodes.json"
+    )
 
     api_key, api_key_source = _resolve_api_key(args)
     if not api_key:
@@ -143,7 +153,7 @@ def main() -> int:
 
     try:
         episodes = filter_real_m1m2_engineer_episodes(
-            load_real_m1m2_engineer_episodes(args.episodes),
+            load_real_m1m2_engineer_episodes(episodes_path),
             episode_ids=args.episode,
             curriculum_levels=args.curriculum_level,
             families=args.family,
@@ -157,7 +167,7 @@ def main() -> int:
 
     if args.list_episodes:
         output["episodes"] = {
-            "path": args.episodes,
+            "path": episodes_path,
             "episode_count": len(episodes),
             "items": [episode.to_dict(include_hidden=False) for episode in episodes],
         }
@@ -178,7 +188,7 @@ def main() -> int:
     output.update(
         {
             "ok": bool(suite["ok"]),
-            "episodes": args.episodes,
+            "episodes": episodes_path,
             "live_remote": bool(args.live_remote),
             "cache_dir": args.cache_dir,
             "suite": suite,
@@ -199,7 +209,12 @@ def main() -> int:
                     "average_reward": suite["average_reward"],
                     "by_curriculum_level": suite["by_curriculum_level"],
                     "by_difficulty": suite["by_difficulty"],
+                    "by_challenge_family": suite["by_challenge_family"],
                     "reward_components": suite["reward_components"],
+                    "numeric_accuracy": suite["numeric_accuracy"],
+                    "poc_accuracy": suite["poc_accuracy"],
+                    "memo_section_score": suite["memo_section_score"],
+                    "strict_agent": suite["strict_agent"],
                 }
             )
         )
@@ -280,7 +295,7 @@ def _run_engineer_gym(
         registry=registry,
         llm_client=client,
         memory_store=memory_store,
-        config=AgentConfig(max_tool_rounds=args.max_tool_rounds),
+        config=_agent_config(args),
     )
     tool_runner = HybridRemoteM1M2CacheRunner(
         registry=registry,
@@ -310,7 +325,7 @@ def _run_engineer_gym(
         )
         env = RealM1M2EngineerEnv(registry=registry, tool_runner=tool_runner)
         env.reset(episode)
-        result = env.run_agent(agent)
+        result = env.run_agent(agent, include_messages=args.include_messages)
         results.append(result)
         print(
             json.dumps(
@@ -335,11 +350,21 @@ def _run_engineer_gym(
         results,
         duration_s=time.perf_counter() - start,
         include_hidden=args.include_hidden,
+        strict_agent=args.strict_agent,
     )
 
 
 def _json(payload: Mapping[str, Any]) -> str:
     return json.dumps(payload, indent=2, sort_keys=True)
+
+
+def _agent_config(args: argparse.Namespace) -> AgentConfig:
+    return AgentConfig(
+        max_tool_rounds=args.max_tool_rounds,
+        enable_deterministic_report=not args.strict_agent,
+        use_deterministic_report_when_final_empty=not args.strict_agent,
+        use_deterministic_report_on_max_rounds=not args.strict_agent,
+    )
 
 
 if __name__ == "__main__":

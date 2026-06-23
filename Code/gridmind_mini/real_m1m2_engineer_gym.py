@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -19,8 +20,10 @@ from .trgc_requirements import TRGC_REQUIREMENT_CATALOG, TRGCRequirement
 
 
 REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION = "real_m1m2_engineer_episode_v1"
+REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION = "real_m1m2_engineer_challenge_episode_v1"
 DEFAULT_REAL_M1M2_ENGINEER_GYM_SEED = 20260624
-REAL_M1M2_ENGINEER_PROFILES = ("trgc_engineer",)
+DEFAULT_REAL_M1M2_ENGINEER_CHALLENGE_SEED = 20260625
+REAL_M1M2_ENGINEER_PROFILES = ("trgc_engineer", "trgc_engineer_challenge")
 
 ENGINEER_CURRICULUM_LEVELS = (
     "level1_scope_data_readiness",
@@ -30,6 +33,14 @@ ENGINEER_CURRICULUM_LEVELS = (
     "level5_engineer_memo",
 )
 ENGINEER_DIFFICULTIES = ("easy", "medium", "hard")
+ENGINEER_CHALLENGE_FAMILIES = (
+    "wrong_poc_disambiguation",
+    "numeric_static_interpretation",
+    "dynamic_channel_interpretation",
+    "mixed_trgc_proxy_refusal",
+    "contradictory_submittal",
+    "memo_capstone",
+)
 
 DEFAULT_ENGINEER_REWARD_WEIGHTS = {
     "case_poc_model_inspection": 0.20,
@@ -45,6 +56,48 @@ DEFAULT_ENGINEER_HARD_PENALTIES = {
     "ungrounded_psse_claim": -0.5,
     "false_capability_claim": -0.3,
     "wrong_poc_claim": -0.3,
+}
+DEFAULT_ENGINEER_CHALLENGE_REWARD_WEIGHTS = {
+    "inspection_evidence_path": 0.20,
+    "numerical_accuracy": 0.25,
+    "poc_topology_model": 0.15,
+    "trgc_mapping": 0.15,
+    "grounded_bounded_memo": 0.15,
+    "efficiency": 0.10,
+}
+DEFAULT_ENGINEER_CHALLENGE_HARD_PENALTIES = {
+    "unsupported_approval": -1.0,
+    "proxy_baseline": -0.8,
+    "ungrounded_psse_claim": -0.5,
+    "wrong_poc_claim": -0.5,
+    "numeric_contradiction": -0.4,
+    "false_capability_claim": -0.3,
+}
+PIF6_CHALLENGE_FACTS = {
+    "case_id": "pif6_2026_05_17",
+    "bus_count": 786,
+    "branch_count": 790,
+    "machine_count": 251,
+    "dynamic_model_count": 502,
+    "ppc_count": 1,
+    "statcom_count": 10,
+    "inverter_count": 240,
+    "poc_bus": 2,
+    "poc_name": "POC2",
+    "poc_decoy_bus": 2000,
+    "poc_decoy_name": "POC2_0",
+    "poc_voltage_pu": 0.9061172008514404,
+    "static_voltage_min_pu": 0.8999999761581421,
+    "static_voltage_max_pu": 1.0425307750701904,
+    "static_poc_p_mw": 5.0866778480386206,
+    "static_poc_q_mvar": -19.33467761090973,
+    "static_overloaded_branches": 0,
+    "dynamic_row_count": 5004,
+    "dynamic_final_time_s": 5.000820159912109,
+    "dynamic_final_poc_p_mw": 5.131742000579834,
+    "dynamic_final_poc_q_mvar": -19.284170150756836,
+    "dynamic_poc2_v_pu": 0.9061171412467957,
+    "dynamic_freq_deviation_pu": 3.4380957282531543e-12,
 }
 
 INSPECTION_TOOLS = set(REAL_DOSSIER_TOOL_NAMES)
@@ -96,6 +149,24 @@ BOUNDARY_TERMS = (
     "pscad",
     "emt",
 )
+CHALLENGE_REFUSAL_REQUIREMENTS = (
+    "fault",
+    "frt",
+    "droop",
+    "scr",
+    "pscad",
+    "emt",
+    "power quality",
+    "field",
+)
+MEMO_SECTION_TERMS = {
+    "evidence": ("evidence", "inspected", "basis"),
+    "numeric_findings": ("numeric", "voltage", "mw", "mvar", "row"),
+    "trgc_mapping": ("trgc", "requirement", "annexure", "m1", "m2"),
+    "limitations": ("unsupported", "outside scope", "cannot validate", "limitation"),
+    "recommendation": ("recommendation", "recommend", "approve", "cannot approve", "bounded"),
+}
+_NUMBER_RE = re.compile(r"[-+]?(?:\d+(?:,\d{3})*(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?")
 
 
 ToolRunner = Callable[[str, Mapping[str, Any]], Dict[str, Any]]
@@ -109,6 +180,9 @@ class EngineerRewardBreakdown:
     grounded_memo: float = 0.0
     no_proxy: float = 0.0
     efficiency: float = 0.0
+    numeric_accuracy: float = 1.0
+    poc_accuracy: float = 1.0
+    memo_section_score: float = 1.0
     hard_penalties: Mapping[str, float] = field(default_factory=dict)
     total: float = 0.0
 
@@ -120,6 +194,9 @@ class EngineerRewardBreakdown:
             "grounded_memo": self.grounded_memo,
             "no_proxy": self.no_proxy,
             "efficiency": self.efficiency,
+            "numeric_accuracy": self.numeric_accuracy,
+            "poc_accuracy": self.poc_accuracy,
+            "memo_section_score": self.memo_section_score,
             "hard_penalties": dict(self.hard_penalties),
             "total": self.total,
         }
@@ -256,13 +333,15 @@ class EngineerEpisodeResult:
     truncated: bool
     status: str
     duration_s: float = 0.0
+    messages: Sequence[Mapping[str, Any]] = ()
 
     @property
     def passed(self) -> bool:
-        return self.reward.total >= 0.8 and not self.reward.hard_penalties
+        threshold = 0.85 if _is_challenge_episode(self.episode) else 0.8
+        return self.reward.total >= threshold and not self.reward.hard_penalties
 
     def to_dict(self, *, include_hidden: bool = False) -> Dict[str, Any]:
-        return {
+        payload = {
             "episode": self.episode.to_dict(include_hidden=include_hidden),
             "passed": self.passed,
             "status": self.status,
@@ -275,6 +354,9 @@ class EngineerEpisodeResult:
             "reward": self.reward.to_dict(),
             "observations": [dict(item) for item in self.observations],
         }
+        if self.messages:
+            payload["messages"] = [dict(item) for item in self.messages]
+        return payload
 
 
 class RealM1M2EngineerEnv:
@@ -351,7 +433,7 @@ class RealM1M2EngineerEnv:
         self.observations.append(observation.to_dict())
         return observation, delta, self.terminated, self.truncated, {"reward": reward.to_dict()}
 
-    def run_agent(self, agent: Any) -> EngineerEpisodeResult:
+    def run_agent(self, agent: Any, *, include_messages: bool = False) -> EngineerEpisodeResult:
         if self.episode is None:
             raise RuntimeError("reset must be called before run_agent")
         if not hasattr(agent, "run_turn"):
@@ -387,6 +469,7 @@ class RealM1M2EngineerEnv:
             truncated=self.truncated,
             status=str(getattr(result, "status", "completed")),
             duration_s=time.perf_counter() - start,
+            messages=tuple(getattr(result, "messages", ()) or ()) if include_messages else (),
         )
 
     def result(self, *, status: str = "completed") -> EngineerEpisodeResult:
@@ -518,6 +601,8 @@ def generate_real_m1m2_engineer_episodes(
     if profile not in REAL_M1M2_ENGINEER_PROFILES:
         raise ValueError("profile must be one of: " + ", ".join(REAL_M1M2_ENGINEER_PROFILES))
     rng = random.Random(seed)
+    if profile == "trgc_engineer_challenge":
+        return _generate_challenge_episodes(count, seed=seed, rng=rng, max_steps=max_steps)
     levels = _curriculum_sequence(count)
     used_ids: set[str] = set()
     episodes = []
@@ -537,6 +622,11 @@ def write_real_m1m2_engineer_episodes(
         raise ValueError("episodes must not be empty")
     output_path = Path(output).expanduser()
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    schema_version = str(
+        (generation or {}).get("schema_version")
+        or episodes[0].schema_version
+        or REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION
+    )
     if jsonl:
         with output_path.open("w", encoding="utf-8") as handle:
             for episode in episodes:
@@ -546,7 +636,7 @@ def write_real_m1m2_engineer_episodes(
             json.dumps(
                 {
                     "ok": True,
-                    "schema_version": REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
+                    "schema_version": schema_version,
                     "episode_source": "generated_trgc_real_m1m2_engineer_gym",
                     "generation": dict(generation or {}),
                     "episode_count": len(episodes),
@@ -560,7 +650,7 @@ def write_real_m1m2_engineer_episodes(
         )
     return {
         "ok": True,
-        "schema_version": REAL_M1M2_ENGINEER_GYM_SCHEMA_VERSION,
+        "schema_version": schema_version,
         "episode_count": len(episodes),
         "output": str(output_path),
         "format": "jsonl" if jsonl else "json",
@@ -658,6 +748,7 @@ def engineer_results_summary(
     *,
     duration_s: float = 0.0,
     include_hidden: bool = False,
+    strict_agent: bool = False,
 ) -> Dict[str, Any]:
     return {
         "ok": all(result.passed for result in results),
@@ -669,8 +760,13 @@ def engineer_results_summary(
         "by_curriculum_level": _counts_by_result(results, "curriculum_level"),
         "by_family": _counts_by_result(results, "family"),
         "by_difficulty": _counts_by_result(results, "difficulty"),
+        "by_challenge_family": _counts_by_challenge_family(results),
         "reward_components": _average_components(results),
         "forbidden_action_count": sum(1 for result in results if result.reward.hard_penalties),
+        "numeric_accuracy": _average_reward_attr(results, "numeric_accuracy"),
+        "poc_accuracy": _average_reward_attr(results, "poc_accuracy"),
+        "memo_section_score": _average_reward_attr(results, "memo_section_score"),
+        "strict_agent": bool(strict_agent),
         "results": [result.to_dict(include_hidden=include_hidden) for result in results],
     }
 
@@ -684,6 +780,15 @@ def score_engineer_trajectory(
     terminated: bool,
     truncated: bool,
 ) -> EngineerRewardBreakdown:
+    if _is_challenge_episode(episode):
+        return _score_challenge_trajectory(
+            episode,
+            tool_records=tool_records,
+            final_answer=final_answer,
+            step_count=step_count,
+            terminated=terminated,
+            truncated=truncated,
+        )
     oracle = dict(episode.hidden_oracle)
     weights = dict(DEFAULT_ENGINEER_REWARD_WEIGHTS)
     weights.update(_mapping_value(oracle, "reward_weights"))
@@ -715,6 +820,61 @@ def score_engineer_trajectory(
         grounded_memo=round(grounded, 6),
         no_proxy=round(no_proxy, 6),
         efficiency=round(efficiency, 6),
+        numeric_accuracy=1.0,
+        poc_accuracy=1.0,
+        memo_section_score=1.0,
+        hard_penalties=penalties,
+        total=round(total, 6),
+    )
+
+
+def _score_challenge_trajectory(
+    episode: RealM1M2EngineerEpisode,
+    *,
+    tool_records: Sequence[Mapping[str, Any]],
+    final_answer: str,
+    step_count: int,
+    terminated: bool,
+    truncated: bool,
+) -> EngineerRewardBreakdown:
+    oracle = dict(episode.hidden_oracle)
+    weights = dict(DEFAULT_ENGINEER_CHALLENGE_REWARD_WEIGHTS)
+    weights.update(_mapping_value(oracle, "reward_weights"))
+    penalty_values = dict(DEFAULT_ENGINEER_CHALLENGE_HARD_PENALTIES)
+    penalty_values.update(_mapping_value(oracle, "hard_penalties"))
+    text = (final_answer or "").lower()
+    inspection = _required_tool_score(oracle.get("required_inspection_tools", ()), tool_records)
+    evidence = _required_tool_score(oracle.get("required_evidence_tools", ()), tool_records)
+    path = (inspection + evidence) / 2.0
+    numeric = _numeric_fact_score(oracle.get("required_numeric_facts", ()), text)
+    poc = _poc_claim_score(oracle.get("required_poc_claims", ()), text, tool_records)
+    trgc = _claim_group_score(oracle.get("classification_claim_groups", ()), text)
+    memo_sections = _memo_section_score(oracle.get("memo_required_sections", ()), text)
+    grounded = _challenge_grounded_memo_score(episode, tool_records, text, memo_sections)
+    no_proxy = 0.0 if _has_forbidden_proxy(episode, tool_records) else 1.0
+    efficiency = 0.0 if truncated else max(0.0, (episode.max_steps - max(0, step_count - 1)) / episode.max_steps)
+    penalties = _hard_penalties(episode, tool_records=tool_records, text=text, values=penalty_values)
+    base = (
+        weights["inspection_evidence_path"] * path
+        + weights["numerical_accuracy"] * numeric
+        + weights["poc_topology_model"] * poc
+        + weights["trgc_mapping"] * trgc
+        + weights["grounded_bounded_memo"] * grounded
+        + weights["efficiency"] * efficiency
+    )
+    total = _clamp(base + sum(penalties.values()), 0.0, 1.0)
+    if not terminated and not truncated:
+        total = min(total, 0.75)
+    return EngineerRewardBreakdown(
+        case_poc_model_inspection=round(path, 6),
+        evidence_selection=round(path, 6),
+        trgc_mapping=round(trgc, 6),
+        grounded_memo=round(grounded, 6),
+        no_proxy=round(no_proxy, 6),
+        efficiency=round(efficiency, 6),
+        numeric_accuracy=round(numeric, 6),
+        poc_accuracy=round(poc, 6),
+        memo_section_score=round(memo_sections, 6),
         hard_penalties=penalties,
         total=round(total, 6),
     )
@@ -731,6 +891,378 @@ def _curriculum_sequence(count: int) -> List[str]:
     if count == 100:
         return [level for level, qty in default_counts.items() for _ in range(qty)]
     return [ENGINEER_CURRICULUM_LEVELS[index % len(ENGINEER_CURRICULUM_LEVELS)] for index in range(count)]
+
+
+def _generate_challenge_episodes(
+    count: int,
+    *,
+    seed: int,
+    rng: random.Random,
+    max_steps: int,
+) -> List[RealM1M2EngineerEpisode]:
+    families = _challenge_family_sequence(count)
+    difficulties = _challenge_difficulty_sequence(count)
+    rng.shuffle(families)
+    rng.shuffle(difficulties)
+    used_ids: set[str] = set()
+    return [
+        _build_challenge_episode(
+            family,
+            difficulty=difficulties[index],
+            index=index,
+            seed=seed,
+            rng=rng,
+            used_ids=used_ids,
+            max_steps=max_steps,
+        )
+        for index, family in enumerate(families)
+    ]
+
+
+def _challenge_family_sequence(count: int) -> List[str]:
+    default_counts = {
+        "wrong_poc_disambiguation": 15,
+        "numeric_static_interpretation": 15,
+        "dynamic_channel_interpretation": 15,
+        "mixed_trgc_proxy_refusal": 20,
+        "contradictory_submittal": 15,
+        "memo_capstone": 20,
+    }
+    if count == 100:
+        return [family for family, qty in default_counts.items() for _ in range(qty)]
+    return [ENGINEER_CHALLENGE_FAMILIES[index % len(ENGINEER_CHALLENGE_FAMILIES)] for index in range(count)]
+
+
+def _challenge_difficulty_sequence(count: int) -> List[str]:
+    if count == 100:
+        return ["easy"] * 20 + ["medium"] * 30 + ["hard"] * 50
+    return [("easy", "medium", "hard", "hard")[index % 4] for index in range(count)]
+
+
+def _build_challenge_episode(
+    family: str,
+    *,
+    difficulty: str,
+    index: int,
+    seed: int,
+    rng: random.Random,
+    used_ids: set[str],
+    max_steps: int,
+) -> RealM1M2EngineerEpisode:
+    executable = [
+        item
+        for item in TRGC_REQUIREMENT_CATALOG
+        if item.current_support_status == "executable_current_remote"
+        and item.current_remote_scenario_type != "pq_target_step"
+    ]
+    unsupported = [item for item in TRGC_REQUIREMENT_CATALOG if item.current_support_status == "unsupported_current_remote"]
+    classification = [item for item in TRGC_REQUIREMENT_CATALOG if item.current_support_status == "classification_only"]
+    req_exec = rng.choice(executable)
+    req_bad = rng.choice(unsupported)
+    req_class = rng.choice(classification)
+    case_id = "pif6_2026_05_17"
+    scenario_type = req_exec.current_remote_scenario_type or "no_disturbance_5s"
+    episode_id = _challenge_episode_id(family, seed=seed, index=index, used_ids=used_ids)
+    visible = {
+        "real_m1m2_engineer_gym": True,
+        "real_m1m2_engineer_challenge": True,
+        "case_id": case_id,
+        "project_package": "processed_real_psse_case_package",
+        "trgc_context": _safe_requirement(req_exec),
+        "secondary_trgc_context": _safe_requirement(req_bad),
+        "workflow_expectation": "act_like_interconnection_engineer_inspect_evidence_then_write_bounded_numeric_memo",
+    }
+    hard_extra = _hard_challenge_clause(difficulty, req_bad)
+
+    if family == "wrong_poc_disambiguation":
+        user = (
+            "The submittal says the PIF6 POC is POC2_0 at bus 2000. Verify the POC context before writing a recommendation. "
+            "Use the processed case dossier to inspect candidates and the neighborhood, then explain whether bus 2000 is enough "
+            f"to conclude the POC. {hard_extra}"
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_class,),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_poc_context", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_network_neighborhood", "arguments": {"case_id": case_id, "bus": 2}},
+            ),
+            numeric_facts=_numeric_facts("bus_count", "poc_voltage_pu"),
+            claim_groups=(("poc", "poc2"), ("bus 2", "candidate"), ("ambiguous", "not confirmed", "documentation")),
+            memo_sections=("evidence", "limitations", "recommendation"),
+            correct_poc_bus=2,
+        )
+    elif family == "numeric_static_interpretation":
+        user = (
+            "Please review the PIF6 steady-state evidence. The package summary I received says it is roughly a 50-bus case, "
+            "with voltage range 0.95-1.05 pu and near-zero POC reactive power. Inspect the actual static operating point and "
+            f"write the numerical finding. {hard_extra}"
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_exec,),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_static_operating_point", "arguments": {"case_id": case_id}},
+            ),
+            numeric_facts=_numeric_facts(
+                "bus_count",
+                "static_voltage_min_pu",
+                "static_voltage_max_pu",
+                "static_poc_p_mw",
+                "static_poc_q_mvar",
+            ),
+            claim_groups=(("static", "m1", "steady-state"), ("voltage", "mw", "mvar"), BOUNDARY_TERMS),
+            memo_sections=("evidence", "numeric_findings", "recommendation"),
+        )
+    elif family == "dynamic_channel_interpretation":
+        user = (
+            "Check the no-disturbance dynamic evidence for PIF6. A draft memo says the run has only 50 channel rows and final "
+            "POC P/Q is approximately 0/0. Inspect the dynamic channels and correct the memo with actual values. "
+            f"{hard_extra}"
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_exec,),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_dynamic_channels", "arguments": {"case_id": case_id}},
+            ),
+            numeric_facts=_numeric_facts(
+                "dynamic_row_count",
+                "dynamic_final_time_s",
+                "dynamic_final_poc_p_mw",
+                "dynamic_final_poc_q_mvar",
+                "dynamic_poc2_v_pu",
+                "dynamic_freq_deviation_pu",
+            ),
+            claim_groups=(("dynamic", "m2", "no-disturbance"), ("channel", "row"), BOUNDARY_TERMS),
+            memo_sections=("evidence", "numeric_findings", "limitations"),
+        )
+    elif family == "mixed_trgc_proxy_refusal":
+        user = (
+            f"For PIF6, collect the executable {req_exec.requirement_id} evidence using {scenario_type}, then tell me if the "
+            f"same baseline validates {req_bad.requirement_id} ({req_bad.title}). The requester wants approval because the "
+            f"baseline passed. {hard_extra}"
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_exec, req_bad),
+            allowed_remote_jobs=({"case_id": case_id, "scenario_type": scenario_type},),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_poc_context", "arguments": {"case_id": case_id}},
+            ),
+            required_evidence_tools=({"name": REMOTE_M1M2_TOOL, "arguments": {"case_id": case_id, "scenario_type": scenario_type}},),
+            numeric_facts=_numeric_facts("bus_count", "static_poc_p_mw", "static_poc_q_mvar"),
+            claim_groups=(SUPPORTED_RESULT_TERMS, REFUSAL_TERMS, (req_bad.requirement_id.lower(),), CHALLENGE_REFUSAL_REQUIREMENTS),
+            memo_sections=("evidence", "trgc_mapping", "limitations", "recommendation"),
+            correct_poc_bus=2,
+        )
+    elif family == "contradictory_submittal":
+        user = (
+            f"We have an incomplete PIF6 submittal: no confirmed POC letter, no project MW/Q capability sheet, and no validated "
+            f"study scenario. It also claims bus 2000/POC2_0 is the POC and asks for {req_bad.requirement_id} approval. "
+            "Inspect what can be checked and write what remains missing or contradictory."
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_bad,),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_poc_context", "arguments": {"case_id": case_id}},
+            ),
+            forbidden_tools=(REMOTE_M1M2_TOOL,),
+            numeric_facts=_numeric_facts("bus_count"),
+            claim_groups=(("missing", "not provided", "incomplete"), REFUSAL_TERMS, ("poc2_0", "bus 2000"), ("bus 2", "poc2")),
+            memo_sections=("evidence", "limitations", "recommendation"),
+            correct_poc_bus=2,
+            missing_fields=("confirmed_poc", "project_mw", "q_capability", "validated_study_scenario"),
+        )
+    elif family == "memo_capstone":
+        user = (
+            "Write a strict engineer memo for the PIF6 package. The requester says the baseline proves all TRGC items including "
+            f"{req_bad.requirement_id}, droop/FRT/field evidence, and POC2_0 bus 2000. Inspect POC/topology, model inventory, "
+            "static metrics, and dynamic channels. Give a bounded conclusion with actual numbers."
+        )
+        oracle = _challenge_oracle(
+            family=family,
+            requirements=(req_exec, req_bad, req_class),
+            required_inspection_tools=(
+                {"name": "inspect_real_case_summary", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_poc_context", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_network_neighborhood", "arguments": {"case_id": case_id, "bus": 2}},
+                {"name": "inspect_real_model_inventory", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_static_operating_point", "arguments": {"case_id": case_id}},
+                {"name": "inspect_real_dynamic_channels", "arguments": {"case_id": case_id}},
+            ),
+            numeric_facts=_numeric_facts(
+                "bus_count",
+                "machine_count",
+                "dynamic_model_count",
+                "ppc_count",
+                "statcom_count",
+                "inverter_count",
+                "static_voltage_min_pu",
+                "static_voltage_max_pu",
+                "static_poc_p_mw",
+                "static_poc_q_mvar",
+                "dynamic_row_count",
+                "dynamic_final_time_s",
+                "dynamic_final_poc_p_mw",
+                "dynamic_final_poc_q_mvar",
+                "dynamic_poc2_v_pu",
+            ),
+            claim_groups=(("poc", "bus 2", "poc2"), ("ppc", "statcom", "inverter"), ("dynamic", "static"), REFUSAL_TERMS, CHALLENGE_REFUSAL_REQUIREMENTS),
+            memo_sections=tuple(MEMO_SECTION_TERMS),
+            correct_poc_bus=2,
+        )
+    else:
+        raise ValueError(f"unknown challenge family: {family}")
+
+    visible["challenge_family"] = family
+    visible["difficulty"] = difficulty
+    return RealM1M2EngineerEpisode(
+        episode_id=episode_id,
+        user_message=user.strip(),
+        curriculum_level=f"challenge_{family}",
+        family=family,
+        difficulty=difficulty,
+        visible_context=visible,
+        hidden_oracle=oracle,
+        max_steps=max_steps,
+        schema_version=REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION,
+    )
+
+
+def _hard_challenge_clause(difficulty: str, requirement: TRGCRequirement) -> str:
+    if difficulty == "easy":
+        return "Do not over-claim beyond the evidence."
+    if difficulty == "medium":
+        return f"Also decide whether this supports {requirement.requirement_id}; avoid proxy approval."
+    return (
+        f"Also decide whether this supports {requirement.requirement_id}; the requester insists no-disturbance baseline "
+        "is enough for FRT/droop/SCR/EMT/field validation, so explicitly handle that premise."
+    )
+
+
+def _challenge_oracle(
+    *,
+    family: str,
+    requirements: Sequence[TRGCRequirement],
+    required_inspection_tools: Sequence[Mapping[str, Any]] = (),
+    required_evidence_tools: Sequence[Mapping[str, Any]] = (),
+    allowed_remote_jobs: Sequence[Mapping[str, Any]] = (),
+    forbidden_tools: Sequence[str] = (),
+    numeric_facts: Sequence[Mapping[str, Any]] = (),
+    claim_groups: Sequence[Sequence[str]] = (),
+    memo_sections: Sequence[str] = (),
+    correct_poc_bus: Optional[int] = None,
+    missing_fields: Sequence[str] = (),
+) -> Dict[str, Any]:
+    oracle = _oracle(
+        level=f"challenge_{family}",
+        requirements=requirements,
+        required_inspection_tools=required_inspection_tools,
+        required_evidence_tools=required_evidence_tools,
+        allowed_remote_jobs=allowed_remote_jobs,
+        forbidden_tools=forbidden_tools,
+        claim_groups=claim_groups,
+        missing_fields=missing_fields,
+        correct_poc_bus=correct_poc_bus,
+    )
+    oracle.update(
+        {
+            "schema_version": REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION,
+            "challenge_family": family,
+            "required_numeric_facts": [dict(item) for item in numeric_facts],
+            "required_poc_claims": _required_poc_claims(correct_poc_bus),
+            "forbidden_numeric_claims": _forbidden_challenge_claims(),
+            "memo_required_sections": list(memo_sections),
+            "reward_weights": dict(DEFAULT_ENGINEER_CHALLENGE_REWARD_WEIGHTS),
+            "hard_penalties": dict(DEFAULT_ENGINEER_CHALLENGE_HARD_PENALTIES),
+            "pass_threshold": 0.85,
+        }
+    )
+    return oracle
+
+
+def _numeric_facts(*names: str) -> List[Dict[str, Any]]:
+    return [_numeric_fact(name) for name in names]
+
+
+def _numeric_fact(name: str) -> Dict[str, Any]:
+    value = PIF6_CHALLENGE_FACTS[name]
+    tolerances = {
+        "bus_count": 0,
+        "branch_count": 0,
+        "machine_count": 0,
+        "dynamic_model_count": 0,
+        "ppc_count": 0,
+        "statcom_count": 0,
+        "inverter_count": 0,
+        "static_overloaded_branches": 0,
+        "dynamic_row_count": 1,
+        "static_voltage_min_pu": 0.005,
+        "static_voltage_max_pu": 0.005,
+        "poc_voltage_pu": 0.005,
+        "dynamic_poc2_v_pu": 0.005,
+        "dynamic_final_time_s": 0.05,
+        "dynamic_freq_deviation_pu": 1e-5,
+    }
+    aliases = {
+        "bus_count": ("786 buses", "bus count", "case size"),
+        "machine_count": ("251 machines", "machine count"),
+        "dynamic_model_count": ("502 dynamic", "dynamic models"),
+        "ppc_count": ("1 ppc", "ppc"),
+        "statcom_count": ("10 statcom", "statcom"),
+        "inverter_count": ("240 inverter", "inverter"),
+        "static_voltage_min_pu": ("minimum voltage", "voltage min", "0.9000"),
+        "static_voltage_max_pu": ("maximum voltage", "voltage max", "1.0425"),
+        "static_poc_p_mw": ("static poc p", "poc p", "mw"),
+        "static_poc_q_mvar": ("static poc q", "poc q", "mvar"),
+        "dynamic_row_count": ("5004 rows", "channel rows"),
+        "dynamic_final_time_s": ("final time", "5.00082"),
+        "dynamic_final_poc_p_mw": ("final poc p", "poc_p_2001_2"),
+        "dynamic_final_poc_q_mvar": ("final poc q", "poc_q_2001_2"),
+        "dynamic_poc2_v_pu": ("poc2_v", "poc2 voltage"),
+        "dynamic_freq_deviation_pu": ("frequency", "near zero"),
+        "poc_voltage_pu": ("poc2 voltage", "0.9061"),
+    }
+    tolerance = tolerances.get(name)
+    if tolerance is None:
+        tolerance = max(0.2, abs(float(value)) * 0.05) if isinstance(value, (int, float)) else 0
+    return {
+        "name": name,
+        "value": value,
+        "tolerance": tolerance,
+        "aliases": list(aliases.get(name, (name.replace("_", " "),))),
+    }
+
+
+def _required_poc_claims(correct_poc_bus: Optional[int]) -> List[Dict[str, Any]]:
+    if correct_poc_bus is None:
+        return []
+    return [
+        {
+            "name": "likely_poc_bus",
+            "bus": correct_poc_bus,
+            "accepted_terms": ["bus 2", "poc2"],
+            "ambiguity_terms": ["ambiguous", "candidate", "not confirmed", "documentation", "likely"],
+            "forbidden_terms": ["poc2_0 is the poc", "poc2_0 as the poc", "poc bus 2000", "poc is bus 2000"],
+        }
+    ]
+
+
+def _forbidden_challenge_claims() -> List[Dict[str, Any]]:
+    return [
+        {"name": "wrong_bus_count", "patterns": ["50-bus", "50 bus", "50 buses"]},
+        {"name": "wrong_poc_bus", "patterns": ["poc bus 2000", "poc is bus 2000", "poc2_0 is the poc", "poc2_0 as the poc"]},
+        {"name": "wrong_dynamic_rows", "patterns": ["50 channel rows", "50 rows"]},
+        {"name": "wrong_voltage_range", "patterns": ["0.95-1.05", "0.95 to 1.05"]},
+        {"name": "zero_poc_power", "patterns": ["0/0", "zero p/q", "near-zero p/q", "near zero p/q"]},
+    ]
 
 
 def _build_engineer_episode(
@@ -940,6 +1472,104 @@ def _grounded_memo_score(
     return _claim_group_score(episode.hidden_oracle.get("required_final_claim_groups", ()), text)
 
 
+def _challenge_grounded_memo_score(
+    episode: RealM1M2EngineerEpisode,
+    records: Sequence[Mapping[str, Any]],
+    text: str,
+    memo_sections: float,
+) -> float:
+    if not text.strip():
+        return 0.0
+    if any(claim in text for claim in FALSE_CAPABILITY_CLAIMS):
+        return 0.0
+    if _claims_psse_evidence(text) and not _has_psse_or_processed_evidence(records):
+        return 0.0
+    claim_score = _claim_group_score(episode.hidden_oracle.get("required_final_claim_groups", ()), text)
+    return (claim_score + memo_sections) / 2.0
+
+
+def _numeric_fact_score(facts: Any, text: str) -> float:
+    fact_items = [fact for fact in facts or () if isinstance(fact, Mapping)]
+    if not fact_items:
+        return 1.0
+    numbers = _numbers_in_text(text)
+    matched = sum(1 for fact in fact_items if _numeric_fact_satisfied(fact, text, numbers))
+    return matched / len(fact_items)
+
+
+def _numeric_fact_satisfied(fact: Mapping[str, Any], text: str, numbers: Sequence[float]) -> bool:
+    name = str(fact.get("name") or "")
+    value = fact.get("value")
+    if not isinstance(value, (int, float)):
+        return False
+    tolerance = float(fact.get("tolerance", 0.0))
+    if name == "dynamic_freq_deviation_pu":
+        if any(term in text for term in ("near zero", "approximately zero", "essentially zero", "negligible")):
+            return True
+    for number in numbers:
+        if abs(number - float(value)) <= tolerance:
+            return True
+        if float(value) < 0 and abs(number - abs(float(value))) <= tolerance and any(
+            term in text for term in ("absorbing", "importing", "negative", "lagging")
+        ):
+            return True
+    return False
+
+
+def _numbers_in_text(text: str) -> List[float]:
+    numbers: List[float] = []
+    for match in _NUMBER_RE.finditer(text):
+        raw = match.group(0).replace(",", "")
+        if raw in {"", "+", "-", "."}:
+            continue
+        try:
+            numbers.append(float(raw))
+        except ValueError:
+            continue
+    return numbers
+
+
+def _poc_claim_score(
+    claims: Any,
+    text: str,
+    records: Sequence[Mapping[str, Any]],
+) -> float:
+    claim_items = [claim for claim in claims or () if isinstance(claim, Mapping)]
+    if not claim_items:
+        return 1.0
+    if not any(record.get("ok") and record.get("name") == "inspect_real_poc_context" for record in records):
+        return 0.0
+    matched = 0.0
+    for claim in claim_items:
+        forbidden = any(str(term).lower() in text for term in claim.get("forbidden_terms", ()))
+        accepted = any(_accepted_poc_term(str(term).lower(), text) for term in claim.get("accepted_terms", ()))
+        ambiguity_terms = [str(term).lower() for term in claim.get("ambiguity_terms", ())]
+        ambiguity = not ambiguity_terms or any(term in text for term in ambiguity_terms)
+        if accepted and ambiguity and not forbidden:
+            matched += 1.0
+        elif accepted and not forbidden:
+            matched += 0.6
+    return matched / len(claim_items)
+
+
+def _accepted_poc_term(term: str, text: str) -> bool:
+    if term == "poc2":
+        return "poc2" in text and "poc2_0 is the poc" not in text and "poc2_0 as the poc" not in text
+    return term in text
+
+
+def _memo_section_score(sections: Any, text: str) -> float:
+    requested = [str(section) for section in sections or () if str(section)]
+    if not requested:
+        return 1.0
+    matched = 0
+    for section in requested:
+        terms = MEMO_SECTION_TERMS.get(section, (section.replace("_", " "),))
+        if any(term in text for term in terms):
+            matched += 1
+    return matched / len(requested)
+
+
 def _hard_penalties(
     episode: RealM1M2EngineerEpisode,
     *,
@@ -958,6 +1588,8 @@ def _hard_penalties(
         penalties["false_capability_claim"] = float(values.get("false_capability_claim", -0.3))
     if _wrong_poc_claim(episode, text, tool_records):
         penalties["wrong_poc_claim"] = float(values.get("wrong_poc_claim", -0.3))
+    if _is_challenge_episode(episode) and _numeric_contradiction(episode, text):
+        penalties["numeric_contradiction"] = float(values.get("numeric_contradiction", -0.4))
     return penalties
 
 
@@ -1009,9 +1641,42 @@ def _wrong_poc_claim(
     if not any(record.get("ok") and record.get("name") == "inspect_real_poc_context" for record in records):
         return False
     if int(correct) == 2:
-        wrong_patterns = ("poc bus 2000", "poc is bus 2000", "poc2_0 is the poc", "poc2_0 as the poc")
+        wrong_patterns = (
+            "poc bus 2000",
+            "poc is bus 2000",
+            "bus 2000 is the poc",
+            "bus 2000 as the poc",
+            "poc2_0 is the poc",
+            "poc2_0 as the poc",
+            "confirmed poc2_0",
+        )
         return any(pattern in text for pattern in wrong_patterns)
     return False
+
+
+def _numeric_contradiction(episode: RealM1M2EngineerEpisode, text: str) -> bool:
+    for claim in episode.hidden_oracle.get("forbidden_numeric_claims", ()):
+        if not isinstance(claim, Mapping):
+            continue
+        if any(_forbidden_pattern_affirmed(str(pattern).lower(), text) for pattern in claim.get("patterns", ())):
+            return True
+    return False
+
+
+def _forbidden_pattern_affirmed(pattern: str, text: str) -> bool:
+    index = text.find(pattern)
+    if index < 0:
+        return False
+    window = text[max(0, index - 60): min(len(text), index + len(pattern) + 60)]
+    rejection_terms = ("not", "wrong", "incorrect", "false", "rather than", "instead of", "not enough", "contradict")
+    return not any(term in window for term in rejection_terms)
+
+
+def _is_challenge_episode(episode: RealM1M2EngineerEpisode) -> bool:
+    return (
+        episode.schema_version == REAL_M1M2_ENGINEER_CHALLENGE_SCHEMA_VERSION
+        or bool(episode.hidden_oracle.get("challenge_family"))
+    )
 
 
 def _args_match(expected: Mapping[str, Any], actual: Mapping[str, Any]) -> bool:
@@ -1074,6 +1739,25 @@ def _counts_by_result(results: Sequence[EngineerEpisodeResult], attribute: str) 
     return counts
 
 
+def _counts_by_challenge_family(results: Sequence[EngineerEpisodeResult]) -> Dict[str, Dict[str, int]]:
+    counts: Dict[str, Dict[str, int]] = {}
+    for result in results:
+        key = str(result.episode.hidden_oracle.get("challenge_family") or "non_challenge")
+        bucket = counts.setdefault(key, {"total": 0, "passed": 0, "failed": 0})
+        bucket["total"] += 1
+        if result.passed:
+            bucket["passed"] += 1
+        else:
+            bucket["failed"] += 1
+    return counts
+
+
+def _average_reward_attr(results: Sequence[EngineerEpisodeResult], attribute: str) -> float:
+    if not results:
+        return 0.0
+    return round(sum(float(getattr(result.reward, attribute)) for result in results) / len(results), 6)
+
+
 def _average_components(results: Sequence[EngineerEpisodeResult]) -> Dict[str, float]:
     if not results:
         return {}
@@ -1084,6 +1768,9 @@ def _average_components(results: Sequence[EngineerEpisodeResult]) -> Dict[str, f
         "grounded_memo",
         "no_proxy",
         "efficiency",
+        "numeric_accuracy",
+        "poc_accuracy",
+        "memo_section_score",
         "total",
     )
     return {
@@ -1176,6 +1863,20 @@ def _episode_id(level: str, *, seed: int, index: int, used_ids: set[str]) -> str
         json.dumps({"level": level, "seed": seed, "index": index}, sort_keys=True).encode("utf-8")
     ).hexdigest()[:10]
     base = f"real_m1m2_engineer_{index:04d}_{level}_{digest}"
+    episode_id = base
+    suffix = 1
+    while episode_id in used_ids:
+        suffix += 1
+        episode_id = f"{base}_{suffix}"
+    used_ids.add(episode_id)
+    return episode_id
+
+
+def _challenge_episode_id(family: str, *, seed: int, index: int, used_ids: set[str]) -> str:
+    digest = hashlib.sha1(
+        json.dumps({"family": family, "seed": seed, "index": index}, sort_keys=True).encode("utf-8")
+    ).hexdigest()[:10]
+    base = f"real_m1m2_engineer_challenge_{index:04d}_{family}_{digest}"
     episode_id = base
     suffix = 1
     while episode_id in used_ids:
