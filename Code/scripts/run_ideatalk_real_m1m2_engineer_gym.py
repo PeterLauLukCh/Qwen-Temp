@@ -55,6 +55,7 @@ def main() -> int:
     parser.add_argument("--smoke-message", default="hello")
     parser.add_argument("--skip-api-smoke", action="store_true")
     parser.add_argument("--api-smoke-only", action="store_true")
+    parser.add_argument("--list-models", action="store_true")
     parser.add_argument(
         "--episodes",
         default="real-data-new/generated_trgc_real_m1m2_engineer_episodes.json",
@@ -116,6 +117,13 @@ def main() -> int:
         "api_key_source": api_key_source,
     }
 
+    if args.list_models:
+        models = _list_models(client)
+        output["models"] = models
+        output["ok"] = bool(models["ok"])
+        print(_json(output))
+        return 0 if output["ok"] else 1
+
     if not args.skip_api_smoke:
         smoke = _run_api_smoke(
             client,
@@ -125,6 +133,7 @@ def main() -> int:
         )
         output["api_smoke"] = smoke
         if not smoke["ok"]:
+            output["ok"] = False
             print(_json(output))
             return 1
 
@@ -235,6 +244,28 @@ def _run_api_smoke(
         "content": response.content,
         "reasoning_content_present": bool(response.reasoning_content),
         "tool_call_count": len(response.tool_calls),
+    }
+
+
+def _list_models(client: VLLMOpenAIClient) -> Dict[str, Any]:
+    try:
+        payload = client.list_models()
+    except LLMClientError as exc:
+        return {"ok": False, "error_type": type(exc).__name__, "error": str(exc)}
+    except Exception as exc:
+        return {"ok": False, "error_type": type(exc).__name__, "error": str(exc)}
+
+    model_ids = []
+    data = payload.get("data")
+    if isinstance(data, list):
+        for item in data:
+            if isinstance(item, Mapping) and isinstance(item.get("id"), str):
+                model_ids.append(item["id"])
+    return {
+        "ok": True,
+        "model_count": len(model_ids),
+        "model_ids": model_ids,
+        "raw": payload,
     }
 
 
