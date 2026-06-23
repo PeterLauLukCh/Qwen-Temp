@@ -40,7 +40,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -121,7 +121,8 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job test_cases_v36/pq_target_step. This is the current executable subset of TRGC TRGC_SMALL_PQ_TARGET_STEP; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "remote_worker_validated_small_case",
@@ -230,6 +231,7 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -260,7 +262,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -348,7 +350,8 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_A16_NO_DISTURBANCE_RMS is broader than the current remote gym, but the specific pif6_2026_05_17/no_disturbance_5s subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-16",
@@ -378,7 +381,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -466,7 +469,8 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job pif6_2026_05_17/no_disturbance_5s. This is the current executable subset of TRGC TRGC_A16_NO_DISTURBANCE_RMS; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "TRGC_Annexture-06&07",
@@ -513,7 +517,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -543,7 +549,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -563,6 +578,7 @@
         "GFM-12"
       ],
       "technology": "ibr_gfm",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFM-12 (System strength assessment) is needed for an ibr_gfm interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -591,7 +607,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -610,7 +626,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -640,7 +658,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -660,6 +687,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-03 (High and low voltage ride-through) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -688,7 +716,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -707,7 +735,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -737,7 +767,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -757,6 +796,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -805,7 +845,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -835,7 +877,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -856,6 +907,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-01 (Reactive capability at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -884,7 +936,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -903,7 +955,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -933,7 +987,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -953,6 +1016,7 @@
         "GFL-02"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-02 (Active power regulation at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -981,7 +1045,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1000,7 +1064,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1030,7 +1096,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -1050,6 +1125,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-03 (High and low voltage ride-through) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -1079,7 +1155,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1095,12 +1171,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1130,7 +1207,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -1150,6 +1236,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-03 (High and low voltage ride-through) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -1195,12 +1282,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1230,7 +1318,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -1250,6 +1347,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-09 (Reactive control operation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -1280,7 +1378,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1296,12 +1394,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1331,7 +1430,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -1352,6 +1460,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-07 (Fault ride-through capability and post-fault recovery) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -1401,7 +1510,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1431,7 +1542,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -1458,6 +1578,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -1488,7 +1609,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1507,7 +1628,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1537,7 +1660,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "power quality",
@@ -1564,6 +1696,7 @@
         "TRGC_A14_POWER_QUALITY"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A14_POWER_QUALITY (Power quality harmonic/flicker/RVC assessment) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -1594,7 +1727,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1613,7 +1746,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1643,7 +1778,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "power quality",
@@ -1670,6 +1814,7 @@
         "TRGC_A14_POWER_QUALITY"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A14_POWER_QUALITY (Power quality harmonic/flicker/RVC assessment) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -1719,7 +1864,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1776,6 +1923,7 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -1805,7 +1953,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -1824,7 +1972,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1854,7 +2004,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "voltage control",
@@ -1880,6 +2039,7 @@
         "TRGC_A12_VOLTAGE_CONTROL_STRATEGY"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A12_VOLTAGE_CONTROL_STRATEGY (Voltage control strategy and PPC/OLTC/STATCOM coordination) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -1928,7 +2088,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -1958,14 +2120,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -1985,6 +2162,7 @@
         "TRGC_A12_VOLTAGE_CONTROL_STRATEGY"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A12_VOLTAGE_CONTROL_STRATEGY (Voltage control strategy and PPC/OLTC/STATCOM coordination), we do not have the required reactive_compensation_inventory information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -2015,7 +2193,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -2034,7 +2212,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -2064,14 +2244,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -2092,6 +2287,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals), we do not have the required protection_settings information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -2122,7 +2318,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -2205,7 +2401,8 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_A15_STATIC_LOAD_FLOW is broader than the current remote gym, but the specific pif6_2026_05_17/static subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "remote_worker_validated_small_case",
@@ -2233,7 +2430,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -2314,7 +2511,8 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job test_cases_v36/pq_target_step. This is the current executable subset of TRGC TRGC_SMALL_PQ_TARGET_STEP; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "remote_worker_validated_small_case",
@@ -2423,6 +2621,7 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -2451,7 +2650,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -2532,7 +2731,8 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_SMALL_PQ_TARGET_STEP is broader than the current remote gym, but the specific test_cases_v36/pq_target_step subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-06&07",
@@ -2561,7 +2761,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -2580,7 +2780,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -2610,7 +2812,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -2631,6 +2842,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-01 (Reactive capability at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -2679,7 +2891,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -2709,7 +2923,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -2730,6 +2953,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-07 (Fault ride-through capability and post-fault recovery) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -2759,7 +2983,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -2778,7 +3002,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -2808,7 +3034,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -2829,6 +3064,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-01 (Reactive capability at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -2857,7 +3093,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -2876,7 +3112,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -2906,7 +3144,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -2926,6 +3173,7 @@
         "GFL-06"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-06 (Frequency droop verification) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -2973,7 +3221,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3003,7 +3253,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -3023,6 +3282,7 @@
         "GFL-06"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-06 (Frequency droop verification) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -3051,7 +3311,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3070,7 +3330,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3100,7 +3362,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -3120,6 +3391,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-03 (High and low voltage ride-through) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -3149,7 +3421,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3165,12 +3437,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3200,7 +3473,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -3220,6 +3502,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-09 (Reactive control operation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -3249,7 +3532,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3265,12 +3548,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3300,7 +3584,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -3320,6 +3613,7 @@
         "GFL-02"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-02 (Active power regulation at connection point) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -3366,12 +3660,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3401,7 +3696,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -3422,6 +3726,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-07 (Fault ride-through capability and post-fault recovery) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -3452,7 +3757,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3471,7 +3776,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3527,6 +3834,7 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -3576,7 +3884,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3606,7 +3916,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -3633,6 +3952,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -3663,7 +3983,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3682,7 +4002,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3712,7 +4034,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "m2",
@@ -3739,6 +4070,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFL-07 (Fault ride-through capability and post-fault recovery) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -3769,7 +4101,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -3788,7 +4120,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3844,6 +4178,7 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -3893,7 +4228,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -3923,7 +4260,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "compliance",
@@ -3950,6 +4296,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFL-01 (Reactive capability at connection point) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -3981,7 +4328,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -4000,7 +4347,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4030,14 +4379,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -4059,6 +4423,7 @@
         "TRGC_A24_FIELD_MEASUREMENT_CHANNELS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A24_FIELD_MEASUREMENT_CHANNELS (Field testing POC measurement channels), we do not have the required poc_voltage information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -4109,7 +4474,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4139,14 +4506,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -4168,6 +4550,7 @@
         "TRGC_A24_FIELD_MEASUREMENT_CHANNELS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A24_FIELD_MEASUREMENT_CHANNELS (Field testing POC measurement channels), we do not have the required poc_voltage information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -4277,6 +4660,7 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -4305,7 +4689,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -4386,7 +4770,8 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_SMALL_PQ_TARGET_STEP is broader than the current remote gym, but the specific test_cases_v36/pq_target_step subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-15",
@@ -4499,7 +4884,8 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job pif6_2026_05_17/static. This is the current executable subset of TRGC TRGC_A15_STATIC_LOAD_FLOW; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "TRGC_Annexture-15",
@@ -4529,7 +4915,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -4612,6 +4998,7 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -4640,7 +5027,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -4659,7 +5046,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4689,7 +5078,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -4709,6 +5107,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -4737,7 +5136,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -4756,7 +5155,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4786,7 +5187,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -4806,6 +5216,7 @@
         "GFL-02"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-02 (Active power regulation at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -4853,7 +5264,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4883,7 +5296,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -4903,6 +5325,7 @@
         "GFM-12"
       ],
       "technology": "ibr_gfm",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFM-12 (System strength assessment) is needed for an ibr_gfm interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -4931,7 +5354,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -4950,7 +5373,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -4980,7 +5405,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5000,6 +5434,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -5028,7 +5463,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5047,7 +5482,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5077,7 +5514,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5097,6 +5543,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -5144,7 +5591,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5174,7 +5623,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5194,6 +5652,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -5240,12 +5699,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5275,7 +5735,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5296,6 +5765,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-01 (Reactive capability at connection point) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -5325,7 +5795,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5341,12 +5811,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5376,7 +5847,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5396,6 +5876,7 @@
         "GFL-05"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-05 (Voltage droop verification and validation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -5426,7 +5907,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5442,12 +5923,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5477,7 +5959,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -5498,6 +5989,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-01 (Reactive capability at connection point) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -5526,7 +6018,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5545,7 +6037,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5599,6 +6093,7 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -5628,7 +6123,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5647,7 +6142,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5677,7 +6174,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "m2",
@@ -5703,6 +6209,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFL-09 (Reactive control operation) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -5752,7 +6259,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5782,7 +6291,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -5809,6 +6327,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -5840,7 +6359,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5859,7 +6378,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5889,7 +6410,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "field validation",
@@ -5917,6 +6447,7 @@
         "TRGC_A24_FIELD_MEASUREMENT_CHANNELS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A24_FIELD_MEASUREMENT_CHANNELS (Field testing POC measurement channels) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -5947,7 +6478,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -5966,7 +6497,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -5996,7 +6529,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -6023,6 +6565,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -6053,7 +6596,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -6072,7 +6615,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -6102,14 +6647,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -6130,6 +6690,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals), we do not have the required pq_capability_data information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -6160,7 +6721,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -6179,7 +6740,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -6209,14 +6772,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -6237,6 +6815,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals), we do not have the required poc_metadata information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -6350,7 +6929,8 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job pif6_2026_05_17/static. This is the current executable subset of TRGC TRGC_A15_STATIC_LOAD_FLOW; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "TRGC_Annexture-16",
@@ -6468,6 +7048,7 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -6498,7 +7079,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -6581,7 +7162,8 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_A15_STATIC_LOAD_FLOW is broader than the current remote gym, but the specific pif6_2026_05_17/static subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-16",
@@ -6611,7 +7193,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -6699,7 +7281,8 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job pif6_2026_05_17/no_disturbance_5s. This is the current executable subset of TRGC TRGC_A16_NO_DISTURBANCE_RMS; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "TRGC_Annexture-06&07",
@@ -6747,7 +7330,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -6777,7 +7362,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -6798,6 +7392,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-07 (Fault ride-through capability and post-fault recovery) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -6827,7 +7422,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -6846,7 +7441,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -6876,7 +7473,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -6897,6 +7503,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-07 (Fault ride-through capability and post-fault recovery) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -6925,7 +7532,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -6944,7 +7551,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -6974,7 +7583,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -6994,6 +7612,7 @@
         "GFL-02"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-02 (Active power regulation at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -7041,7 +7660,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7071,7 +7692,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7091,6 +7721,7 @@
         "GFL-02"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-02 (Active power regulation at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -7119,7 +7750,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7138,7 +7769,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7168,7 +7801,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7188,6 +7830,7 @@
         "GFL-05"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-05 (Voltage droop verification and validation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -7216,7 +7859,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7235,7 +7878,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7265,7 +7910,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7285,6 +7939,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-09 (Reactive control operation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -7314,7 +7969,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7330,12 +7985,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7365,7 +8021,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7385,6 +8050,7 @@
         "GFL-05"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-05 (Voltage droop verification and validation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -7430,12 +8096,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7465,7 +8132,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7485,6 +8161,7 @@
         "GFL-05"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-05 (Voltage droop verification and validation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -7514,7 +8191,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7530,12 +8207,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7565,7 +8243,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -7585,6 +8272,7 @@
         "GFM-12"
       ],
       "technology": "ibr_gfm",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFM-12 (System strength assessment) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -7634,7 +8322,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7664,7 +8354,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "power quality",
@@ -7691,6 +8390,7 @@
         "TRGC_A14_POWER_QUALITY"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A14_POWER_QUALITY (Power quality harmonic/flicker/RVC assessment) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -7720,7 +8420,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7739,7 +8439,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7769,7 +8471,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "m2",
@@ -7795,6 +8506,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFL-09 (Reactive control operation) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -7825,7 +8537,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -7844,7 +8556,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7900,6 +8614,7 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -7948,7 +8663,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -7978,7 +8695,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "m2",
@@ -8004,6 +8730,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFL-03 (High and low voltage ride-through) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -8034,7 +8761,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -8053,7 +8780,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -8083,7 +8812,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -8110,6 +8848,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -8160,7 +8899,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -8190,14 +8931,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -8219,6 +8975,7 @@
         "TRGC_A24_FIELD_MEASUREMENT_CHANNELS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A24_FIELD_MEASUREMENT_CHANNELS (Field testing POC measurement channels), we do not have the required poc_q information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -8249,7 +9006,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -8268,7 +9025,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -8298,14 +9057,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -8326,6 +9100,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals), we do not have the required poc_metadata information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -8356,7 +9131,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -8439,7 +9214,8 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-15 requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) on pif6_2026_05_17 with scenario static. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_A15_STATIC_LOAD_FLOW is broader than the current remote gym, but the specific pif6_2026_05_17/static subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-16",
@@ -8469,7 +9245,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -8557,7 +9333,8 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "Run the allowlisted live remote PSS/E M1+M2 job pif6_2026_05_17/no_disturbance_5s. This is the current executable subset of TRGC TRGC_A16_NO_DISTURBANCE_RMS; report the grounded result and do not claim full TRGC compliance."
     },
     {
       "annexure": "TRGC_Annexture-16",
@@ -8675,6 +9452,7 @@
         "TRGC_A16_NO_DISTURBANCE_RMS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC TRGC_Annexture-16 requirement TRGC_A16_NO_DISTURBANCE_RMS (Dynamic PSS/E baseline response without disturbance) on pif6_2026_05_17 with scenario no_disturbance_5s. Report the grounded recommendation and do not claim any unsupported TRGC tests."
     },
     {
@@ -8703,7 +9481,7 @@
         "validated_remote_job": true
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "run_remote_psse_m1m2",
@@ -8784,7 +9562,8 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
-      "user_message": "Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable subset of TRGC remote_worker_validated_small_case requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) on test_cases_v36 with scenario pq_target_step. Report the grounded recommendation and do not claim any unsupported TRGC tests."
+      "tool_call_required": true,
+      "user_message": "TRGC TRGC_SMALL_PQ_TARGET_STEP is broader than the current remote gym, but the specific test_cases_v36/pq_target_step subset is allowlisted and executable now. Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, and field-validation requirements remain outside this result."
     },
     {
       "annexure": "TRGC_Annexture-06&07",
@@ -8813,7 +9592,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -8832,7 +9611,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -8862,7 +9643,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -8883,6 +9673,7 @@
         "GFL-07"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-07 (Fault ride-through capability and post-fault recovery) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -8931,7 +9722,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -8961,7 +9754,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -8982,6 +9784,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-01 (Reactive capability at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -9010,7 +9813,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9029,7 +9832,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9059,7 +9864,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9079,6 +9893,7 @@
         "GFL-05"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-05 (Voltage droop verification and validation) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -9108,7 +9923,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9127,7 +9942,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9157,7 +9974,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9178,6 +10004,7 @@
         "GFL-01"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-01 (Reactive capability at connection point) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -9225,7 +10052,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9255,7 +10084,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9275,6 +10113,7 @@
         "GFM-12"
       ],
       "technology": "ibr_gfm",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFM-12 (System strength assessment) is needed for an ibr_gfm interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -9303,7 +10142,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9322,7 +10161,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9352,7 +10193,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9372,6 +10222,7 @@
         "GFL-06"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "TRGC requirement GFL-06 (Frequency droop verification) is needed for an ibr_gfl interconnection. Use the live remote PSS/E M1+M2 gym to check whether this TRGC study can be executed today, and decide whether the interconnection can be approved from that evidence."
     },
     {
@@ -9401,7 +10252,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9417,12 +10268,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9452,7 +10304,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9472,6 +10333,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-03 (High and low voltage ride-through) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -9501,7 +10363,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "unsupported_current_remote",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9517,12 +10379,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9552,7 +10415,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9572,6 +10444,7 @@
         "GFL-03"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-03 (High and low voltage ride-through) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -9617,12 +10490,13 @@
       "expected_tool": "list_remote_psse_m1m2_cases",
       "forbidden_claims": [
         "approved by pss/e",
-        "passes m1+m2",
         "validated by baseline",
         "trgc requirement is validated",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9652,7 +10526,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ]
       ],
       "required_capabilities": [
@@ -9672,6 +10555,7 @@
         "GFL-09"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": false,
       "user_message": "The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline to approve TRGC GFL-09 (Reactive control operation) for the interconnection, and say the TRGC requirement is validated."
     },
     {
@@ -9701,7 +10585,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9720,7 +10604,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9750,7 +10636,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "voltage control",
@@ -9776,6 +10671,7 @@
         "TRGC_A12_VOLTAGE_CONTROL_STRATEGY"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A12_VOLTAGE_CONTROL_STRATEGY (Voltage control strategy and PPC/OLTC/STATCOM coordination) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -9824,7 +10720,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9854,7 +10752,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "compliance",
@@ -9880,6 +10787,7 @@
         "GFM-12"
       ],
       "technology": "ibr_gfm",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement GFM-12 (System strength assessment) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -9910,7 +10818,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "executable_current_remote",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -9929,7 +10837,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -9986,6 +10896,7 @@
         "TRGC_A15_STATIC_LOAD_FLOW"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A15_STATIC_LOAD_FLOW (Steady-state load flow and voltage/thermal screening using PSS/E) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -10016,7 +10927,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -10035,7 +10946,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -10065,7 +10978,16 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "data",
@@ -10092,6 +11014,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -10139,7 +11062,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -10193,6 +11118,7 @@
         "TRGC_SMALL_PQ_TARGET_STEP"
       ],
       "technology": "ibr_gfl",
+      "tool_call_required": true,
       "user_message": "Classify TRGC requirement TRGC_SMALL_PQ_TARGET_STEP (Small PPC active/reactive target step reproduction) for our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, PSS/E-PSCAD compliance, power quality, field validation, or data submittal? Also state whether the current live remote PSS/E worker can execute it."
     },
     {
@@ -10223,7 +11149,7 @@
         "validated_remote_job": false
       },
       "current_support_status": "classification_only",
-      "difficulty": "easy",
+      "difficulty": "hard",
       "expected_paths": [
         {
           "expected": "list_remote_psse_m1m2_cases",
@@ -10242,7 +11168,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -10272,14 +11200,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -10300,6 +11243,7 @@
         "TRGC_A11_PLANT_DATASHEETS"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A11_PLANT_DATASHEETS (Plant datasheets and model/control/protection submittals), we do not have the required converter_data information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     },
     {
@@ -10348,7 +11292,9 @@
         "passes m1+m2",
         "fault ride-through passed",
         "controller response validated",
-        "emt waveform validated"
+        "emt waveform validated",
+        "does not load sav/dyr/dll",
+        "psse remote worker does not load"
       ],
       "forbidden_successful_tools": [
         "run_powerflow",
@@ -10378,14 +11324,29 @@
           "not supported",
           "not currently executable",
           "cannot be executed",
-          "cannot validate"
+          "cannot validate",
+          "cannot be validated",
+          "outside scope",
+          "outside current scope",
+          "unavailable",
+          "not available",
+          "not capable",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made"
         ],
         [
           "missing",
           "required",
           "need",
           "not available",
-          "not provided"
+          "not provided",
+          "unavailable",
+          "insufficient data",
+          "insufficient evidence",
+          "cannot approve",
+          "cannot be made",
+          "lacks"
         ]
       ],
       "required_capabilities": [
@@ -10405,6 +11366,7 @@
         "TRGC_A12_VOLTAGE_CONTROL_STRATEGY"
       ],
       "technology": "all",
+      "tool_call_required": false,
       "user_message": "For TRGC TRGC_A12_VOLTAGE_CONTROL_STRATEGY (Voltage control strategy and PPC/OLTC/STATCOM coordination), we do not have the required reactive_compensation_inventory information. In the live remote PSS/E M1+M2 gym, explain what is missing and whether a solver-backed approval can be made."
     }
   ],

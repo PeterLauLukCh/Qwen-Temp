@@ -272,12 +272,15 @@ def evaluate_real_m1m2_interconnection_result(
     expected_records = [
         record for record in records if getattr(record, "name", None) == scenario.expected_tool
     ]
+    tool_call_required = bool(getattr(scenario, "tool_call_required", True))
     checks.append(
         RealM1M2BenchmarkCheckResult(
             name="expected_tool",
-            passed=bool(expected_records),
+            passed=bool(expected_records) or not tool_call_required,
             actual=called_names,
-            expected=scenario.expected_tool,
+            expected=scenario.expected_tool
+            if tool_call_required
+            else f"optional:{scenario.expected_tool}",
         )
     )
     for forbidden in scenario.forbidden_successful_tools:
@@ -325,7 +328,7 @@ def evaluate_real_m1m2_interconnection_result(
             )
         )
         checks.extend(_tool_path_checks(scenario, getattr(record, "result", {})))
-    else:
+    elif tool_call_required:
         checks.extend(
             RealM1M2BenchmarkCheckResult(
                 name=f"result:{item.path}",

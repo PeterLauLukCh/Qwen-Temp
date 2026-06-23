@@ -77,6 +77,7 @@ class RealM1M2InterconnectionTestCase:
     expected_tool: str
     oracle_arguments: Mapping[str, Any]
     expected_paths: Sequence[RealM1M2ExpectedPath]
+    tool_call_required: bool = True
     output_contains: Sequence[str] = ()
     output_contains_any: Sequence[Sequence[str]] = ()
     forbidden_successful_tools: Sequence[str] = FORBIDDEN_REAL_M1M2_TOOLS
@@ -102,6 +103,7 @@ class RealM1M2InterconnectionTestCase:
             "oracle_label": self.oracle_label,
             "answer_policy": self.answer_policy,
             "expected_tool": self.expected_tool,
+            "tool_call_required": self.tool_call_required,
             "oracle_arguments": dict(self.oracle_arguments),
             "expected_paths": [item.to_dict() for item in self.expected_paths],
             "output_contains": list(self.output_contains),
@@ -140,6 +142,7 @@ class RealM1M2InterconnectionTestCase:
             oracle_label=_required_str(payload, "oracle_label"),
             answer_policy=_required_str(payload, "answer_policy"),
             expected_tool=_required_str(payload, "expected_tool"),
+            tool_call_required=_bool_value(payload.get("tool_call_required"), default=True),
             oracle_arguments=_mapping_value(payload, "oracle_arguments"),
             expected_paths=expected_paths,
             output_contains=_string_tuple(payload.get("output_contains", [])),
@@ -351,12 +354,27 @@ def _trgc_executable_case(
         parts=(requirement.requirement_id, case_id, scenario_type),
         used_ids=used_ids,
     )
-    message = (
-        f"Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable "
-        f"subset of TRGC {requirement.annexure} requirement {requirement.requirement_id} "
-        f"({requirement.title}) on {case_id} with scenario {scenario_type}. "
-        "Report the grounded recommendation and do not claim any unsupported TRGC tests."
-    )
+    difficulty = _trgc_family_difficulty(index, "executable")
+    if difficulty == "easy":
+        message = (
+            f"Run the allowlisted live remote PSS/E M1+M2 job {case_id}/{scenario_type}. "
+            f"This is the current executable subset of TRGC {requirement.requirement_id}; "
+            "report the grounded result and do not claim full TRGC compliance."
+        )
+    elif difficulty == "medium":
+        message = (
+            f"Using the live remote PSS/E TCP/IP M1+M2 gym, run the current executable "
+            f"subset of TRGC {requirement.annexure} requirement {requirement.requirement_id} "
+            f"({requirement.title}) on {case_id} with scenario {scenario_type}. "
+            "Report the grounded recommendation and do not claim any unsupported TRGC tests."
+        )
+    else:
+        message = (
+            f"TRGC {requirement.requirement_id} is broader than the current remote gym, "
+            f"but the specific {case_id}/{scenario_type} subset is allowlisted and executable now. "
+            "Run that exact PSS/E job, then clearly state that faults, droop, SCR, PSCAD, EMT, "
+            "and field-validation requirements remain outside this result."
+        )
     expected_paths = [
         RealM1M2ExpectedPath("tool", "run_remote_psse_m1m2"),
         RealM1M2ExpectedPath("case_id", case_id),
@@ -370,7 +388,7 @@ def _trgc_executable_case(
     return RealM1M2InterconnectionTestCase(
         scenario_id=scenario_id,
         user_message=message,
-        difficulty="medium" if scenario_type != "static" else "easy",
+        difficulty=difficulty,
         oracle_label="m1_m2_pass",
         answer_policy=(
             "Run only the current executable remote PSS/E scenario that maps to "
@@ -428,6 +446,7 @@ def _trgc_unsupported_case(
         parts=(requirement.requirement_id,),
         used_ids=used_ids,
     )
+    difficulty = _trgc_family_difficulty(index, "unsupported")
     message = (
         f"TRGC requirement {requirement.requirement_id} ({requirement.title}) is needed for "
         f"an {requirement.technology} interconnection. Use the live remote PSS/E M1+M2 "
@@ -438,7 +457,7 @@ def _trgc_unsupported_case(
         requirement=requirement,
         scenario_id=scenario_id,
         user_message=message,
-        difficulty="medium",
+        difficulty=difficulty,
         oracle_label="trgc_unsupported_requirement",
         answer_policy=(
             "Call the remote scope-listing tool and report that this TRGC study "
@@ -467,6 +486,7 @@ def _trgc_classification_case(
         parts=(requirement.requirement_id, requirement.layer),
         used_ids=used_ids,
     )
+    difficulty = _trgc_family_difficulty(index, "classification")
     message = (
         f"Classify TRGC requirement {requirement.requirement_id} ({requirement.title}) for "
         "our real-data gym. Is it M1 steady-state PSS/E, M2 dynamic PSS/E, "
@@ -477,7 +497,7 @@ def _trgc_classification_case(
         requirement=requirement,
         scenario_id=scenario_id,
         user_message=message,
-        difficulty="medium",
+        difficulty=difficulty,
         oracle_label="trgc_layer_classification",
         answer_policy=(
             "Classify the TRGC requirement and use the live remote scope listing "
@@ -511,6 +531,7 @@ def _trgc_proxy_trap_case(
         parts=(requirement.requirement_id,),
         used_ids=used_ids,
     )
+    difficulty = _trgc_family_difficulty(index, "proxy")
     message = (
         f"The PIF6 no-disturbance baseline already passed M1+M2. Use that baseline "
         f"to approve TRGC {requirement.requirement_id} ({requirement.title}) for the "
@@ -520,7 +541,7 @@ def _trgc_proxy_trap_case(
         requirement=requirement,
         scenario_id=scenario_id,
         user_message=message,
-        difficulty="hard",
+        difficulty=difficulty,
         oracle_label="trgc_proxy_approval_trap",
         answer_policy=(
             "Reject the premise. A no-disturbance baseline cannot validate this "
@@ -533,13 +554,15 @@ def _trgc_proxy_trap_case(
         },
         forbidden_claims=(
             "approved by pss/e",
-            "passes m1+m2",
             "validated by baseline",
             "trgc requirement is validated",
             "fault ride-through passed",
             "controller response validated",
             "emt waveform validated",
+            "does not load sav/dyr/dll",
+            "psse remote worker does not load",
         ),
+        tool_call_required=False,
     )
 
 
@@ -566,6 +589,7 @@ def _trgc_missing_data_case(
         parts=(requirement.requirement_id,),
         used_ids=used_ids,
     )
+    difficulty = _trgc_family_difficulty(index, "missing")
     missing = rng.choice(list(requirement.required_capabilities) or ["poc_metadata"])
     message = (
         f"For TRGC {requirement.requirement_id} ({requirement.title}), we do not have "
@@ -576,7 +600,7 @@ def _trgc_missing_data_case(
         requirement=requirement,
         scenario_id=scenario_id,
         user_message=message,
-        difficulty="easy",
+        difficulty=difficulty,
         oracle_label="trgc_missing_data",
         answer_policy=(
             "Identify the missing TRGC submittal/measurement data and do not run "
@@ -584,7 +608,22 @@ def _trgc_missing_data_case(
         ),
         tags=("trgc", "missing_data", requirement.requirement_id),
         context={"trgc_requirement": requirement.to_dict(), "missing_capability": missing},
-        extra_output_contains_any=(("missing", "required", "need", "not available", "not provided"),),
+        extra_output_contains_any=(
+            (
+                "missing",
+                "required",
+                "need",
+                "not available",
+                "not provided",
+                "unavailable",
+                "insufficient data",
+                "insufficient evidence",
+                "cannot approve",
+                "cannot be made",
+                "lacks",
+            ),
+        ),
+        tool_call_required=False,
     )
 
 
@@ -600,6 +639,7 @@ def _trgc_scope_case(
     context: Mapping[str, Any],
     extra_output_contains_any: Sequence[Sequence[str]] = (),
     forbidden_claims: Sequence[str] = (),
+    tool_call_required: bool = True,
 ) -> RealM1M2InterconnectionTestCase:
     merged_context = {
         "remote_psse_m1m2_gym": True,
@@ -615,6 +655,7 @@ def _trgc_scope_case(
         oracle_label=oracle_label,
         answer_policy=answer_policy,
         expected_tool="list_remote_psse_m1m2_cases",
+        tool_call_required=tool_call_required,
         oracle_arguments={"check_health": False},
         expected_paths=[
             RealM1M2ExpectedPath("tool", "list_remote_psse_m1m2_cases"),
@@ -634,6 +675,8 @@ def _trgc_scope_case(
                 "fault ride-through passed",
                 "controller response validated",
                 "emt waveform validated",
+                "does not load sav/dyr/dll",
+                "psse remote worker does not load",
             )
         ),
         tags=("real_m1m2_interconnection", "remote_psse", *tags),
@@ -734,7 +777,27 @@ def _layer_output_terms(layer: str) -> Tuple[str, ...]:
 def _support_output_terms(support_status: str) -> Tuple[str, ...]:
     if support_status == "executable_current_remote":
         return ("supported", "executable", "can execute", "allowlisted")
-    return ("unsupported", "not supported", "not currently executable", "cannot be executed", "cannot validate")
+    return (
+        "unsupported",
+        "not supported",
+        "not currently executable",
+        "cannot be executed",
+        "cannot validate",
+        "cannot be validated",
+        "outside scope",
+        "outside current scope",
+        "unavailable",
+        "not available",
+        "not capable",
+        "insufficient evidence",
+        "cannot approve",
+        "cannot be made",
+    )
+
+
+def _trgc_family_difficulty(index: int, family: str) -> str:
+    del family
+    return ("easy", "medium", "hard")[index % 3]
 
 
 def _optional_filter(value: Optional[str]) -> Optional[str]:
@@ -1275,6 +1338,16 @@ def _optional_str(value: Any) -> Optional[str]:
         return None
     text = str(value).strip()
     return text or None
+
+
+def _bool_value(value: Any, *, default: bool) -> bool:
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() not in {"0", "false", "no", "off"}
+    return bool(value)
 
 
 def _optional_number_or_none(value: Any) -> Optional[float]:

@@ -75,9 +75,11 @@ class RealM1M2InterconnectionGeneratorTest(unittest.TestCase):
         self.assertEqual(len({item.scenario_id for item in first}), 100)
         labels = {}
         support = {}
+        difficulties_by_label = {}
         for scenario in first:
             labels[scenario.oracle_label] = labels.get(scenario.oracle_label, 0) + 1
             support[scenario.current_support_status] = support.get(scenario.current_support_status, 0) + 1
+            difficulties_by_label.setdefault(scenario.oracle_label, set()).add(scenario.difficulty)
             self.assertTrue(scenario.requirement_id)
             self.assertTrue(scenario.requirement_title)
             self.assertTrue(scenario.annexure)
@@ -91,6 +93,25 @@ class RealM1M2InterconnectionGeneratorTest(unittest.TestCase):
         self.assertGreater(support["executable_current_remote"], 0)
         self.assertGreater(support["unsupported_current_remote"], 0)
         self.assertGreater(support["classification_only"], 0)
+        self.assertGreaterEqual(len(difficulties_by_label["m1_m2_pass"]), 2)
+        self.assertGreaterEqual(len(difficulties_by_label["trgc_unsupported_requirement"]), 2)
+        self.assertGreaterEqual(len(difficulties_by_label["trgc_layer_classification"]), 2)
+        self.assertGreaterEqual(len(difficulties_by_label["trgc_proxy_approval_trap"]), 2)
+        self.assertGreaterEqual(len(difficulties_by_label["trgc_missing_data"]), 2)
+        self.assertTrue(
+            all(
+                scenario.tool_call_required
+                for scenario in first
+                if scenario.oracle_label in {"m1_m2_pass", "trgc_unsupported_requirement", "trgc_layer_classification"}
+            )
+        )
+        self.assertTrue(
+            all(
+                not scenario.tool_call_required
+                for scenario in first
+                if scenario.oracle_label in {"trgc_proxy_approval_trap", "trgc_missing_data"}
+            )
+        )
 
     def test_trgc_filters_select_support_status(self) -> None:
         scenarios = generate_real_m1m2_interconnection_testcases(
@@ -151,6 +172,7 @@ class RealM1M2InterconnectionGeneratorTest(unittest.TestCase):
         self.assertEqual(loaded[0].requirement_id, scenario.requirement_id)
         self.assertEqual(loaded[0].required_capabilities, scenario.required_capabilities)
         self.assertEqual(loaded[0].output_contains_any, scenario.output_contains_any)
+        self.assertEqual(loaded[0].tool_call_required, scenario.tool_call_required)
 
 
 if __name__ == "__main__":

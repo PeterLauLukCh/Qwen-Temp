@@ -161,6 +161,76 @@ class RealM1M2InterconnectionBenchmarkTest(unittest.TestCase):
         )
         self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
 
+    def test_trgc_proxy_trap_accepts_clear_text_refusal_without_tool(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(20, seed=8, profile="trgc")
+            if item.oracle_label == "trgc_proxy_approval_trap"
+        )
+        self.assertFalse(scenario.tool_call_required)
+        agent_result = _AgentResult(
+            "completed",
+            (
+                "TRGC GFL-03 cannot be validated by the no-disturbance baseline. "
+                "The requested ride-through study is outside current remote PSS/E scope, "
+                "so the interconnection cannot approve this requirement from that proxy."
+            ),
+            [],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
+
+    def test_trgc_missing_data_accepts_no_solver_refusal(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(20, seed=8, profile="trgc")
+            if item.oracle_label == "trgc_missing_data"
+        )
+        self.assertFalse(scenario.tool_call_required)
+        agent_result = _AgentResult(
+            "completed",
+            (
+                "TRGC data is missing and the required submittal evidence is unavailable "
+                "in the current remote PSS/E gym. A solver-backed approval cannot be made."
+            ),
+            [],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        self.assertTrue(all(check.passed for check in checks), [check.to_dict() for check in checks])
+
+    def test_trgc_missing_data_still_fails_remote_baseline_proxy(self):
+        scenario = next(
+            item
+            for item in generate_real_m1m2_interconnection_testcases(20, seed=8, profile="trgc")
+            if item.oracle_label == "trgc_missing_data"
+        )
+        agent_result = _AgentResult(
+            "completed",
+            (
+                "TRGC data is missing and insufficient evidence remains in the current "
+                "remote PSS/E gym."
+            ),
+            [
+                _Record(
+                    "run_remote_psse_m1m2",
+                    True,
+                    {"tool": "run_remote_psse_m1m2", "recommendation": "approve"},
+                )
+            ],
+        )
+        checks = evaluate_real_m1m2_interconnection_result(
+            scenario,
+            agent_result=agent_result,
+        )
+        failed = [check.name for check in checks if not check.passed]
+        self.assertIn("forbidden_remote_baseline_proxy", failed)
+
     def test_forbidden_claim_fails(self):
         scenario = next(
             item
