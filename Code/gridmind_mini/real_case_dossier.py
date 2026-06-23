@@ -164,6 +164,12 @@ def inspect_real_poc_context(
             selector=selector,
             max_rows=_positive_int(max_candidates, "max_candidates"),
         )
+        all_bus_candidates = _filter_poc_buses(
+            inventory["poc_candidates"],
+            selector="",
+            max_rows=_positive_int(max_candidates, "max_candidates"),
+        )
+        selector_narrowed = bool(selector) and len(all_bus_candidates) > len(bus_candidates)
         selected_bus = _selected_bus(bus_candidates)
         branch_candidates = _filter_poc_branches(
             inventory["poc_candidates"],
@@ -184,19 +190,24 @@ def inspect_real_poc_context(
             "query": {"poc_label_or_bus": selector or None},
             "selected_poc": bus_candidates[0] if bus_candidates else None,
             "candidate_count": len(bus_candidates),
-            "ambiguous": len(bus_candidates) > 1,
+            "total_poc_bus_candidate_count": len(all_bus_candidates),
+            "selector_narrowed_candidates": selector_narrowed,
+            "ambiguous": len(bus_candidates) > 1 or selector_narrowed,
             "candidate_buses": bus_candidates,
+            "other_poc_candidates_preview": [
+                row
+                for row in all_bus_candidates
+                if row not in bus_candidates
+            ][: max(0, _positive_int(max_candidates, "max_candidates") - len(bus_candidates))],
             "candidate_branches": branch_candidates,
             "controlled_or_nearby_machines": machines,
-            "engineering_note": (
-                "Treat similarly named buses as candidates until a metering branch or project documentation confirms the POC."
-                if len(bus_candidates) > 1
-                else "POC candidate selection is based on processed names/known POC labels."
+            "engineering_note": _poc_engineering_note(
+                selected_count=len(bus_candidates),
+                total_count=len(all_bus_candidates),
+                selector=selector,
+                selector_narrowed=selector_narrowed,
             ),
-            "limitations": [
-                "processed_inventory_only_no_live_case_mutation",
-                "poc_labels_not_yet_expert_validated",
-            ],
+            "limitations": _poc_limitations(selector_narrowed),
         }
     except RealCaseDossierError as exc:
         return _error_result("inspect_real_poc_context", case_id, exc)
@@ -556,6 +567,34 @@ def _artifact_status(root: Path, definition: RealCaseDossierDefinition) -> Dict[
 
 def _poc_candidate_preview(rows: Sequence[Mapping[str, Any]], *, max_rows: int) -> List[Dict[str, Any]]:
     return [_poc_view(row) for row in rows[:max_rows]]
+
+
+def _poc_engineering_note(
+    *,
+    selected_count: int,
+    total_count: int,
+    selector: str,
+    selector_narrowed: bool,
+) -> str:
+    if selector_narrowed:
+        return (
+            f"The selector {selector!r} narrowed the candidate list to {selected_count} of {total_count} POC-like buses. "
+            "Do not treat the filtered match alone as a confirmed interconnection POC; compare against other POC candidates "
+            "and project documentation."
+        )
+    if selected_count > 1:
+        return "Treat similarly named buses as candidates until a metering branch or project documentation confirms the POC."
+    return "POC candidate selection is based on processed names/known POC labels."
+
+
+def _poc_limitations(selector_narrowed: bool) -> List[str]:
+    limitations = [
+        "processed_inventory_only_no_live_case_mutation",
+        "poc_labels_not_yet_expert_validated",
+    ]
+    if selector_narrowed:
+        limitations.append("filtered_selector_can_hide_other_poc_candidates")
+    return limitations
 
 
 def _filter_poc_buses(

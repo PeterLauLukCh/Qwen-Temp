@@ -1646,11 +1646,12 @@ def _wrong_poc_claim(
             "poc is bus 2000",
             "bus 2000 is the poc",
             "bus 2000 as the poc",
+            "bus 2000 / poc2_0 is the poc",
             "poc2_0 is the poc",
             "poc2_0 as the poc",
             "confirmed poc2_0",
         )
-        return any(pattern in text for pattern in wrong_patterns)
+        return any(_forbidden_pattern_affirmed(pattern, text) for pattern in wrong_patterns)
     return False
 
 
@@ -1667,9 +1668,77 @@ def _forbidden_pattern_affirmed(pattern: str, text: str) -> bool:
     index = text.find(pattern)
     if index < 0:
         return False
-    window = text[max(0, index - 60): min(len(text), index + len(pattern) + 60)]
-    rejection_terms = ("not", "wrong", "incorrect", "false", "rather than", "instead of", "not enough", "contradict")
-    return not any(term in window for term in rejection_terms)
+    for match in re.finditer(re.escape(pattern), text):
+        if not _is_rejected_or_quoted_premise(text, match.start(), match.end()):
+            return True
+    return False
+
+
+def _is_rejected_or_quoted_premise(text: str, start: int, end: int) -> bool:
+    line = _line_window(text, start)
+    paragraph = _paragraph_window(text, start)
+    local = text[max(0, start - 100): min(len(text), end + 140)]
+    windows = (line, paragraph, local)
+    premise_terms = (
+        "claim",
+        "claimed",
+        "submittal",
+        "requester",
+        "draft memo",
+        "package summary",
+        "says",
+        "stated",
+        "description",
+    )
+    rejection_terms = (
+        "not",
+        "wrong",
+        "incorrect",
+        "false",
+        "reject",
+        "rejected",
+        "rather than",
+        "instead of",
+        "not enough",
+        "not sufficient",
+        "not corroborated",
+        "contradict",
+        "contradictory",
+        "mischaracterizes",
+        "mischaracterized",
+        "understates",
+        "wider than",
+        "not near-zero",
+        "not near zero",
+        "not the poc",
+    )
+    if any(term in window for window in windows for term in rejection_terms):
+        return True
+    if any(term in line for term in premise_terms):
+        return True
+    if any(term in paragraph for term in premise_terms) and any(term in paragraph for term in rejection_terms):
+        return True
+    return False
+
+
+def _line_window(text: str, index: int) -> str:
+    left = text.rfind("\n", 0, index)
+    right = text.find("\n", index)
+    if left < 0:
+        left = -1
+    if right < 0:
+        right = len(text)
+    return text[left + 1:right]
+
+
+def _paragraph_window(text: str, index: int) -> str:
+    left = text.rfind("\n\n", 0, index)
+    right = text.find("\n\n", index)
+    if left < 0:
+        left = -2
+    if right < 0:
+        right = len(text)
+    return text[left + 2:right]
 
 
 def _is_challenge_episode(episode: RealM1M2EngineerEpisode) -> bool:

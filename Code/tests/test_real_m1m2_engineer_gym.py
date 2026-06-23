@@ -59,8 +59,11 @@ def _fake_runner(name, args):
             "case_id": args["case_id"],
             "selected_poc": {"bus": 2, "name": "POC2", "voltage_pu": 0.9061},
             "candidate_count": 2,
+            "total_poc_bus_candidate_count": 5,
+            "selector_narrowed_candidates": bool(args.get("poc_label_or_bus")),
             "ambiguous": True,
             "candidate_buses": [{"bus": 2, "name": "POC2"}, {"bus": 2000, "name": "POC2_0"}],
+            "other_poc_candidates_preview": [{"bus": 800, "name": "TERMINAL(60)"}, {"bus": 2001, "name": "DUMMY"}],
             "candidate_branches": [{"from_bus": 2, "to_bus": 2001, "p_mw": 5.1, "q_mvar": -19.3}],
         }
     if name == "inspect_real_network_neighborhood":
@@ -332,6 +335,34 @@ class RealM1M2EngineerGymTest(unittest.TestCase):
 
         self.assertIn("wrong_poc_claim", result.reward.hard_penalties)
         self.assertFalse(result.passed)
+
+    def test_challenge_rejected_bad_premises_do_not_trigger_numeric_or_poc_penalty(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(40, seed=17, profile="trgc_engineer_challenge")
+            if item.family == "contradictory_submittal"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_poc_context", "arguments": {"case_id": "pif6_2026_05_17", "poc_label_or_bus": "2000"}},
+                {
+                    "type": "final_answer",
+                    "text": (
+                        "Evidence inspected: the submittal claim says bus 2000 / POC2_0 is the POC, but this is not corroborated. "
+                        "Numeric findings: the case has 786 buses, not the claimed 50-bus summary. "
+                        "POC interpretation: bus 2 / POC2 is the likely grid-side POC candidate; bus 2000 / POC2_0 is not enough without documentation. "
+                        "TRGC mapping: GFL-07 remains unsupported. Limitations: missing confirmed POC, project MW/Q capability, and validated scenario. "
+                        "Recommendation: cannot approve unsupported requirements."
+                    ),
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertNotIn("numeric_contradiction", result.reward.hard_penalties)
+        self.assertNotIn("wrong_poc_claim", result.reward.hard_penalties)
 
     def test_challenge_proxy_remote_run_for_contradictory_submittal_penalized(self):
         episode = next(

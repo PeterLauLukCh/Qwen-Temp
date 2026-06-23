@@ -28,6 +28,16 @@ class RealCaseDossierTest(unittest.TestCase):
         self.assertNotIn("hidden_oracle", str(result))
         self.assertNotIn("reward_weights", str(result))
 
+    def test_filtered_poc_context_warns_about_hidden_candidates(self):
+        result = inspect_real_poc_context(case_id="pif6_2026_05_17", poc_label_or_bus="2000")
+
+        self.assertTrue(result["ok"], result)
+        self.assertTrue(result["selector_narrowed_candidates"])
+        self.assertTrue(result["ambiguous"])
+        self.assertGreater(result["total_poc_bus_candidate_count"], result["candidate_count"])
+        self.assertTrue(result["other_poc_candidates_preview"])
+        self.assertIn("filtered_selector_can_hide_other_poc_candidates", result["limitations"])
+
     def test_static_operating_point_reports_voltage_and_poc(self):
         result = inspect_real_static_operating_point(case_id="pif6_2026_05_17")
 
