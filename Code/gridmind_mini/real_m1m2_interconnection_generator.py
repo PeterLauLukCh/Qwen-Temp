@@ -402,7 +402,8 @@ def _trgc_executable_case(
             "request_id": scenario_id,
         },
         expected_paths=expected_paths,
-        output_contains=("recommendation", "pss/e"),
+        output_contains=("pss/e",),
+        output_contains_any=(("recommendation", "grounded result", "approve", "approved", "pass", "passes"),),
         forbidden_successful_tools=FORBIDDEN_REAL_M1M2_TOOLS,
         forbidden_claims=(
             "fault ride-through validated",

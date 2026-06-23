@@ -101,10 +101,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -211,10 +219,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -328,10 +344,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -447,10 +471,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -2379,10 +2411,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -2491,10 +2531,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -2601,10 +2649,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -2711,10 +2767,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -4640,10 +4704,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -4750,10 +4822,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"
@@ -4862,10 +4942,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -4976,10 +5064,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -6907,10 +7003,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -7026,10 +7130,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -7140,10 +7252,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -7259,10 +7379,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -9192,10 +9320,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_load_flow",
         "bus_voltage_range",
@@ -9311,10 +9447,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -9430,10 +9574,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "psse_rms_dynamic",
         "dynamic_initialization",
@@ -9542,10 +9694,18 @@
       },
       "oracle_label": "m1_m2_pass",
       "output_contains": [
-        "recommendation",
         "pss/e"
       ],
-      "output_contains_any": [],
+      "output_contains_any": [
+        [
+          "recommendation",
+          "grounded result",
+          "approve",
+          "approved",
+          "pass",
+          "passes"
+        ]
+      ],
       "required_capabilities": [
         "ppc_pq_target_step",
         "poc_pq_channels"

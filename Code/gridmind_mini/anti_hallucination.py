@@ -617,6 +617,10 @@ def validate_tool_call_policy(
         remote_psse_intent
         and normalized_tool == "run_remote_psse_m1m2"
         and _requests_unvalidated_remote_m1m2_action(lower)
+        and not _is_context_approved_remote_m1m2_subset(
+            arguments=arguments or {},
+            context=context_dict,
+        )
     ):
         return ToolCallPolicyDecision(
             allowed=False,
@@ -1140,6 +1144,47 @@ def _requests_unvalidated_remote_m1m2_action(lower: str) -> bool:
         )
         and re.search(r"\b(change|edit|modify|set|tune|adjust)\b", lower)
     )
+
+
+def _is_context_approved_remote_m1m2_subset(
+    *,
+    arguments: Mapping[str, Any],
+    context: Mapping[str, Any],
+) -> bool:
+    """Allow exact live PSS/E jobs that the testcase context marks executable.
+
+    This preserves the proxy guard for faults, ride-through, droop, SCR, new
+    projects, and controller edits while letting TRGC prompts run an explicitly
+    allowlisted subset and then bound the conclusion.
+    """
+
+    case_id = str(arguments.get("case_id") or "").strip()
+    scenario_type = str(arguments.get("scenario_type") or "").strip()
+    if not case_id or not scenario_type:
+        return False
+    if not _is_allowlisted_remote_m1m2_pair(case_id, scenario_type):
+        return False
+
+    context_case = str(context.get("case_id") or "").strip()
+    context_scenario = str(context.get("scenario_type") or "").strip()
+    if context_case == case_id and context_scenario == scenario_type:
+        return True
+
+    requirement = context.get("trgc_requirement")
+    if isinstance(requirement, Mapping):
+        support = str(requirement.get("current_support_status") or "").strip()
+        remote_scenario = str(requirement.get("current_remote_scenario_type") or "").strip()
+        if support == "executable_current_remote" and remote_scenario == scenario_type:
+            return True
+    return False
+
+
+def _is_allowlisted_remote_m1m2_pair(case_id: str, scenario_type: str) -> bool:
+    allowed = {
+        "test_cases_v36": {"static", "no_disturbance_5s", "pq_target_step"},
+        "pif6_2026_05_17": {"static", "no_disturbance_5s"},
+    }
+    return scenario_type in allowed.get(case_id, set())
 
 
 def _has_real_interconnection_intent(lower: str) -> bool:

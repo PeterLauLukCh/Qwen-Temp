@@ -197,6 +197,29 @@ class RemotePsseIntegrationTest(unittest.TestCase):
         self.assertFalse(decision.allowed)
         self.assertEqual(decision.recommended_tool, "list_remote_psse_m1m2_cases")
 
+    def test_guardrail_allows_context_approved_trgc_subset(self) -> None:
+        decision = validate_tool_call_policy(
+            tool_name="run_remote_psse_m1m2",
+            user_message=(
+                "TRGC Annexure 16 is broader than the current remote gym, but the "
+                "specific pif6_2026_05_17/no_disturbance_5s subset is allowlisted. "
+                "Run that exact job, then state that faults, droop, SCR, PSCAD, EMT, "
+                "and field-validation requirements remain outside this result."
+            ),
+            arguments={"case_id": "pif6_2026_05_17", "scenario_type": "no_disturbance_5s"},
+            context={
+                "remote_psse_m1m2_gym": True,
+                "case_id": "pif6_2026_05_17",
+                "scenario_type": "no_disturbance_5s",
+                "trgc_requirement": {
+                    "current_support_status": "executable_current_remote",
+                    "current_remote_scenario_type": "no_disturbance_5s",
+                },
+            },
+        )
+
+        self.assertTrue(decision.allowed)
+
 
 class FakeRemotePsseTransport:
     def __init__(self) -> None:
