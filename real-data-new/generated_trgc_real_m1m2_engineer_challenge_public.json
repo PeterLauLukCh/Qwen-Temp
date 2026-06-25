@@ -1148,23 +1148,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -2513,23 +2529,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -4415,23 +4447,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -6475,23 +6523,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -7465,23 +7529,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -7749,23 +7829,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -8034,23 +8130,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -8548,23 +8660,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -8832,23 +8960,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -9532,23 +9676,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -9816,23 +9976,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -11548,23 +11724,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -12061,23 +12253,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -13012,23 +13220,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -21898,23 +22122,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -24245,23 +24485,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -25500,23 +25756,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -26033,23 +26305,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -26317,23 +26605,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [
@@ -26601,23 +26905,39 @@
           },
           {
             "aliases": [
-              "static poc p",
-              "poc p",
-              "mw"
+              "5004 rows",
+              "channel rows"
             ],
-            "name": "static_poc_p_mw",
-            "tolerance": 0.25433389240193105,
-            "value": 5.0866778480386206
+            "name": "dynamic_row_count",
+            "tolerance": 1,
+            "value": 5004
           },
           {
             "aliases": [
-              "static poc q",
-              "poc q",
-              "mvar"
+              "final time",
+              "5.00082"
             ],
-            "name": "static_poc_q_mvar",
-            "tolerance": 0.9667338805454865,
-            "value": -19.33467761090973
+            "name": "dynamic_final_time_s",
+            "tolerance": 0.05,
+            "value": 5.000820159912109
+          },
+          {
+            "aliases": [
+              "final poc p",
+              "poc_p_2001_2"
+            ],
+            "name": "dynamic_final_poc_p_mw",
+            "tolerance": 0.2565871000289917,
+            "value": 5.131742000579834
+          },
+          {
+            "aliases": [
+              "final poc q",
+              "poc_q_2001_2"
+            ],
+            "name": "dynamic_final_poc_q_mvar",
+            "tolerance": 0.9642085075378418,
+            "value": -19.284170150756836
           }
         ],
         "required_poc_claims": [

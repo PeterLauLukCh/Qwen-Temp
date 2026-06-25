@@ -364,6 +364,82 @@ class RealM1M2EngineerGymTest(unittest.TestCase):
         self.assertNotIn("numeric_contradiction", result.reward.hard_penalties)
         self.assertNotIn("wrong_poc_claim", result.reward.hard_penalties)
 
+    def test_challenge_correcting_bad_static_summary_does_not_trigger_numeric_penalty(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(40, seed=18, profile="trgc_engineer_challenge")
+            if item.family == "numeric_static_interpretation"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_static_operating_point", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {
+                    "type": "final_answer",
+                    "text": (
+                        "Evidence inspected: case summary and static operating point. "
+                        "Numeric findings: correcting the roughly 50-bus summary, the actual case has 786 buses. "
+                        "The actual minimum voltage is 0.9000 pu and maximum voltage is 1.0425 pu, so the voltage range is wider than 0.95 to 1.05. "
+                        "Static POC P/Q is 5.0867 MW / -19.3347 Mvar. "
+                        "TRGC mapping: this is only an M1 static load-flow check. "
+                        "Limitations: it cannot approve GFM-12, SCR, FRT, droop, EMT, power-quality, or field-validation items. "
+                        "Recommendation: bounded conclusion only for the inspected static evidence."
+                    ),
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertNotIn("numeric_contradiction", result.reward.hard_penalties)
+        self.assertEqual(result.reward.numeric_accuracy, 1.0)
+
+    def test_challenge_mixed_proxy_uses_dynamic_numeric_oracle(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(100, seed=19, profile="trgc_engineer_challenge")
+            if item.family == "mixed_trgc_proxy_refusal"
+        )
+        fact_names = {item["name"] for item in episode.hidden_oracle["required_numeric_facts"]}
+
+        self.assertIn("dynamic_row_count", fact_names)
+        self.assertIn("dynamic_final_time_s", fact_names)
+        self.assertIn("dynamic_final_poc_p_mw", fact_names)
+        self.assertIn("dynamic_final_poc_q_mvar", fact_names)
+        self.assertNotIn("static_poc_p_mw", fact_names)
+        self.assertNotIn("static_poc_q_mvar", fact_names)
+
+    def test_challenge_unconfirmed_bus_2000_with_bus2_relation_gets_partial_poc_credit(self):
+        episode = next(
+            item
+            for item in generate_real_m1m2_engineer_episodes(40, seed=20, profile="trgc_engineer_challenge")
+            if item.family == "contradictory_submittal"
+        )
+        result = replay_real_m1m2_engineer_trajectory(
+            episode,
+            [
+                {"type": "tool_call", "name": "inspect_real_case_summary", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {"type": "tool_call", "name": "inspect_real_poc_context", "arguments": {"case_id": "pif6_2026_05_17", "poc_label_or_bus": "2000"}},
+                {"type": "tool_call", "name": "inspect_real_model_inventory", "arguments": {"case_id": "pif6_2026_05_17"}},
+                {
+                    "type": "final_answer",
+                    "text": (
+                        "Evidence inspected: case summary, selected POC context for bus 2000, and model inventory. "
+                        "Numeric findings: 786 buses. "
+                        "POC interpretation: bus 2000 / POC2_0 is one of five candidate buses and has no confirmed POC letter; "
+                        "the machine at bus 2000 regulates bus 2, so there is a bus 2 relation that must be resolved before confirming the grid-side POC. "
+                        "TRGC mapping: GFM-12 is unsupported in the current live gym. "
+                        "Limitations: missing confirmed POC letter, project MW/Q capability, and validated study scenario. "
+                        "Recommendation: cannot approve the unsupported requirement."
+                    ),
+                },
+            ],
+            tool_runner=_fake_runner,
+        )
+
+        self.assertNotIn("wrong_poc_claim", result.reward.hard_penalties)
+        self.assertEqual(result.reward.poc_accuracy, 0.6)
+
     def test_challenge_proxy_remote_run_for_contradictory_submittal_penalized(self):
         episode = next(
             item

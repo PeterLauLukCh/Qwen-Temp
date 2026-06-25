@@ -1055,7 +1055,13 @@ def _build_challenge_episode(
                 {"name": "inspect_real_poc_context", "arguments": {"case_id": case_id}},
             ),
             required_evidence_tools=({"name": REMOTE_M1M2_TOOL, "arguments": {"case_id": case_id, "scenario_type": scenario_type}},),
-            numeric_facts=_numeric_facts("bus_count", "static_poc_p_mw", "static_poc_q_mvar"),
+            numeric_facts=_numeric_facts(
+                "bus_count",
+                "dynamic_row_count",
+                "dynamic_final_time_s",
+                "dynamic_final_poc_p_mw",
+                "dynamic_final_poc_q_mvar",
+            ),
             claim_groups=(SUPPORTED_RESULT_TERMS, REFUSAL_TERMS, (req_bad.requirement_id.lower(),), CHALLENGE_REFUSAL_REQUIREMENTS),
             memo_sections=("evidence", "trgc_mapping", "limitations", "recommendation"),
             correct_poc_bus=2,
@@ -1549,13 +1555,81 @@ def _poc_claim_score(
             matched += 1.0
         elif accepted and not forbidden:
             matched += 0.6
+        elif not forbidden and _partial_poc_credit(claim, text):
+            matched += 0.6
     return matched / len(claim_items)
 
 
 def _accepted_poc_term(term: str, text: str) -> bool:
     if term == "poc2":
-        return "poc2" in text and "poc2_0 is the poc" not in text and "poc2_0 as the poc" not in text
+        if "poc2_0 is the poc" in text or "poc2_0 as the poc" in text:
+            return False
+        patterns = (
+            r"\bbus\s*2\b\s*/\s*poc2\b",
+            r"\bbus\s*2\b\s*\(\s*poc2\s*\)",
+            r"\bpoc2\b[^.\n;]{0,80}\blikely\b",
+            r"\bpoc2\b[^.\n;]{0,80}\bgrid-side\b",
+            r"\bpoc2\b[^.\n;]{0,80}\bpoc\b",
+        )
+        return any(re.search(pattern, text) for pattern in patterns)
+    if term == "bus 2":
+        patterns = (
+            r"\bbus\s*2\b\s*/\s*poc2\b",
+            r"\bbus\s*2\b\s*\(\s*poc2\s*\)",
+            r"\bbus\s*2\b[^.\n;]{0,80}\blikely\b",
+            r"\bbus\s*2\b[^.\n;]{0,80}\bgrid-side\b",
+            r"\bbus\s*2\b[^.\n;]{0,80}\bpoc\b",
+            r"\bpoc\b[^.\n;]{0,80}\bbus\s*2\b",
+            r"\bgrid-side\b[^.\n;]{0,80}\bbus\s*2\b",
+        )
+        for pattern in patterns:
+            for match in re.finditer(pattern, text):
+                window = text[max(0, match.start() - 80): min(len(text), match.end() + 120)]
+                unresolved_relation = "relation" in window and (
+                    "before confirming" in window
+                    or "must be resolved" in window
+                    or "needs to be resolved" in window
+                    or "requires resolution" in window
+                )
+                regulated_only = (
+                    "regulates bus 2" in window
+                    or "regulated bus = 2" in window
+                    or "regulated bus 2" in window
+                )
+                if unresolved_relation or regulated_only:
+                    continue
+                return True
+        return False
     return term in text
+
+
+def _partial_poc_credit(claim: Mapping[str, Any], text: str) -> bool:
+    if claim.get("bus") != 2:
+        return False
+    uncertainty_terms = (
+        "not corroborated",
+        "not confirmed",
+        "unconfirmed",
+        "no confirmed poc",
+        "no confirmed poc letter",
+        "missing poc letter",
+        "one of five",
+        "one of 5",
+        "candidate buses",
+        "poc letter",
+        "documentation ambiguity",
+    )
+    bus2_relation_terms = (
+        "regulates bus 2",
+        "regulated bus = 2",
+        "regulated bus 2",
+        "bus 2 relation",
+        "bus 2 / poc2",
+        "bus 2/poc2",
+        "poc2 relation",
+        "grid-side relation",
+    )
+    return any(term in text for term in uncertainty_terms) and any(term in text for term in bus2_relation_terms)
 
 
 def _memo_section_score(sections: Any, text: str) -> float:
@@ -1702,11 +1776,23 @@ def _is_rejected_or_quoted_premise(text: str, start: int, end: int) -> bool:
         "not enough",
         "not sufficient",
         "not corroborated",
+        "not a",
+        "not an",
         "contradict",
         "contradictory",
+        "correcting",
+        "corrected",
+        "correction",
         "mischaracterizes",
         "mischaracterized",
         "understates",
+        "substantially larger",
+        "larger than",
+        "actual case is",
+        "actual case has",
+        "actual minimum",
+        "actual voltage",
+        "actual low",
         "wider than",
         "not near-zero",
         "not near zero",
